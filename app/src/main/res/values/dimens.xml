@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="font_size">19dp</dimen>
+    <dimen name="button_corner_radius">20dp</dimen>
+    <dimen name="element_padding">19dp</dimen>
+</resources>
