@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="main_activity_font_size">22dp</dimen>
-    <dimen name="settings_title_font_size">20dp</dimen>
-    <dimen name="settings_activity_font_size">16dp</dimen>
-    <dimen name="button_corner_radius">16dp</dimen>
-    <dimen name="element_padding">19dp</dimen>
+    <dimen name="title_label_padding">12dp</dimen>
+    <dimen name="title_label_margin">4dp</dimen>
+    <dimen name="title_label_margin_bottom">24dp</dimen>
+
+    <dimen name="main_activity_font_size">22sp</dimen>
+    <dimen name="main_button_corner_radius">16dp</dimen>
+    <dimen name="main_icon_padding">8dp</dimen>
+    <dimen name="main_layout_padding">16dp</dimen>
+    <dimen name="main_layout_margin_between_button">12dp</dimen>
+    <dimen name="main_layout_bottom">12dp</dimen>
+
+    <dimen name="settings_title_icon_padding">24dp</dimen>
+    <dimen name="settings_start_padding">16dp</dimen>
+    <dimen name="settings_icon_end_padding">12dp</dimen>
+    <dimen name="settings_switch_end_padding">6dp</dimen>
+    <dimen name="settings_element_padding">20dp</dimen>
+    <dimen name="settings_title_font_size">22sp</dimen>
+    <dimen name="settings_activity_font_size">16sp</dimen>
 </resources>
