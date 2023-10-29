@@ -32,8 +32,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingHorizontal="@dimen/main_layout_padding"
-            android:layout_marginBottom="@dimen/main_layout_bottom"
-         >
+            android:layout_marginBottom="@dimen/main_layout_bottom">
             <Button
                 android:id="@+id/buttonSearch"
                 android:layout_width="match_parent"
