@@ -25,6 +25,22 @@
         <item name="android:paddingEnd">@dimen/settings_icon_end_padding</item>
         <item name="android:textColor">?attr/colorOnSecondary</item>
         <item name="android:drawableTint">?attr/colorSecondaryVariant</item>
-         <item name="android:textSize">@dimen/settings_activity_font_size</item>
+        <item name="android:textSize">@dimen/settings_activity_font_size</item>
+    </style>
+
+    <style name="ButtonBackFromActivityStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginVertical">@dimen/title_label_margin</item>
+        <item name="android:layout_marginStart">@dimen/title_label_margin</item>
+        <item name="android:layout_marginBottom">@dimen/title_label_margin_bottom</item>
+        <item name="android:padding">@dimen/title_label_padding</item>
+        <item name="android:backgroundTint">?attr/colorSecondary</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textSize">@dimen/settings_title_font_size</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/settings_title_icon_padding</item>
+        <item name="iconTint">?attr/colorOnPrimary</item>
     </style>
 </resources>

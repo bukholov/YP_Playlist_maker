@@ -4,46 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSecondary"
     tools:context=".SearchActivity">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/colorSecondary"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/buttonBackFromSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/title_label_margin"
-            android:layout_marginStart="@dimen/title_label_margin"
-            android:layout_marginBottom="@dimen/title_label_margin_bottom"
-            android:background="@null"
-            android:backgroundTint="?attr/colorSecondary"
-            android:padding="@dimen/title_label_padding"
+        <Button style="@style/ButtonBackFromActivityStyle"
+            android:id="@+id/button_back_from_search"
             android:text="@string/search"
-            android:textAlignment="textStart"
-            android:textColor="?attr/colorOnPrimary"
-            android:textSize="@dimen/settings_title_font_size"
-            app:icon="@drawable/arrow_back"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/settings_title_icon_padding"
-            app:iconTint="?attr/colorOnPrimary" />
+            app:icon="@drawable/arrow_back" />
 
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <EditText
-                android:id="@+id/editTextSearch"
+                android:id="@+id/edit_text_search"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/search_activity_edit_text_height"
-                android:layout_marginStart="@dimen/search_activity_font_size"
-                android:layout_marginTop="@dimen/search_activity_font_size"
-                android:layout_marginEnd="@dimen/search_activity_font_size"
-                android:layout_marginBottom="@dimen/search_activity_font_size"
+                android:layout_marginStart="@dimen/search_activity_layout_margin"
+                android:layout_marginTop="@dimen/search_activity_layout_margin"
+                android:layout_marginEnd="@dimen/search_activity_layout_margin"
+                android:layout_marginBottom="@dimen/search_activity_layout_margin"
                 android:background="@drawable/et_style"
                 android:backgroundTint="?attr/colorTertiary"
                 android:drawableStart="@drawable/search"
@@ -56,20 +42,22 @@
                 android:textColor="@color/black"
                 android:textColorHint="?attr/colorOnTertiary"
                 android:paddingStart="@dimen/search_activity_padding_edit_text"
-                android:textSize="@dimen/search_activity_font_size" />
+                android:textSize="@dimen/search_activity_font_size"
+                android:textCursorDrawable="@drawable/color_cursor_search_text"
+               />
 
             <ImageView
-                android:id="@+id/imageViewClearText"
+                android:id="@+id/image_view_clear_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/editTextSearch"
-                android:layout_alignBottom="@+id/editTextSearch"
-                android:layout_alignRight="@+id/editTextSearch"
+                android:layout_marginTop="@dimen/search_activity_layout_margin"
+                android:layout_marginEnd="@dimen/search_activity_layout_margin"
+                android:layout_gravity="end"
                 android:backgroundTint="?attr/colorOnTertiary"
                 android:padding="@dimen/search_activity_padding_image_clear_text"
-                android:visibility="invisible"
-                android:src="@drawable/cross_clear_text" />
-        </RelativeLayout>
+                android:src="@drawable/cross_clear_text"
+                android:visibility="invisible" />
+        </FrameLayout>
 
     </LinearLayout>
 

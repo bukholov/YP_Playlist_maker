@@ -2,14 +2,12 @@ package com.example.yp_playlist_maker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
-import com.google.android.material.internal.ViewUtils
 
 class SearchActivity : AppCompatActivity() {
     companion object {
@@ -27,12 +25,12 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val buttonBackFromSearch= findViewById<TextView>(R.id.buttonBackFromSearch)
+        val buttonBackFromSearch= findViewById<TextView>(R.id.button_back_from_search)
         buttonBackFromSearch.setOnClickListener{
             finish()
         }
-        val editTextSearch = findViewById<TextView>(R.id.editTextSearch)
-        val clearButton = findViewById<ImageView>(R.id.imageViewClearText)
+        val editTextSearch = findViewById<TextView>(R.id.edit_text_search)
+        val clearButton = findViewById<ImageView>(R.id.image_view_clear_text)
 
         clearButton.setOnClickListener {
             editTextSearch.setText("")
@@ -52,6 +50,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                searchTextToSave = findViewById<TextView>(R.id.edit_text_search).text.toString()
                 clearButton.visibility = clearButtonVisibility(s)
             }
         }
@@ -60,7 +59,6 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        searchTextToSave = findViewById<TextView>(R.id.editTextSearch).text.toString()
         outState.putString(SAVED_SEARCH_TEXT, searchTextToSave)
     }
 
@@ -69,6 +67,6 @@ class SearchActivity : AppCompatActivity() {
     {
         super.onRestoreInstanceState(savedInstanceState)
         searchTextToSave = savedInstanceState.getString(SAVED_SEARCH_TEXT, "")
-        findViewById<TextView>(R.id.editTextSearch).text = searchTextToSave
+        findViewById<TextView>(R.id.edit_text_search).text = searchTextToSave
     }
 }

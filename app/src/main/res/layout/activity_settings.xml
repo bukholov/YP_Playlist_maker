@@ -13,44 +13,31 @@
         android:background="?attr/colorSecondary"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/buttonBackFromSettings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/title_label_margin"
-            android:layout_marginStart="@dimen/title_label_margin"
-            android:layout_marginBottom="@dimen/title_label_margin_bottom"
+        <Button style="@style/ButtonBackFromActivityStyle"
+            android:id="@+id/button_back_from_settings"
             android:backgroundTint="?attr/colorSecondary"
-            android:padding="@dimen/title_label_padding"
             android:text="@string/settings"
-            android:textAlignment="textStart"
-            android:textColor="?attr/colorOnPrimary"
-            android:textSize="@dimen/settings_title_font_size"
-            android:background="@null"
-            app:icon="@drawable/arrow_back"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/settings_title_icon_padding"
-            app:iconTint="?attr/colorOnPrimary" />
+            app:icon="@drawable/arrow_back" />
 
         <androidx.appcompat.widget.SwitchCompat style="@style/SettingsMenuStyle"
-            android:id="@+id/switchDarkTheme"
+            android:id="@+id/switch_dark_theme"
             app:thumbTint="?attr/colorSwitchThumbNormal"
             app:trackTint="?attr/colorSurface"
             android:paddingEnd="@dimen/settings_switch_end_padding"
             android:text="@string/dark_theme" />
 
         <TextView style="@style/SettingsMenuStyle"
-            android:id="@+id/textViewShare"
+            android:id="@+id/text_view_share"
             android:drawableEnd="@drawable/share"
             android:text="@string/share_app" />
 
         <TextView style="@style/SettingsMenuStyle"
-            android:id="@+id/textViewSendToSupport"
+            android:id="@+id/text_view_send_to_support"
             android:drawableEnd="@drawable/support"
             android:text="@string/write_to_support" />
 
         <TextView style="@style/SettingsMenuStyle"
-            android:id="@+id/textViewUserAgreement"
+            android:id="@+id/text_view_user_agreement"
             android:drawableEnd="@drawable/arrow_forward"
             android:text="@string/user_agreement" />
     </LinearLayout>
