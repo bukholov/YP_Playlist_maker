@@ -2,11 +2,11 @@
      <style name="Theme.YP_Playlist_Maker" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/YP_Blue</item>
         <item name="colorPrimaryVariant">@color/YP_Text_Gray</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorOnPrimary">@color/YP_Black</item>
 
         <item name="colorSecondary">@color/white</item>
         <item name="colorSecondaryVariant">@color/YP_Text_Gray</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/YP_Black</item>
 
         <item name="colorSwitchThumbNormal">@color/YP_Text_Gray</item>
         <item name="colorSurface">@color/YP_Light_Gray</item>
