@@ -1,9 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.YP_Playlist_Maker" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+     <style name="Theme.YP_Playlist_Maker" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/YP_Blue</item>
+        <item name="colorPrimaryVariant">@color/YP_Text_Gray</item>
+        <item name="colorOnPrimary">@color/black</item>
+
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/YP_Text_Gray</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <item name="colorSwitchThumbNormal">@color/YP_Text_Gray</item>
+        <item name="colorSurface">@color/YP_Light_Gray</item>
+        <item name="colorOnTertiary">@color/YP_Text_Gray</item>
+        <item name="colorTertiary">@color/YP_Light_Gray</item>
     </style>
 
-    <style name="Theme.YP_Playlist_Maker" parent="Base.Theme.YP_Playlist_Maker" />
 </resources>

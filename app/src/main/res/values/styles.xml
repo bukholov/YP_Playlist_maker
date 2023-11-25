@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MainButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:font">@font/ys_display_medium</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/main_activity_font_size</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_marginBottom">@dimen/main_layout_margin_between_button</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconTint">@color/black</item>
+        <item name="iconPadding">@dimen/main_icon_padding</item>
+        <item name="cornerRadius">@dimen/main_button_corner_radius</item>
+    </style>
+
+    <style name="SettingsMenuStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:font">@font/ys_display_regular</item>
+        <item name="android:paddingVertical">@dimen/settings_element_padding</item>
+        <item name="android:paddingStart">@dimen/settings_element_padding</item>
+        <item name="android:paddingEnd">@dimen/settings_icon_end_padding</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:drawableTint">?attr/colorSecondaryVariant</item>
+        <item name="android:textSize">@dimen/settings_activity_font_size</item>
+    </style>
+
+    <style name="ButtonBackFromActivityStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginVertical">@dimen/title_label_margin</item>
+        <item name="android:layout_marginStart">@dimen/title_label_margin</item>
+        <item name="android:layout_marginBottom">@dimen/title_label_margin_bottom</item>
+        <item name="android:padding">@dimen/title_label_padding</item>
+        <item name="android:backgroundTint">?attr/colorSecondary</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textSize">@dimen/settings_title_font_size</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">@dimen/settings_title_icon_padding</item>
+        <item name="iconTint">?attr/colorOnPrimary</item>
+    </style>
+</resources>

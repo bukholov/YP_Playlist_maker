@@ -1,8 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSecondary"
     tools:context=".SearchActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button style="@style/ButtonBackFromActivityStyle"
+            android:id="@+id/button_back_from_search"
+            android:text="@string/search"
+            app:icon="@drawable/arrow_back" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/edit_text_search"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/search_activity_edit_text_height"
+                android:layout_marginStart="@dimen/search_activity_layout_margin"
+                android:layout_marginTop="@dimen/search_activity_layout_margin"
+                android:layout_marginEnd="@dimen/search_activity_layout_margin"
+                android:layout_marginBottom="@dimen/search_activity_layout_margin"
+                android:background="@drawable/et_style"
+                android:backgroundTint="?attr/colorTertiary"
+                android:drawableStart="@drawable/search"
+                android:drawablePadding="@dimen/search_activity_drawable_padding_edit_text"
+                android:drawableTint="?attr/colorOnTertiary"
+                android:fontFamily="@font/ys_display_regular"
+                android:hint="@string/search"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textColorHint="?attr/colorOnTertiary"
+                android:paddingStart="@dimen/search_activity_padding_edit_text"
+                android:textSize="@dimen/search_activity_font_size"
+                android:textCursorDrawable="@drawable/color_cursor_search_text"
+               />
+
+            <ImageView
+                android:id="@+id/image_view_clear_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/search_activity_layout_margin"
+                android:layout_marginEnd="@dimen/search_activity_layout_margin"
+                android:layout_gravity="end"
+                android:backgroundTint="?attr/colorOnTertiary"
+                android:padding="@dimen/search_activity_padding_image_clear_text"
+                android:src="@drawable/cross_clear_text"
+                android:visibility="invisible" />
+        </FrameLayout>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

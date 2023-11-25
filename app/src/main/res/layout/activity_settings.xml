@@ -10,73 +10,36 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/settings_background_color"
+        android:background="?attr/colorSecondary"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/buttonBackFromSettings"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/title_label_margin"
-            android:layout_marginStart="@dimen/title_label_margin"
-            android:layout_marginBottom="@dimen/title_label_margin_bottom"
-            android:backgroundTint="@color/settings_background_color"
-            android:padding="@dimen/title_label_padding"
+        <Button style="@style/ButtonBackFromActivityStyle"
+            android:id="@+id/button_back_from_settings"
+            android:backgroundTint="?attr/colorSecondary"
             android:text="@string/settings"
-            android:textAlignment="textStart"
-            android:textColor="@color/YP_font_color"
-            android:textSize="@dimen/settings_title_font_size"
-            app:icon="@drawable/arrow_back"
-            app:iconGravity="textStart"
-            app:iconPadding="@dimen/settings_title_icon_padding"
-            app:iconTint="@color/icon_button_black_color" />
+            app:icon="@drawable/arrow_back" />
 
-        <Switch
-            android:id="@+id/switchDarkTheme"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/settings_element_padding"
-            android:paddingStart="@dimen/settings_element_padding"
+        <androidx.appcompat.widget.SwitchCompat style="@style/SettingsMenuStyle"
+            android:id="@+id/switch_dark_theme"
+            app:thumbTint="?attr/colorSwitchThumbNormal"
+            app:trackTint="?attr/colorSurface"
             android:paddingEnd="@dimen/settings_switch_end_padding"
-            android:text="@string/dark_theme"
-            android:textColor="@color/YP_font_color"
-            android:textSize="@dimen/settings_activity_font_size" />
+            android:text="@string/dark_theme" />
 
-        <TextView
-            android:id="@+id/textViewShare"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <TextView style="@style/SettingsMenuStyle"
+            android:id="@+id/text_view_share"
             android:drawableEnd="@drawable/share"
-            android:paddingVertical="@dimen/settings_element_padding"
-            android:paddingStart="@dimen/settings_start_padding"
-            android:paddingEnd="@dimen/settings_icon_end_padding"
-            android:text="@string/share_app"
-            android:textColor="@color/YP_font_color"
-            android:textSize="@dimen/settings_activity_font_size" />
+            android:text="@string/share_app" />
 
-        <TextView
-            android:id="@+id/textViewSendToSupport"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <TextView style="@style/SettingsMenuStyle"
+            android:id="@+id/text_view_send_to_support"
             android:drawableEnd="@drawable/support"
-            android:paddingVertical="@dimen/settings_element_padding"
-            android:paddingStart="@dimen/settings_start_padding"
-            android:paddingEnd="@dimen/settings_icon_end_padding"
-            android:text="@string/write_to_support"
-            android:textColor="@color/YP_font_color"
-            android:textSize="@dimen/settings_activity_font_size" />
+            android:text="@string/write_to_support" />
 
-        <TextView
-            android:id="@+id/textViewUserAgreement"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <TextView style="@style/SettingsMenuStyle"
+            android:id="@+id/text_view_user_agreement"
             android:drawableEnd="@drawable/arrow_forward"
-            android:paddingVertical="@dimen/settings_element_padding"
-            android:paddingStart="@dimen/settings_start_padding"
-            android:paddingEnd="@dimen/settings_icon_end_padding"
-            android:text="@string/user_agreement"
-            android:textColor="@color/YP_font_color"
-            android:textSize="@dimen/settings_activity_font_size" />
+            android:text="@string/user_agreement" />
     </LinearLayout>
 
 
