@@ -30,7 +30,7 @@
     <dimen name="track_item_title_font_size">16sp</dimen>
     <dimen name="track_item_body_font_size">13sp</dimen>
     <dimen name="track_item_art_size">44dp</dimen>
-    <dimen name="track_item_art_round_corner">5</dimen>
+    <dimen name="track_item_art_round_corner">2dp</dimen>
     <dimen name="track_item_button_forward_size">24dp</dimen>
     <dimen name="track_item_horizontal_margin">8dp</dimen>
     <dimen name="track_item_vertical_margin">8dp</dimen>

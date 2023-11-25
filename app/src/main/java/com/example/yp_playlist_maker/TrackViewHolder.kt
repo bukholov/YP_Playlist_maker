@@ -25,7 +25,7 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         tvTrackName.text = item.trackName
         tvTrackTime.text = item.trackTime
 
-        val radiusRound = rootLayout.context.getString(R.dimen.track_item_art_round_corner).toFloat().roundToInt()
+        val radiusRound = rootLayout.context.resources.getDimension(R.dimen.track_item_art_round_corner).roundToInt()
 
         Glide.with(rootLayout)
             .load(Uri.parse(item.artworkUrl100))
