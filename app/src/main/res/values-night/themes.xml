@@ -1,16 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.YP_Playlist_Maker" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryVariant">@color/black</item>
+        <item name="colorPrimary">@color/YP_Black</item>
+        <item name="colorPrimaryVariant">@color/YP_Black</item>
         <item name="colorOnPrimary">@color/white</item>
 
-        <item name="colorSecondary">@color/black</item>
+        <item name="colorSecondary">@color/YP_Black</item>
         <item name="colorSecondaryVariant">@color/white</item>
         <item name="colorOnSecondary">@color/white</item>
 
         <item name="colorSwitchThumbNormal">@color/YP_Blue</item>
         <item name="colorSurface">@color/YP_Blue_Light</item>
-        <item name="colorOnTertiary">@color/black</item>
+        <item name="colorOnTertiary">@color/YP_Black</item>
         <item name="colorTertiary">@color/white</item>
     </style>
 </resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/image_view_track_art"
+        android:layout_width="@dimen/track_item_art_size"
+        android:layout_height="@dimen/track_item_art_size"
+        android:layout_marginVertical="@dimen/track_item_vertical_margin"
+        android:layout_marginEnd="@dimen/track_item_horizontal_margin"
+        android:scaleType="centerCrop"
+        tools:srcCompat="@drawable/placeholder" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <TextView style="@style/TrackStyle.TitleText"
+            android:id="@+id/text_view_track_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+
+            <TextView style="@style/TrackStyle.BodyText"
+                android:id="@+id/text_view_track_artist"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+
+            <ImageView
+                android:id="@+id/image_view_dot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:tint = "?attr/colorSecondaryVariant"
+                app:srcCompat="@drawable/dot" />
+
+            <TextView style="@style/TrackStyle.BodyText"
+                android:id="@+id/text_view_track_time"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/image_view_arrow"
+        android:layout_width="@dimen/track_item_button_forward_size"
+        android:layout_height="@dimen/track_item_button_forward_size"
+        android:layout_gravity="center"
+        android:layout_marginStart="@dimen/track_item_horizontal_margin"
+        app:tint = "?attr/colorSecondaryVariant"
+        app:srcCompat="@drawable/arrow_forward" />
+</LinearLayout>
