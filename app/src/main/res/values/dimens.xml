@@ -35,4 +35,11 @@
     <dimen name="track_item_horizontal_margin">8dp</dimen>
     <dimen name="track_item_vertical_margin">8dp</dimen>
 
+    <dimen name="search_results_panel_margin_top">100dp</dimen>
+    <dimen name="search_results_panel_text_margin_top">16dp</dimen>
+    <dimen name="search_results_panel_button_retry_margin_top">24dp</dimen>
+    <dimen name="search_results_panel_image_padding_top">21dp</dimen>
+    <dimen name="search_results_panel_image_padding_end">4dp</dimen>
+    <dimen name="search_results_panel_retry_button_round_corner">54dp</dimen>
+    <dimen name="search_results_panel_retry_button_font_size">16sp</dimen>
 </resources>
