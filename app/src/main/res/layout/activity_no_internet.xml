@@ -1,36 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/ll_not_found"
-    android:layout_width="match_parent"
+    style="@style/SearchPanelResult"
+    android:id="@+id/ll_no_internet"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <FrameLayout
-        style="@style/SearchPanelResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/search_results_panel_margin_top"
         android:layout_weight="1">
 
-        <ImageView style="@style/SearchPanelResult.ImageView.Note"
-            android:id="@+id/iv_note_left"
-            app:srcCompat="@drawable/note_union_left" />
-
         <ImageView style="@style/SearchPanelResult.ImageView"
-            android:id="@+id/iv_not_found"
-            android:paddingEnd="@dimen/search_results_panel_image_padding_end"
-            android:paddingTop="@dimen/search_results_panel_image_padding_top"
+            android:id="@+id/iv_no_internet"
             app:srcCompat="@drawable/no_internet" />
 
-        <ImageView style="@style/SearchPanelResult.ImageView.Note"
-            android:id="@+id/iv_note_right"
-            app:srcCompat="@drawable/note_union_right" />
     </FrameLayout>
 
     <TextView style="@style/SearchPanelResult.TextView"
         android:id="@+id/tv_not_found"
         android:layout_marginTop="@dimen/search_results_panel_text_margin_top"
-        android:text="@string/not_found" />
+        android:text="@string/no_internet" />
+
+    <Button style="@style/SearchPanelResult.Button"
+        android:id="@+id/button_retry"
+        android:layout_marginTop="@dimen/search_results_panel_button_retry_margin_top"
+        android:text="@string/internet_retry" />
 </LinearLayout>

@@ -20,8 +20,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
-    companion object {
+    private companion object {
         const val SAVED_SEARCH_TEXT = "SAVED_SEARCH_TEXT"
+        const val CONNECTION_SUCCESS = 200
     }
     private var searchTextToSave = ""
     private var lastSearchQuery = ""
@@ -32,6 +33,8 @@ class SearchActivity : AppCompatActivity() {
         .build()
 
     private val iTunesService = retrofit.create(ITunesApi::class.java)
+    private val trackList = ArrayList<Track>()
+    private val trackAdapter = TrackAdapter(trackList)
     
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
@@ -39,6 +42,34 @@ class SearchActivity : AppCompatActivity() {
         } else {
             View.VISIBLE
         }
+    }
+
+    private fun searchTracks(textTrack: String){
+        val flContent = findViewById<FrameLayout>(R.id.fl_content)
+        flContent.removeAllViewsInLayout()
+        iTunesService.search(textTrack).enqueue(object : Callback<TracksResponse>{
+            override fun onResponse(
+                call: Call<TracksResponse>,
+                response: Response<TracksResponse>
+            ) {
+                if(response.code() == CONNECTION_SUCCESS){
+                    trackList.clear()
+                    if(response.body()?.results?.isNotEmpty() == true){
+                        trackList.addAll(response.body()?.results!!)
+                        trackAdapter.notifyDataSetChanged()
+                    }
+                    else{
+                        layoutInflater.inflate(R.layout.activity_not_found, flContent)
+                    }
+                }
+            }
+            override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+                layoutInflater.inflate(R.layout.activity_no_internet, flContent)
+                findViewById<LinearLayout>(R.id.ll_no_internet).findViewById<Button>(R.id.button_retry).setOnClickListener {
+                    searchTracks(lastSearchQuery)
+                }
+            }
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +82,6 @@ class SearchActivity : AppCompatActivity() {
         }
         val editTextSearch = findViewById<TextView>(R.id.edit_text_search)
         val clearButton = findViewById<ImageView>(R.id.image_view_clear_text)
-        val frameLayoutContent = findViewById<FrameLayout>(R.id.fl_content)
         val textWatcherSearch = object : TextWatcher{
             override fun afterTextChanged(s: Editable?) {
             }
@@ -65,38 +95,10 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         editTextSearch.addTextChangedListener(textWatcherSearch)
-        val trackList = ArrayList<Track>()
 
-        val trackAdapter = TrackAdapter(trackList)
         val rvTracks = findViewById<RecyclerView>(R.id.rv_tracks)
         rvTracks.adapter = trackAdapter
 
-        fun searchTracks(textTrack: String){
-            frameLayoutContent.removeAllViewsInLayout()
-            iTunesService.search(textTrack).enqueue(object : Callback<TracksResponse>{
-                override fun onResponse(
-                    call: Call<TracksResponse>,
-                    response: Response<TracksResponse>
-                ) {
-                    if(response.code() == 200){
-                        trackList.clear()
-                        if(response.body()?.results?.isNotEmpty() == true){
-                            trackList.addAll(response.body()?.results!!)
-                            trackAdapter.notifyDataSetChanged()
-                        }
-                        else{
-                            layoutInflater.inflate(R.layout.not_found_activity, frameLayoutContent)
-                        }
-                    }
-                }
-                override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
-                    layoutInflater.inflate(R.layout.no_internet_activity, frameLayoutContent)
-                    findViewById<LinearLayout>(R.id.ll_no_internet).findViewById<Button>(R.id.button_retry).setOnClickListener {
-                        searchTracks(lastSearchQuery)
-                    }
-                }
-            })
-        }
         editTextSearch.setOnEditorActionListener { textView, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_DONE){
                 lastSearchQuery = textView.text.toString()
