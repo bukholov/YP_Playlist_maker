@@ -14,4 +14,7 @@
     <string name="uri_user_agreement" translatable="false">"https://yandex.ru/legal/practicum_offer/"</string>
     <string name="uri_practicum_android_developer" translatable="false">https://practicum.yandex.ru/android-developer/</string>
     <string name="share_app_text_plain" translatable="false">text/plain</string>
+    <string name="not_found">Ничего не нашлось</string>
+    <string name="no_internet">Проблемы со связью \n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
+    <string name="internet_retry">Обновить</string>
 </resources>

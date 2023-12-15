@@ -44,6 +44,8 @@
                 android:paddingStart="@dimen/search_activity_padding_edit_text"
                 android:textSize="@dimen/search_activity_font_size"
                 android:textCursorDrawable="@drawable/color_cursor_search_text"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
                />
 
             <ImageView
@@ -68,7 +70,14 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
             tools:listitem="@layout/track_item"
-            tools:itemCount="5"/>
+            tools:itemCount="1"/>
+        <FrameLayout
+            android:id="@+id/fl_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+        </FrameLayout>
 
     </LinearLayout>
 

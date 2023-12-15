@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import java.text.SimpleDateFormat
+import java.util.Locale
 import kotlin.math.roundToInt
 
 class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -23,7 +25,7 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     fun bind(item: Track){
         tvTrackArtist.text = item.artistName
         tvTrackName.text = item.trackName
-        tvTrackTime.text = item.trackTime
+        tvTrackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(item.trackTime)
 
         val radiusRound = rootLayout.context.resources.getDimension(R.dimen.track_item_art_round_corner).roundToInt()
 
