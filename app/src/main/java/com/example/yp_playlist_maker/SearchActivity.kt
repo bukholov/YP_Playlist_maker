@@ -19,11 +19,12 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-const val SAVED_TRACKS_PREFERENCES = "yp_playlist_saved_tracks"
+
 class SearchActivity : AppCompatActivity() {
     private companion object {
         const val SAVED_SEARCH_TEXT = "SAVED_SEARCH_TEXT"
         const val CONNECTION_SUCCESS = 200
+        const val SAVED_TRACKS_PREFERENCES = "yp_playlist_saved_tracks"
     }
     private var searchTextToSave = ""
     private var lastSearchQuery = ""

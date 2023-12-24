@@ -1,7 +1,6 @@
 package com.example.yp_playlist_maker
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.widget.TextView
@@ -23,8 +22,7 @@ class SettingsActivity : AppCompatActivity() {
 
         val sharedPrefs = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE)
         val switchDarkTheme = findViewById<SwitchCompat>(R.id.switch_dark_theme)
-        val themeFromConfiguration = (Configuration.UI_MODE_NIGHT_MASK and resources.configuration.uiMode) == Configuration.UI_MODE_NIGHT_YES
-        switchDarkTheme.isChecked = sharedPrefs.getBoolean(THEME_TEXT, themeFromConfiguration)
+        switchDarkTheme.isChecked = sharedPrefs.getBoolean(THEME_TEXT, false)
 
         switchDarkTheme.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) }
