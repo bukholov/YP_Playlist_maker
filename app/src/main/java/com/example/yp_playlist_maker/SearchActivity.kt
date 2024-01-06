@@ -80,7 +80,7 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         val tracksSharedPreferences = getSharedPreferences(SAVED_TRACKS_PREFERENCES, MODE_PRIVATE)
-        val trackAdapter = TrackAdapter(trackList, tracksSharedPreferences)
+        val trackAdapter = TrackAdapter(trackList, tracksSharedPreferences, this)
         val buttonBackFromSearch= findViewById<TextView>(R.id.button_back_from_search)
         buttonBackFromSearch.setOnClickListener{
             finish()

@@ -44,5 +44,20 @@
     <dimen name="search_panel_text_view_history_margin_top">18dp</dimen>
     <dimen name="search_panel_text_view_history_margin_bottom">12dp</dimen>
 
-    <dimen name="saved_search_history_size">10</dimen>
+    <dimen name="audio_player_head_horizontal_margin">24dp</dimen>
+    <dimen name="audio_player_head_top_margin">24dp</dimen>
+    <dimen name="audio_player_artist_name_top_margin">24dp</dimen>
+    <dimen name="audio_player_info_horizontal_margin">16dp</dimen>
+    <dimen name="audio_player_play_button_margin_top">32dp</dimen>
+    <dimen name="audio_player_play_button_size">100dp</dimen>
+    <dimen name="audio_player_additional_buttons_size">52dp</dimen>
+    <dimen name="audio_player_current_track_time_margin_top">4dp</dimen>
+    <dimen name="audio_player_track_photo_round_corner">8dp</dimen>
+    <dimen name="audio_player_track_photo_margin_top">24dp</dimen>
+    <dimen name="audio_player_track_name_font_size">22sp</dimen>
+    <dimen name="audio_player_artist_name_font_size">14sp</dimen>
+    <dimen name="audio_player_info_font_size">13sp</dimen>
+    <dimen name="audio_player_margin_top_text_view_info_tab">40dp</dimen>
+    <dimen name="audio_player_margin_between_text_view_info">16dp</dimen>
+    <dimen name="audio_player_margin_bottom_text_view_info_tab">8dp</dimen>
 </resources>
