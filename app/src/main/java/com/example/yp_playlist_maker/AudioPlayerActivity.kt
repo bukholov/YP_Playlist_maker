@@ -44,7 +44,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         Glide.with(this)
             .load(Uri.parse(selectedTrack.getCoverArtwork()))
             .fitCenter()
-            .apply(RequestOptions().placeholder(R.drawable.placeholder))
+            .placeholder(R.drawable.placeholder)
             .apply(RequestOptions.bitmapTransform(RoundedCorners(this.resources.getDimension(R.dimen.audio_player_track_photo_round_corner).roundToInt())))
             .into(ivTrackPhoto)
 

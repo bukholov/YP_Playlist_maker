@@ -1,5 +1,6 @@
 package com.example.yp_playlist_maker
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +14,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -80,7 +82,15 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         val tracksSharedPreferences = getSharedPreferences(SAVED_TRACKS_PREFERENCES, MODE_PRIVATE)
-        val trackAdapter = TrackAdapter(trackList, tracksSharedPreferences, this)
+
+        val onClickListener: (Track) -> Unit  = {item:Track ->
+            SearchHistory(getSharedPreferences(SAVED_TRACKS_PREFERENCES, MODE_PRIVATE)).write(item)
+            val intent = Intent(this, AudioPlayerActivity::class.java)
+            intent.putExtra("SELECTED_TRACK", Gson().toJson(item))
+            startActivity(intent)
+        }
+
+        val trackAdapter = TrackAdapter(trackList, onClickListener)
         val buttonBackFromSearch= findViewById<TextView>(R.id.button_back_from_search)
         buttonBackFromSearch.setOnClickListener{
             finish()
