@@ -19,10 +19,12 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
 class SearchActivity : AppCompatActivity() {
     private companion object {
         const val SAVED_SEARCH_TEXT = "SAVED_SEARCH_TEXT"
         const val CONNECTION_SUCCESS = 200
+        const val SAVED_TRACKS_PREFERENCES = "yp_playlist_saved_tracks"
     }
     private var searchTextToSave = ""
     private var lastSearchQuery = ""
@@ -33,9 +35,8 @@ class SearchActivity : AppCompatActivity() {
         .build()
 
     private val iTunesService = retrofit.create(ITunesApi::class.java)
-    private val trackList = ArrayList<Track>()
-    private val trackAdapter = TrackAdapter(trackList)
-    
+    private var trackList = ArrayList<Track>()
+
     private fun clearButtonVisibility(s: CharSequence?): Int {
         return if (s.isNullOrEmpty()) {
             View.GONE
@@ -44,7 +45,7 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun searchTracks(textTrack: String){
+    private fun searchTracks(textTrack: String, trackAdapter: TrackAdapter){
         val flContent = findViewById<FrameLayout>(R.id.fl_content)
         flContent.removeAllViewsInLayout()
         iTunesService.search(textTrack).enqueue(object : Callback<TracksResponse>{
@@ -56,17 +57,20 @@ class SearchActivity : AppCompatActivity() {
                     trackList.clear()
                     if(response.body()?.results?.isNotEmpty() == true){
                         trackList.addAll(response.body()?.results!!)
-                        trackAdapter.notifyDataSetChanged()
                     }
                     else{
                         layoutInflater.inflate(R.layout.activity_not_found, flContent)
                     }
+                    trackAdapter.notifyDataSetChanged()
                 }
             }
             override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+                trackList.clear()
+                trackAdapter.notifyDataSetChanged()
                 layoutInflater.inflate(R.layout.activity_no_internet, flContent)
+                flContent.visibility = View.VISIBLE
                 findViewById<LinearLayout>(R.id.ll_no_internet).findViewById<Button>(R.id.button_retry).setOnClickListener {
-                    searchTracks(lastSearchQuery)
+                    searchTracks(lastSearchQuery, trackAdapter)
                 }
             }
         })
@@ -75,13 +79,18 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
+        val tracksSharedPreferences = getSharedPreferences(SAVED_TRACKS_PREFERENCES, MODE_PRIVATE)
+        val trackAdapter = TrackAdapter(trackList, tracksSharedPreferences)
         val buttonBackFromSearch= findViewById<TextView>(R.id.button_back_from_search)
         buttonBackFromSearch.setOnClickListener{
             finish()
         }
         val editTextSearch = findViewById<TextView>(R.id.edit_text_search)
-        val clearButton = findViewById<ImageView>(R.id.image_view_clear_text)
+        val buttonClear = findViewById<ImageView>(R.id.image_view_clear_text)
+        val buttonClearHistory = findViewById<Button>(R.id.button_clear_history)
+        val textViewLookingFor = findViewById<TextView>(R.id.tv_looking_for)
+        buttonClearHistory.visibility = View.GONE
+
         val textWatcherSearch = object : TextWatcher{
             override fun afterTextChanged(s: Editable?) {
             }
@@ -91,32 +100,64 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 searchTextToSave = findViewById<TextView>(R.id.edit_text_search).text.toString()
-                clearButton.visibility = clearButtonVisibility(s)
+                buttonClear.visibility = clearButtonVisibility(s)
             }
         }
         editTextSearch.addTextChangedListener(textWatcherSearch)
-
         val rvTracks = findViewById<RecyclerView>(R.id.rv_tracks)
         rvTracks.adapter = trackAdapter
 
         editTextSearch.setOnEditorActionListener { textView, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_DONE){
                 lastSearchQuery = textView.text.toString()
-                searchTracks(textView.text.toString())
+                searchTracks(textView.text.toString(), trackAdapter)
+                buttonClearHistory.visibility = View.GONE
+                textViewLookingFor.visibility = View.GONE
                 true
             }
             false
         }
 
-        clearButton.setOnClickListener {
+        editTextSearch.setOnFocusChangeListener { view, hasFocus ->
+            if(hasFocus && editTextSearch.text.toString()==""){
+                trackList.addAll(SearchHistory(tracksSharedPreferences).read().reversed())
+                trackAdapter.notifyDataSetChanged()
+                if(trackList.isNotEmpty()){
+                    buttonClearHistory.visibility = View.VISIBLE
+                    textViewLookingFor.visibility = View.VISIBLE
+                }
+            }
+            else{
+                buttonClearHistory.visibility = View.GONE
+                textViewLookingFor.visibility = View.GONE
+            }
+        }
+
+        buttonClear.setOnClickListener {
             editTextSearch.setText("")
             val view: View? = this.currentFocus
             trackList.clear()
+            val savedTracksInHistory = SearchHistory(tracksSharedPreferences).read()
+            savedTracksInHistory.reverse()
+            trackList.addAll(savedTracksInHistory)
             trackAdapter.notifyDataSetChanged()
+            buttonClearHistory.visibility = if (trackList.isNotEmpty()) View.VISIBLE else View.GONE
+            textViewLookingFor.visibility = if (trackList.isNotEmpty()) View.VISIBLE else View.GONE
+            findViewById<FrameLayout>(R.id.fl_content).visibility = View.GONE
             if(view != null){
                 val inputMethodManager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
             }
+        }
+
+        buttonClearHistory.setOnClickListener {
+            tracksSharedPreferences.edit().
+                clear().
+                apply()
+            trackList.clear()
+            trackAdapter.notifyDataSetChanged()
+            buttonClearHistory.visibility = View.GONE
+            textViewLookingFor.visibility = View.GONE
         }
     }
 

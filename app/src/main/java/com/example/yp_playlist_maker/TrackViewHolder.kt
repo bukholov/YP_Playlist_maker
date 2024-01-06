@@ -1,6 +1,7 @@
 package com.example.yp_playlist_maker
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
@@ -22,7 +23,7 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val rootLayout: LinearLayout = itemView.findViewById(R.id.rootLayout)
 
     @SuppressLint("ResourceType")
-    fun bind(item: Track){
+    fun bind(item: Track, sharedPreferences: SharedPreferences){
         tvTrackArtist.text = item.artistName
         tvTrackName.text = item.trackName
         tvTrackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(item.trackTime)
@@ -35,5 +36,9 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             .apply(RequestOptions().placeholder(R.drawable.placeholder))
             .apply(RequestOptions.bitmapTransform(RoundedCorners(radiusRound)))
             .into(ivTrackArt)
+
+        itemView.setOnClickListener {
+            SearchHistory(sharedPreferences).write(item)
+        }
     }
 }

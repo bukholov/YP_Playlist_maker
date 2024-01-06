@@ -1,14 +1,15 @@
 package com.example.yp_playlist_maker
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
 
+const val THEME_PREFERENCES = "yp_playlist_saved_theme"
+const val THEME_TEXT = "key_for_theme"
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,11 +20,16 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
 
+        val sharedPrefs = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE)
         val switchDarkTheme = findViewById<SwitchCompat>(R.id.switch_dark_theme)
-        switchDarkTheme.isChecked = (Configuration.UI_MODE_NIGHT_MASK and resources.configuration.uiMode) == Configuration.UI_MODE_NIGHT_YES
+        switchDarkTheme.isChecked = sharedPrefs.getBoolean(THEME_TEXT, false)
+
         switchDarkTheme.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) }
             else { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) }
+            sharedPrefs.edit()
+                .putBoolean(THEME_TEXT, isChecked)
+                .apply()
         }
 
         val textViewShare = findViewById<TextView>(R.id.text_view_share)
