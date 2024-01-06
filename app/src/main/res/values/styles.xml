@@ -97,6 +97,43 @@
     <style name="SearchPanelResult.ImageView.Note">
         <item name="android:tint">?attr/colorOnPrimary</item>
     </style>>
+    <style name="AudioPlayerStyle">
 
+    </style>
+
+    <style name="AudioPlayerStyle.Head">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="AudioPlayerStyle.Head.TrackName">
+        <item name="android:textSize">@dimen/audio_player_track_name_font_size</item>
+    </style>
+    <style name="AudioPlayerStyle.Head.ArtistName">
+        <item name="android:textSize">@dimen/audio_player_artist_name_font_size</item>
+    </style>
+
+    <style name="AudioPlayerStyle.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/audio_player_info_font_size</item>
+    </style>
+
+    <style name="AudioPlayerStyle.TextView.TrackParams">
+        <item name="android:layout_marginStart">@dimen/audio_player_info_horizontal_margin</item>
+        <item name="android:textColor">@color/YP_Text_Gray</item>
+        <item name="android:layout_width">124dp</item>
+    </style>
+
+    <style name="AudioPlayerStyle.TextView.InfoDesc">
+        <item name="android:layout_marginEnd">@dimen/audio_player_info_horizontal_margin</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textAlignment">textEnd</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+    </style>
 
 </resources>
