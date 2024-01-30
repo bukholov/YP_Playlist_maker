@@ -26,6 +26,8 @@
     <dimen name="search_activity_drawable_padding_edit_text">8dp</dimen>
     <dimen name="search_activity_padding_image_clear_text">12dp</dimen>
     <dimen name="search_corner_radius">8dp</dimen>
+    <dimen name="search_activity_progress_bar_sizes">44dp</dimen>
+    <dimen name="search_activity_progress_margin_top">140dp</dimen>
 
     <dimen name="track_item_title_font_size">16sp</dimen>
     <dimen name="track_item_body_font_size">13sp</dimen>

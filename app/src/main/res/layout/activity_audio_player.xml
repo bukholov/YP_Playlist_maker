@@ -46,15 +46,15 @@
         android:layout_marginBottom="@dimen/audio_player_artist_name_margin_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/button_play" />
+        app:layout_constraintBottom_toTopOf="@id/image_view_play" />
 
     <ImageView
-        android:id="@+id/button_play"
+        android:id="@+id/image_view_play"
         android:layout_width="@dimen/audio_player_play_button_size"
         android:layout_height="@dimen/audio_player_play_button_size"
         android:layout_marginTop="@dimen/audio_player_artist_name_margin_bottom"
         android:layout_marginBottom="@dimen/audio_player_play_button_margin_bottom"
-        android:background="@drawable/play"
+        android:src="@drawable/play"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,8 +66,8 @@
         android:layout_marginStart="@dimen/audio_player_head_horizontal_margin"
         android:background="@drawable/add_playlist"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/button_play"
-        app:layout_constraintTop_toTopOf="@id/button_play" />
+        app:layout_constraintBottom_toBottomOf="@id/image_view_play"
+        app:layout_constraintTop_toTopOf="@id/image_view_play" />
 
     <ImageView
         android:layout_width="@dimen/audio_player_additional_buttons_size"
@@ -75,19 +75,18 @@
         android:layout_marginEnd="@dimen/audio_player_head_horizontal_margin"
         android:background="@drawable/like"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/button_play"
-        app:layout_constraintTop_toTopOf="@id/button_play" />
+        app:layout_constraintBottom_toBottomOf="@id/image_view_play"
+        app:layout_constraintTop_toTopOf="@id/image_view_play" />
 
     <TextView style="@style/AudioPlayerStyle.Head.ArtistName"
         android:id="@+id/tv_current_track_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/audio_player_track_photo_margin_bottom"
-        android:text="0:30"
-        app:layout_constraintEnd_toEndOf="@+id/button_play"
-        app:layout_constraintStart_toStartOf="@+id/button_play"
+        android:text="00:00"
+        app:layout_constraintEnd_toEndOf="@+id/image_view_play"
+        app:layout_constraintStart_toStartOf="@+id/image_view_play"
         app:layout_constraintBottom_toTopOf="@id/tv_track_duration" />
-
 
     <TextView style="@style/AudioPlayerStyle.TextView.TrackParams"
         android:id="@+id/tv_track_duration"
