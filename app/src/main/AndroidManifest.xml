@@ -22,18 +22,22 @@
             android:name=".NotFound"
             android:exported="false"
             android:label="@string/not_found"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.YP_Playlist_Maker" />
         <activity
             android:name=".SearchActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".MediaActivity"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".SettingsActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -36,15 +36,17 @@ class AudioPlayerActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
 
     private fun preparePlayer() {
-        mediaPlayer.setDataSource(selectedTrack.previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            playerState = STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            playerState = STATE_PREPARED
-            imageViewPlay.setImageResource(R.drawable.play)
-            tvCurrentTrackTime.text = "00:00"
+        with(mediaPlayer){
+            setDataSource(selectedTrack.previewUrl)
+            prepareAsync()
+            setOnPreparedListener {
+                playerState = STATE_PREPARED
+            }
+            setOnCompletionListener {
+                playerState = STATE_PREPARED
+                imageViewPlay.setImageResource(R.drawable.play)
+                tvCurrentTrackTime.text = getString(R.string.audio_player_start_position)
+            }
         }
     }
 
@@ -58,13 +60,14 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private fun pausePlayer() {
-        mediaPlayer.pause()
+        if(mediaPlayer.isPlaying)
+            mediaPlayer.pause()
         imageViewPlay.setImageResource(R.drawable.play)
         playerState = STATE_PAUSED
     }
 
-    private fun playbackControl() {
-        when(playerState) {
+    private fun playbackControl(inputPlayerState: Int) {
+        when(inputPlayerState) {
             STATE_PLAYING -> {
                 pausePlayer()
             }
@@ -124,7 +127,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
         preparePlayer()
         imageViewPlay.setOnClickListener {
-            playbackControl()
+            playbackControl(playerState)
         }
     }
 

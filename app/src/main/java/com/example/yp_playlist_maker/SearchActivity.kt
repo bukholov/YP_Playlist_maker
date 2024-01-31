@@ -128,12 +128,11 @@ class SearchActivity : AppCompatActivity() {
 
 
         val searchRunnable = Runnable {
-            if(!editTextSearch.text.isNullOrEmpty()){
+                Log.d("SearchActivity", "Search query: {%s}".format(editTextSearch.text))
                 buttonClearHistory.visibility = View.GONE
                 textViewLookingFor.visibility = View.GONE
                 searchTracks(editTextSearch.text.toString(), trackAdapter)
-            }
-        }
+           }
         fun searchDebounce() {
             handler.removeCallbacks(searchRunnable)
             handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
