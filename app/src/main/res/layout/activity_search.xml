@@ -59,6 +59,16 @@
                 android:src="@drawable/cross_clear_text"
                 android:visibility="invisible" />
         </FrameLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar_search_tracks"
+            android:layout_width="@dimen/search_activity_progress_bar_sizes"
+            android:layout_height="@dimen/search_activity_progress_bar_sizes"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/YP_Blue"
+            android:layout_marginTop="@dimen/search_activity_progress_margin_top"
+            android:visibility="gone"/>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -101,6 +111,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </FrameLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
