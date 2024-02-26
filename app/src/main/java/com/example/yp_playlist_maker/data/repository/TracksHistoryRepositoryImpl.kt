@@ -1,31 +1,48 @@
-package com.example.yp_playlist_maker
+package com.example.yp_playlist_maker.data.repository
 
-import android.content.SharedPreferences
+import android.content.Context
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.example.yp_playlist_maker.domain.api.TracksHistoryRepository
+import com.example.yp_playlist_maker.domain.models.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-
+const val THEME_PREFERENCES = "yp_playlist_saved_theme"
+const val THEME_TEXT = "key_for_theme"
 const val TRACK_KEY = "TRACK_KEY"
 const val MAX_SAVED_TRACKS_HISTORY_SIZE = 10
-class SearchHistory(private val sharedPreferences: SharedPreferences) {
-    fun read(): ArrayList<Track> {
+const val SAVED_TRACKS_PREFERENCES = "yp_playlist_saved_tracks"
+class TracksHistoryRepositoryImpl(val context: Context):TracksHistoryRepository {
+
+    val sharedPreferences = context.getSharedPreferences(
+        SAVED_TRACKS_PREFERENCES,
+        AppCompatActivity.MODE_PRIVATE
+    )
+    override fun clearSavedTracks(){
+        sharedPreferences.edit().
+        clear().
+        apply()
+    }
+
+    override fun read(): ArrayList<Track> {
         Log.d("SearchHistory.read", "Read SharedPreferences")
         val json = sharedPreferences.getString(TRACK_KEY, null) ?: return ArrayList()
         Log.d("SearchHistory.read", "SharedPreferences is founded")
 
-        val typeTokenTrack = object :TypeToken<ArrayList<Track>>() {}.type
+        val typeTokenTrack = object : TypeToken<ArrayList<Track>>() {}.type
         Log.d("SearchHistory.read", "Return ArrayList<Track> with saved tracks")
         return Gson().fromJson<ArrayList<Track>>(json, typeTokenTrack)
     }
 
-    fun write(track: Track){
+    override fun write(track: Track) {
         Log.d("SearchHistory.write", "Read current saving history")
         val savedTracksArray = this.read()
         if(savedTracksArray.contains(track)){
             Log.d("SearchHistory.write", "Remove repetitions")
             savedTracksArray.remove(track)
         }
+
         //Если количество сохраняемых треков ВДРУГ изменится, то будут отображены только 10 последних добавленных треков
         while (savedTracksArray.size>= MAX_SAVED_TRACKS_HISTORY_SIZE){
             Log.d("SearchHistory.write", "Remove items exceeding size")
@@ -37,4 +54,5 @@ class SearchHistory(private val sharedPreferences: SharedPreferences) {
             .putString(TRACK_KEY, Gson().toJson(savedTracksArray))
             .apply()
     }
+
 }
