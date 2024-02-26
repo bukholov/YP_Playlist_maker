@@ -1,10 +1,12 @@
-package com.example.yp_playlist_maker
+package com.example.yp_playlist_maker.presentation.ui
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.yp_playlist_maker.R
+import com.example.yp_playlist_maker.domain.Creator
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,8 +22,8 @@ class MainActivity : AppCompatActivity() {
         val buttonSettings = findViewById<Button>(R.id.button_settings)
         buttonSettings.setOnClickListener{startActivity(Intent(this, SettingsActivity::class.java)) }
 
-        val sharedPrefs = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE)
-        val themeIsDark = sharedPrefs.getBoolean(THEME_TEXT, false)
+        val themeIsDark =  Creator.provideSavedThemeInteractor(applicationContext).retrieveIsDarkTheme()
+
         if (themeIsDark) { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) }
         else { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) }
     }
