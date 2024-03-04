@@ -4,6 +4,6 @@ import com.example.yp_playlist_maker.domain.models.Track
 
 interface TracksHistoryInteractor {
     fun clearSavedTracks()
-    fun read(): ArrayList<Track>
+    fun read(): List<Track>
     fun write(track: Track)
 }

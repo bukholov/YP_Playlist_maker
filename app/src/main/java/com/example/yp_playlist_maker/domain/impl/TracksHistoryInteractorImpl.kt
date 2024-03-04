@@ -9,7 +9,7 @@ class TracksHistoryInteractorImpl(private val repository: TracksHistoryRepositor
         repository.clearSavedTracks()
     }
 
-    override fun read(): ArrayList<Track> {
+    override fun read(): List<Track> {
         return repository.read()
     }
 

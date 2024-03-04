@@ -1,10 +1,8 @@
 package com.example.yp_playlist_maker.domain.api
 
 import com.example.yp_playlist_maker.domain.models.Track
+import java.util.function.Consumer
 
 interface TracksInteractor {
-    fun searchTracks(expression: String, consumer: TracksConsumer)
-    interface TracksConsumer{
-        fun consume(foundData: TracksConsumerData<ArrayList<Track>>)
-    }
+    fun searchTracks(expression: String, consumer: Consumer<Result<List<Track>>>)
 }

@@ -25,19 +25,20 @@ class TracksHistoryRepositoryImpl(val context: Context):TracksHistoryRepository 
         apply()
     }
 
-    override fun read(): ArrayList<Track> {
+    override fun read(): List<Track> {
         Log.d("SearchHistory.read", "Read SharedPreferences")
         val json = sharedPreferences.getString(TRACK_KEY, null) ?: return ArrayList()
         Log.d("SearchHistory.read", "SharedPreferences is founded")
 
         val typeTokenTrack = object : TypeToken<ArrayList<Track>>() {}.type
         Log.d("SearchHistory.read", "Return ArrayList<Track> with saved tracks")
-        return Gson().fromJson<ArrayList<Track>>(json, typeTokenTrack)
+        return Gson().fromJson<List<Track>>(json, typeTokenTrack)
     }
 
     override fun write(track: Track) {
         Log.d("SearchHistory.write", "Read current saving history")
-        val savedTracksArray = this.read()
+        val savedTracksArray = ArrayList<Track>()
+        savedTracksArray.addAll(this.read())
         if(savedTracksArray.contains(track)){
             Log.d("SearchHistory.write", "Remove repetitions")
             savedTracksArray.remove(track)

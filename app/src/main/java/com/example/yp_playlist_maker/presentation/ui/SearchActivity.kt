@@ -20,8 +20,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.yp_playlist_maker.R
 import com.example.yp_playlist_maker.domain.Creator
-import com.example.yp_playlist_maker.domain.api.TracksConsumerData
-import com.example.yp_playlist_maker.domain.api.TracksInteractor
 import com.example.yp_playlist_maker.domain.models.Track
 import com.example.yp_playlist_maker.presentation.ui.tracks.TrackAdapter
 import com.google.gson.Gson
@@ -107,40 +105,34 @@ class SearchActivity : AppCompatActivity() {
             progressBarSearchTracks.visibility = View.VISIBLE
 
             tracksInteractor.searchTracks(
-                expression = textTrack,
-                consumer = object : TracksInteractor.TracksConsumer{
+                expression = textTrack
+            ) { tracksConsumerData ->
+                val currentRunnable = detailsRunnable
+                if (currentRunnable != null) {
+                    handler.removeCallbacks(currentRunnable)
+                }
 
-                override fun consume(tracksConsumerData: TracksConsumerData<ArrayList<Track>>) {
-                    val currentRunnable = detailsRunnable
-                    if (currentRunnable != null) {
-                        handler.removeCallbacks(currentRunnable)
-                    }
+                val newDetailsRunnable = Runnable {
+                    progressBarSearchTracks.visibility = View.GONE
 
-                    val newDetailsRunnable = Runnable {
-                        progressBarSearchTracks.visibility = View.GONE
-
-                        when(tracksConsumerData){
-                            is TracksConsumerData.Error -> {
-                                layoutInflater.inflate(R.layout.activity_no_internet, flContent)
-                                findViewById<LinearLayout>(R.id.ll_no_internet).findViewById<Button>(R.id.button_retry).setOnClickListener{
-                                    searchTracks(lastSearchQuery)
-                                }
+                    if (tracksConsumerData.isFailure) {
+                        layoutInflater.inflate(R.layout.activity_no_internet, flContent)
+                        findViewById<LinearLayout>(R.id.ll_no_internet).findViewById<Button>(R.id.button_retry)
+                            .setOnClickListener {
+                                searchTracks(lastSearchQuery)
                             }
-                            is TracksConsumerData.Success ->{
-                                if(tracksConsumerData.foundTracks.isNotEmpty()){
-                                    trackList.addAll(tracksConsumerData.foundTracks)
-                                    trackAdapter.notifyDataSetChanged()
-                                }
-                                else{
-                                    layoutInflater.inflate(R.layout.activity_not_found, flContent)
-                                }
-                            }
+                    } else if (tracksConsumerData.isSuccess) {
+                        if (tracksConsumerData.getOrNull()?.isNotEmpty() == true) {
+                            trackList.addAll(tracksConsumerData.getOrNull()!!)
+                            trackAdapter.notifyDataSetChanged()
+                        } else {
+                            layoutInflater.inflate(R.layout.activity_not_found, flContent)
                         }
                     }
-                    detailsRunnable = newDetailsRunnable
-                    handler.post(newDetailsRunnable)
                 }
-            })
+                detailsRunnable = newDetailsRunnable
+                handler.post(newDetailsRunnable)
+            }
         }
 
         val searchRunnable = Runnable {
@@ -195,8 +187,7 @@ class SearchActivity : AppCompatActivity() {
             val view: View? = this.currentFocus
             trackList.clear()
             val savedTracksInHistory = tracksHistoryInteractor.read()
-            savedTracksInHistory.reverse()
-            trackList.addAll(savedTracksInHistory)
+            trackList.addAll(savedTracksInHistory.reversed())
             trackAdapter.notifyDataSetChanged()
 
             if (trackList.isNotEmpty()){
