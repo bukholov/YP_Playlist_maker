@@ -1,4 +1,4 @@
-package com.example.yp_playlist_maker
+package com.example.yp_playlist_maker.presentation.ui
 
 import android.content.Intent
 import android.net.Uri
@@ -7,29 +7,27 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
+import com.example.yp_playlist_maker.R
+import com.example.yp_playlist_maker.domain.Creator
 
-const val THEME_PREFERENCES = "yp_playlist_saved_theme"
-const val THEME_TEXT = "key_for_theme"
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-
+        val savedThemeInteractorImpl = Creator.provideSavedThemeInteractor(applicationContext)
         val buttonBackFromSettings = findViewById<TextView>(R.id.button_back_from_settings)
         buttonBackFromSettings.setOnClickListener{
             finish()
         }
 
-        val sharedPrefs = getSharedPreferences(THEME_PREFERENCES, MODE_PRIVATE)
         val switchDarkTheme = findViewById<SwitchCompat>(R.id.switch_dark_theme)
-        switchDarkTheme.isChecked = sharedPrefs.getBoolean(THEME_TEXT, false)
+
+        switchDarkTheme.isChecked = savedThemeInteractorImpl.retrieveIsDarkTheme()
 
         switchDarkTheme.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) }
             else { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) }
-            sharedPrefs.edit()
-                .putBoolean(THEME_TEXT, isChecked)
-                .apply()
+            savedThemeInteractorImpl.storeDarkTheme(isChecked)
         }
 
         val textViewShare = findViewById<TextView>(R.id.text_view_share)
@@ -57,6 +55,8 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val textViewUserAgreement = findViewById<TextView>(R.id.text_view_user_agreement)
-        textViewUserAgreement.setOnClickListener {startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.uri_user_agreement)))) }
+        textViewUserAgreement.setOnClickListener {startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(
+            R.string.uri_user_agreement
+        )))) }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.yp_playlist_maker
+package com.example.yp_playlist_maker.presentation.ui.tracks
 
 import android.annotation.SuppressLint
 import android.net.Uri
@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.yp_playlist_maker.R
+import com.example.yp_playlist_maker.domain.models.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.math.roundToInt

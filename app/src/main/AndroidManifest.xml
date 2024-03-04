@@ -15,7 +15,7 @@
         android:theme="@style/Theme.YP_Playlist_Maker"
         tools:targetApi="31">
         <activity
-            android:name=".AudioPlayerActivity"
+            android:name=".presentation.ui.AudioPlayerActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
@@ -25,18 +25,18 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.YP_Playlist_Maker" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".presentation.ui.SearchActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".MediaActivity"
+            android:name=".presentation.ui.MediaActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".presentation.ui.SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.ui.MainActivity"
             android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>

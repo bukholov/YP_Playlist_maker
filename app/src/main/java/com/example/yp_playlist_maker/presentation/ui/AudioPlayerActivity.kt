@@ -1,4 +1,4 @@
-package com.example.yp_playlist_maker
+package com.example.yp_playlist_maker.presentation.ui
 
 import android.media.MediaPlayer
 import android.net.Uri
@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.example.yp_playlist_maker.R
+import com.example.yp_playlist_maker.domain.models.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.text.SimpleDateFormat
