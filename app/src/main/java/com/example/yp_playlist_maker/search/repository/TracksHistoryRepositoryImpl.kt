@@ -15,7 +15,7 @@ const val MAX_SAVED_TRACKS_HISTORY_SIZE = 10
 const val SAVED_TRACKS_PREFERENCES = "yp_playlist_saved_tracks"
 class TracksHistoryRepositoryImpl(val context: Context): TracksHistoryRepository {
 
-    val sharedPreferences = context.getSharedPreferences(
+    private val sharedPreferences = context.getSharedPreferences(
         SAVED_TRACKS_PREFERENCES,
         AppCompatActivity.MODE_PRIVATE
     )

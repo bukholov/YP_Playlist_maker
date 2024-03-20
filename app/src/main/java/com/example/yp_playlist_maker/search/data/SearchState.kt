@@ -4,7 +4,7 @@ import android.view.View.OnClickListener
 import com.example.yp_playlist_maker.search.domain.Track
 
 sealed interface SearchState {
-    object Loading: SearchState
+    data object Loading: SearchState
 
     data class Content(
         val tracks: List<Track>

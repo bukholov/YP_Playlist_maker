@@ -1,6 +1,6 @@
 package com.example.yp_playlist_maker.player.view_model
 
-import android.app.Application
+import android.content.Context
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
@@ -11,23 +11,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.yp_playlist_maker.R
 import com.example.yp_playlist_maker.creator.Creator
 import com.example.yp_playlist_maker.player.data.PlayerState
 import com.example.yp_playlist_maker.search.domain.TracksInteractor
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AudioPlayerViewModel( private val application: Application,
-                            private val tracksInteractor: TracksInteractor
+class AudioPlayerViewModel(private val tracksInteractor: TracksInteractor
 ): ViewModel() {
     companion object {
-        const val SHOW_TIME_DEBOUNCE_DELAY = 500L
+        const val SHOW_TIME_DEBOUNCE_DELAY_MILLIS = 500L
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val myApp = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application
                 val interactor = Creator.provideTracksInteractor()
-                AudioPlayerViewModel(myApp, interactor)
+                AudioPlayerViewModel(interactor)
             }
         }
     }
@@ -36,9 +33,9 @@ class AudioPlayerViewModel( private val application: Application,
     private val handler = Handler(Looper.getMainLooper())
     fun observeState(): LiveData<PlayerState> = stateLiveData
 
-    fun loadTrack(stringExtra: String){
+    fun loadTrack(stringExtra: String, context: Context){
         val track = tracksInteractor.loadTrackData(stringExtra)
-        Creator.provideTracksInteractor()
+
         with(mediaPlayer){
             mediaPlayer.setDataSource(track.previewUrl)
             mediaPlayer.prepareAsync()
@@ -46,15 +43,16 @@ class AudioPlayerViewModel( private val application: Application,
                 renderState(PlayerState.Prepared)
             }
             setOnCompletionListener {
-                renderState(PlayerState.Complete(application.getString(R.string.audio_player_start_position)))
+                renderState(PlayerState.Complete(Creator.providePlayerRepository(context).getStartPosition()))
             }
         }
         renderState(PlayerState.StateDefault(track))
     }
 
-    private fun renderState(playerState: PlayerState) {
-        stateLiveData.postValue(playerState)
+    fun release(){
+        mediaPlayer.release()
     }
+
     fun playbackControl(){
         if(mediaPlayer.isPlaying){
             mediaPlayer.pause()
@@ -67,11 +65,16 @@ class AudioPlayerViewModel( private val application: Application,
             )
         }
     }
+
     fun pausePlayer(){
         if(mediaPlayer.isPlaying){
             mediaPlayer.pause()
             renderState(PlayerState.Pause)
         }
+    }
+
+    private fun renderState(playerState: PlayerState) {
+        stateLiveData.postValue(playerState)
     }
 
     private fun createUpdatePositionTask():Runnable{
@@ -80,18 +83,14 @@ class AudioPlayerViewModel( private val application: Application,
                 Log.d("Position task", "Load current position: %s".format(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)))
                 if(mediaPlayer.isPlaying){
                     renderState(PlayerState.StatePlaying(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)))
-                    handler.postDelayed(this, SHOW_TIME_DEBOUNCE_DELAY)
+                    handler.postDelayed(this, SHOW_TIME_DEBOUNCE_DELAY_MILLIS)
                 }
             }
         }
     }
 
-    fun release(){
-        mediaPlayer.release()
-    }
-
     override fun onCleared() {
         super.onCleared()
-        handler.removeCallbacksAndMessages(SHOW_TIME_DEBOUNCE_DELAY)
+        handler.removeCallbacksAndMessages(SHOW_TIME_DEBOUNCE_DELAY_MILLIS)
     }
 }

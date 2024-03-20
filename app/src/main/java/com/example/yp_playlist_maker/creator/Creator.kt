@@ -1,15 +1,19 @@
 package com.example.yp_playlist_maker.creator
 
 import android.content.Context
+import com.example.yp_playlist_maker.player.domain.PlayerInteractor
+import com.example.yp_playlist_maker.player.domain.PlayerInteractorImpl
+import com.example.yp_playlist_maker.player.domain.PlayerRepository
+import com.example.yp_playlist_maker.player.domain.PlayerRepositoryImpl
 import com.example.yp_playlist_maker.search.data.network.RetrofitNetworkClient
-import com.example.yp_playlist_maker.search.repository.TracksHistoryRepositoryImpl
-import com.example.yp_playlist_maker.search.repository.TracksRepositoryImpl
-import com.example.yp_playlist_maker.search.domain.TracksInteractorImpl
-import com.example.yp_playlist_maker.search.domain.TracksHistoryInteractorImpl
 import com.example.yp_playlist_maker.search.domain.TracksHistoryInteractor
+import com.example.yp_playlist_maker.search.domain.TracksHistoryInteractorImpl
 import com.example.yp_playlist_maker.search.domain.TracksHistoryRepository
 import com.example.yp_playlist_maker.search.domain.TracksInteractor
+import com.example.yp_playlist_maker.search.domain.TracksInteractorImpl
 import com.example.yp_playlist_maker.search.domain.TracksRepository
+import com.example.yp_playlist_maker.search.repository.TracksHistoryRepositoryImpl
+import com.example.yp_playlist_maker.search.repository.TracksRepositoryImpl
 import com.example.yp_playlist_maker.settings.data.SettingsRepositoryImpl
 import com.example.yp_playlist_maker.settings.domain.SettingsInteractor
 import com.example.yp_playlist_maker.settings.domain.SettingsInteractorImpl
@@ -50,5 +54,13 @@ object Creator {
 
     fun provideSharingInteractor(context: Context): SharingInteractor{
         return SharingInteractorImpl(getSharingRepository(context))
+    }
+
+    private fun getPlayerRepository(context: Context): PlayerRepository {
+        return PlayerRepositoryImpl(context)
+    }
+
+    fun providePlayerRepository(context: Context): PlayerInteractor{
+        return PlayerInteractorImpl(getPlayerRepository(context))
     }
 }

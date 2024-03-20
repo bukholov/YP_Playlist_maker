@@ -9,8 +9,6 @@ import com.example.yp_playlist_maker.R
 import com.example.yp_playlist_maker.settings.view_model.SettingsViewModel
 
 class SettingsActivity : AppCompatActivity() {
-
-
     private lateinit var viewModel: SettingsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

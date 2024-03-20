@@ -26,8 +26,10 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var viewModel: SearchViewModel
     private lateinit var textWatcher: TextWatcher
     private lateinit var binding: ActivitySearchBinding
+    private var isVisibleHistoryFeatures : Boolean = false
 
     private fun showHistoryFeatures(isVisible: Boolean){
+        isVisibleHistoryFeatures = isVisible
         if(isVisible){
             binding.buttonClearHistory.visibility = View.VISIBLE
             binding.tvLookingFor.visibility = View.VISIBLE
@@ -81,14 +83,16 @@ class SearchActivity : AppCompatActivity() {
 
         binding.buttonClearHistory.visibility = View.GONE
         tracksHistoryInteractor = Creator.provideTracksHistoryInteractor(this)
-
-        trackAdapter = TrackAdapter {
-            if (viewModel.clickDebounce()) {
-                tracksHistoryInteractor.write(it)
-                AudioPlayerActivity.show(this, it)
+        val click = {it: Track->
+            tracksHistoryInteractor.write(it)
+            AudioPlayerActivity.show(this, it)
+            if (isVisibleHistoryFeatures) {
+                showContent(tracksHistoryInteractor.read().reversed())
             }
         }
-
+        trackAdapter = TrackAdapter {
+            viewModel.clickTrack(click(it))
+        }
         trackAdapter.tracks = ArrayList()
 
         binding.rvTracks.adapter = trackAdapter

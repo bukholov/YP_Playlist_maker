@@ -18,8 +18,8 @@ import com.example.yp_playlist_maker.search.data.SearchState
 
 class SearchViewModel(private val application: Application): ViewModel() {
     companion object {
-        const val SEARCH_DEBOUNCE_DELAY = 2000L
-        const val CLICK_DEBOUNCE_DELAY = 1000L
+        const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
+        const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
         private val SEARCH_REQUEST_TOKEN = Any()
 
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
@@ -30,14 +30,7 @@ class SearchViewModel(private val application: Application): ViewModel() {
         }
     }
 
-    fun clickDebounce() : Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        return current
-    }
+
     private var isClickAllowed = true
 
     private val handler = Handler(Looper.getMainLooper())
@@ -59,10 +52,10 @@ class SearchViewModel(private val application: Application): ViewModel() {
             handler.postDelayed(
                 searchRunnable,
                 SEARCH_REQUEST_TOKEN,
-                SEARCH_DEBOUNCE_DELAY
+                SEARCH_DEBOUNCE_DELAY_MILLIS
             )
         } else {
-            val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY
+            val postTime = SystemClock.uptimeMillis() + SEARCH_DEBOUNCE_DELAY_MILLIS
             handler.postAtTime(
                 searchRunnable,
                 SEARCH_REQUEST_TOKEN,
@@ -102,6 +95,20 @@ class SearchViewModel(private val application: Application): ViewModel() {
         }
     }
 
+    fun clickTrack(unit: Unit){
+        if(clickDebounce()){
+            unit
+        }
+    }
+
+    private fun clickDebounce() : Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY_MILLIS)
+        }
+        return current
+    }
     private fun renderState(searchState: SearchState){
         stateLiveData.postValue(searchState)
     }

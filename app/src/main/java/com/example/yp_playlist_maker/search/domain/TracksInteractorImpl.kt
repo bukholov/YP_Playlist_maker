@@ -16,6 +16,4 @@ class TracksInteractorImpl(private val repository: TracksRepository): TracksInte
     override fun loadTrackData(expression: String): Track {
         return repository.loadTrackData(expression)
     }
-
-
 }

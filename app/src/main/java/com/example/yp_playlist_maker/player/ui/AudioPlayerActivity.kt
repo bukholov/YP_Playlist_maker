@@ -24,11 +24,13 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAudioPlayerBinding
     private lateinit var viewModel: AudioPlayerViewModel
 
-    companion object{
-        fun show(context: Context, track: Track){
+    companion object {
+        private const val SELECTED_TRACK_KEY = "SELECTED_TRACK"
+        fun show(context: Context, track: Track) {
+
             Log.d("SearchActivity", "Open AudioPlayerActivity")
             val intent = Intent(context, AudioPlayerActivity::class.java)
-            intent.putExtra("SELECTED_TRACK", Gson().toJson(track))
+            intent.putExtra(SELECTED_TRACK_KEY, Gson().toJson(track))
             context.startActivity(intent)
         }
     }
@@ -41,32 +43,45 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding.imageViewPlay.setImageResource(R.drawable.pause)
         binding.tvCurrentTrackTime.text = currentPosition
     }
+
     private fun render(playerState: PlayerState) {
-        when(playerState){
-            is PlayerState.StateDefault ->{
+        when (playerState) {
+            is PlayerState.StateDefault -> {
                 binding.tvTrackName.text = playerState.track.trackName
                 binding.tvArtistName.text = playerState.track.artistName
-                binding.tvSelectedTrackDuration.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(playerState.track.trackTime)
+                binding.tvSelectedTrackDuration.text = SimpleDateFormat(
+                    "mm:ss", Locale.getDefault()
+                ).format(playerState.track.trackTime)
                 binding.tvSelectedTrackPrimaryGenreName.text = playerState.track.primaryGenreName
                 binding.tvSelectedTrackCountry.text = playerState.track.country
                 binding.tvSelectedTrackCollectionName.text = playerState.track.collectionName
-                binding.tvSelectedTrackReleaseDate.text = SimpleDateFormat("yyyy", Locale.getDefault()).format(playerState.track.releaseDate)
-                Glide.with(this)
-                    .load(Uri.parse(playerState.track.getCoverArtwork()))
-                    .fitCenter()
-                    .placeholder(R.drawable.placeholder)
-                    .apply(RequestOptions.bitmapTransform(RoundedCorners(this.resources.getDimension(R.dimen.audio_player_track_photo_round_corner).roundToInt())))
-                    .into(binding.ivTrackPhoto)
+                binding.tvSelectedTrackReleaseDate.text = SimpleDateFormat(
+                    "yyyy", Locale.getDefault()
+                ).format(playerState.track.releaseDate)
+                Glide.with(this).load(Uri.parse(playerState.track.getCoverArtwork())).fitCenter()
+                    .placeholder(R.drawable.placeholder).apply(
+                        RequestOptions.bitmapTransform(
+                            RoundedCorners(
+                                this.resources.getDimension(
+                                    R.dimen.audio_player_track_photo_round_corner
+                                ).roundToInt()
+                            )
+                        )
+                    ).into(binding.ivTrackPhoto)
             }
-            is PlayerState.StatePlaying ->{
+
+            is PlayerState.StatePlaying -> {
                 startPlayer(playerState.currentPosition)
             }
+
             is PlayerState.Pause -> {
                 pausePlayer()
             }
+
             is PlayerState.Prepared -> {
                 pausePlayer()
             }
+
             is PlayerState.Complete -> {
                 binding.imageViewPlay.setImageResource(R.drawable.play)
                 binding.tvCurrentTrackTime.text = playerState.startPosition
@@ -79,11 +94,14 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this, AudioPlayerViewModel.getViewModelFactory())[AudioPlayerViewModel::class.java]
-        viewModel.observeState().observe(this){
+        viewModel = ViewModelProvider(
+            this,
+            AudioPlayerViewModel.getViewModelFactory()
+        )[AudioPlayerViewModel::class.java]
+        viewModel.observeState().observe(this) {
             render(it)
         }
-        viewModel.loadTrack(stringExtra = intent.getStringExtra("SELECTED_TRACK")!!)
+        viewModel.loadTrack(stringExtra = intent.getStringExtra(SELECTED_TRACK_KEY)!!, this)
 
         binding.imageViewPlay.setOnClickListener {
             viewModel.playbackControl()
