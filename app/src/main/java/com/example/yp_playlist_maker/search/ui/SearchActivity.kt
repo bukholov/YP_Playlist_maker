@@ -41,6 +41,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showLoading() {
+        binding.flContent.removeAllViewsInLayout()
         trackAdapter.tracks.clear()
         trackAdapter.notifyDataSetChanged()
         showHistoryFeatures(false)
@@ -55,6 +56,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showEmpty(){
         binding.progressBarSearchTracks.visibility = View.GONE
+        binding.flContent.removeAllViewsInLayout()
         layoutInflater.inflate(R.layout.activity_not_found, binding.flContent)
     }
 
@@ -83,6 +85,7 @@ class SearchActivity : AppCompatActivity() {
 
         binding.buttonClearHistory.visibility = View.GONE
         tracksHistoryInteractor = Creator.provideTracksHistoryInteractor(this)
+
         val click = {it: Track->
             tracksHistoryInteractor.write(it)
             AudioPlayerActivity.show(this, it)

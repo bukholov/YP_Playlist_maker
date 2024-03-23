@@ -27,7 +27,6 @@ class AudioPlayerActivity : AppCompatActivity() {
     companion object {
         private const val SELECTED_TRACK_KEY = "SELECTED_TRACK"
         fun show(context: Context, track: Track) {
-
             Log.d("SearchActivity", "Open AudioPlayerActivity")
             val intent = Intent(context, AudioPlayerActivity::class.java)
             intent.putExtra(SELECTED_TRACK_KEY, Gson().toJson(track))
@@ -101,7 +100,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         viewModel.observeState().observe(this) {
             render(it)
         }
-        viewModel.loadTrack(stringExtra = intent.getStringExtra(SELECTED_TRACK_KEY)!!, this)
+        viewModel.loadTrack(stringExtra = intent.getStringExtra(SELECTED_TRACK_KEY)!!)
 
         binding.imageViewPlay.setOnClickListener {
             viewModel.playbackControl()

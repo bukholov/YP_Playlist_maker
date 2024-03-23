@@ -1,6 +1,5 @@
 package com.example.yp_playlist_maker.search.view_model
 
-import android.app.Application
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -12,11 +11,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.yp_playlist_maker.R
 import com.example.yp_playlist_maker.creator.Creator
 import com.example.yp_playlist_maker.search.data.SearchState
 
-class SearchViewModel(private val application: Application): ViewModel() {
+class SearchViewModel: ViewModel() {
     companion object {
         const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
@@ -24,12 +22,10 @@ class SearchViewModel(private val application: Application): ViewModel() {
 
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val myApp = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application
-                SearchViewModel(myApp)
+                SearchViewModel()
             }
         }
     }
-
 
     private var isClickAllowed = true
 
@@ -66,7 +62,6 @@ class SearchViewModel(private val application: Application): ViewModel() {
 
     fun searchTracks(textTrack: String) {
         renderState(SearchState.Loading)
-
         tracksInteractor.searchTracks(
             expression = textTrack
         ) { tracksConsumerData ->
@@ -83,9 +78,7 @@ class SearchViewModel(private val application: Application): ViewModel() {
                         renderState(SearchState.Content(tracksConsumerData.getOrNull()!!))
                     } else {
                         renderState(
-                            SearchState.Empty(
-                                message = application.getString(R.string.not_found)
-                            )
+                            SearchState.Empty
                         )
                     }
                 }

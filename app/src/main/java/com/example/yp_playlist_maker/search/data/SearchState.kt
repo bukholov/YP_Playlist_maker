@@ -14,7 +14,5 @@ sealed interface SearchState {
         val onClickListener: OnClickListener
     ): SearchState
 
-    data class Empty(
-        val message: String
-    ): SearchState
+    data object Empty: SearchState
 }

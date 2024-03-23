@@ -1,6 +1,6 @@
 package com.example.yp_playlist_maker.player.view_model
 
-import android.content.Context
+import android.app.Application
 import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
@@ -13,18 +13,22 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.yp_playlist_maker.creator.Creator
 import com.example.yp_playlist_maker.player.data.PlayerState
+import com.example.yp_playlist_maker.player.domain.PlayerInteractor
 import com.example.yp_playlist_maker.search.domain.TracksInteractor
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AudioPlayerViewModel(private val tracksInteractor: TracksInteractor
+class AudioPlayerViewModel(private val tracksInteractor: TracksInteractor,
+                           private val playerInteractor: PlayerInteractor
 ): ViewModel() {
     companion object {
         const val SHOW_TIME_DEBOUNCE_DELAY_MILLIS = 500L
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val interactor = Creator.provideTracksInteractor()
-                AudioPlayerViewModel(interactor)
+                val myApp = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application
+                val tracksInteractor = Creator.provideTracksInteractor()
+                val playerInteractor = Creator.providePlayerRepository(myApp)
+                AudioPlayerViewModel(tracksInteractor, playerInteractor)
             }
         }
     }
@@ -33,7 +37,7 @@ class AudioPlayerViewModel(private val tracksInteractor: TracksInteractor
     private val handler = Handler(Looper.getMainLooper())
     fun observeState(): LiveData<PlayerState> = stateLiveData
 
-    fun loadTrack(stringExtra: String, context: Context){
+    fun loadTrack(stringExtra: String){
         val track = tracksInteractor.loadTrackData(stringExtra)
 
         with(mediaPlayer){
@@ -43,7 +47,8 @@ class AudioPlayerViewModel(private val tracksInteractor: TracksInteractor
                 renderState(PlayerState.Prepared)
             }
             setOnCompletionListener {
-                renderState(PlayerState.Complete(Creator.providePlayerRepository(context).getStartPosition()))
+                playerInteractor.getStartPosition()
+                renderState(PlayerState.Complete(playerInteractor.getStartPosition()))
             }
         }
         renderState(PlayerState.StateDefault(track))
