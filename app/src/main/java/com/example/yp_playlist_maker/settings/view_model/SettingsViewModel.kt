@@ -1,9 +1,10 @@
 package com.example.yp_playlist_maker.settings.view_model
 
-import android.content.Context
+import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.yp_playlist_maker.creator.Creator
@@ -16,9 +17,10 @@ class SettingsViewModel(
 ): ViewModel() {
 
     companion object{
-        fun getViewModelFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
+        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                SettingsViewModel(Creator.provideSharingInteractor(context), Creator.provideSettingsInteractor(context))
+                val application = this[APPLICATION_KEY] as Application
+                SettingsViewModel(Creator.provideSharingInteractor(application), Creator.provideSettingsInteractor(application))
             }
         }
     }

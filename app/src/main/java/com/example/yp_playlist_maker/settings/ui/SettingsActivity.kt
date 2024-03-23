@@ -14,7 +14,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        viewModel = ViewModelProvider(this,  SettingsViewModel.getViewModelFactory(this))[SettingsViewModel::class.java]
+        viewModel = ViewModelProvider(this,  SettingsViewModel.getViewModelFactory())[SettingsViewModel::class.java]
 
         val buttonBackFromSettings = findViewById<TextView>(R.id.button_back_from_settings)
         val switchDarkTheme = findViewById<SwitchCompat>(R.id.switch_dark_theme)
