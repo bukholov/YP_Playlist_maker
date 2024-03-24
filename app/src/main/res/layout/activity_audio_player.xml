@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.AudioPlayerActivity">
+    tools:context=".player.ui.AudioPlayerActivity">
 
     <Button style="@style/ButtonBackFromActivityStyle"
         android:id="@+id/button_back_from_audio_player"
