@@ -1,20 +1,15 @@
 package com.example.yp_playlist_maker.player.view_model
 
-import android.app.Application
 import android.media.MediaPlayer
 import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.yp_playlist_maker.creator.Creator
 import com.example.yp_playlist_maker.player.data.PlayerState
 import com.example.yp_playlist_maker.player.domain.PlayerInteractor
 import com.example.yp_playlist_maker.search.domain.TracksInteractor
+import org.koin.java.KoinJavaComponent.inject
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -23,18 +18,10 @@ class AudioPlayerViewModel(private val tracksInteractor: TracksInteractor,
 ): ViewModel() {
     companion object {
         const val SHOW_TIME_DEBOUNCE_DELAY_MILLIS = 500L
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val myApp = this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application
-                val tracksInteractor = Creator.provideTracksInteractor()
-                val playerInteractor = Creator.providePlayerRepository(myApp)
-                AudioPlayerViewModel(tracksInteractor, playerInteractor)
-            }
-        }
     }
-    private var mediaPlayer = MediaPlayer()
-    private val stateLiveData = MutableLiveData<PlayerState>()
-    private val handler = Handler(Looper.getMainLooper())
+    private val mediaPlayer: MediaPlayer by inject(MediaPlayer::class.java)
+    private val stateLiveData: MutableLiveData<PlayerState> by inject(MutableLiveData::class.java)
+    private val handler: Handler by inject(Handler::class.java)
     fun observeState(): LiveData<PlayerState> = stateLiveData
 
     fun loadTrack(stringExtra: String){

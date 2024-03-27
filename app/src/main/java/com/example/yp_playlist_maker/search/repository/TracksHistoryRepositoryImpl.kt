@@ -13,7 +13,7 @@ const val THEME_TEXT = "key_for_theme"
 const val TRACK_KEY = "TRACK_KEY"
 const val MAX_SAVED_TRACKS_HISTORY_SIZE = 10
 const val SAVED_TRACKS_PREFERENCES = "yp_playlist_saved_tracks"
-class TracksHistoryRepositoryImpl(val context: Context): TracksHistoryRepository {
+class TracksHistoryRepositoryImpl(val gson: Gson, val context: Context): TracksHistoryRepository {
 
     private val sharedPreferences = context.getSharedPreferences(
         SAVED_TRACKS_PREFERENCES,
@@ -32,7 +32,7 @@ class TracksHistoryRepositoryImpl(val context: Context): TracksHistoryRepository
 
         val typeTokenTrack = object : TypeToken<ArrayList<Track>>() {}.type
         Log.d("SearchHistory.read", "Return ArrayList<Track> with saved tracks")
-        return Gson().fromJson<List<Track>>(json, typeTokenTrack)
+        return gson.fromJson<List<Track>>(json, typeTokenTrack)
     }
 
     override fun write(track: Track) {
@@ -52,7 +52,7 @@ class TracksHistoryRepositoryImpl(val context: Context): TracksHistoryRepository
         savedTracksArray.add(track)
         Log.d("SearchHistory.write", "Adding {%s} to SharedPreferences".format(track.toString()))
         sharedPreferences.edit()
-            .putString(TRACK_KEY, Gson().toJson(savedTracksArray))
+            .putString(TRACK_KEY, gson.toJson(savedTracksArray))
             .apply()
     }
 

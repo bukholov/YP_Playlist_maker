@@ -10,20 +10,19 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.example.yp_playlist_maker.R
-import com.example.yp_playlist_maker.creator.Creator
 import com.example.yp_playlist_maker.databinding.ActivitySearchBinding
 import com.example.yp_playlist_maker.player.ui.AudioPlayerActivity
 import com.example.yp_playlist_maker.search.data.SearchState
 import com.example.yp_playlist_maker.search.domain.Track
 import com.example.yp_playlist_maker.search.domain.TracksHistoryInteractor
 import com.example.yp_playlist_maker.search.view_model.SearchViewModel
+import org.koin.android.ext.android.inject
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var trackAdapter: TrackAdapter
-    private lateinit var tracksHistoryInteractor: TracksHistoryInteractor
-    private lateinit var viewModel: SearchViewModel
+    private val tracksHistoryInteractor: TracksHistoryInteractor by inject()
+    private val viewModel: SearchViewModel by inject()
     private lateinit var textWatcher: TextWatcher
     private lateinit var binding: ActivitySearchBinding
     private var isVisibleHistoryFeatures : Boolean = false
@@ -84,7 +83,6 @@ class SearchActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.buttonClearHistory.visibility = View.GONE
-        tracksHistoryInteractor = Creator.provideTracksHistoryInteractor(this)
 
         val click = {it: Track->
             tracksHistoryInteractor.write(it)
@@ -99,7 +97,6 @@ class SearchActivity : AppCompatActivity() {
         trackAdapter.tracks = ArrayList()
 
         binding.rvTracks.adapter = trackAdapter
-        viewModel = ViewModelProvider(this, SearchViewModel.getViewModelFactory())[SearchViewModel::class.java]
 
         viewModel.observeState().observe(this){
             render(it)

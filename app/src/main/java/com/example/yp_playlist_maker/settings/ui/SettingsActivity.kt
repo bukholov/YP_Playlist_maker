@@ -1,45 +1,37 @@
 package com.example.yp_playlist_maker.settings.ui
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
-import androidx.lifecycle.ViewModelProvider
-import com.example.yp_playlist_maker.R
+import com.example.yp_playlist_maker.databinding.ActivitySettingsBinding
 import com.example.yp_playlist_maker.settings.view_model.SettingsViewModel
+import org.koin.android.ext.android.inject
 
 class SettingsActivity : AppCompatActivity() {
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel: SettingsViewModel by inject()
+    private lateinit var binding: ActivitySettingsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this,  SettingsViewModel.getViewModelFactory())[SettingsViewModel::class.java]
-
-        val buttonBackFromSettings = findViewById<TextView>(R.id.button_back_from_settings)
-        val switchDarkTheme = findViewById<SwitchCompat>(R.id.switch_dark_theme)
-        val textViewShare = findViewById<TextView>(R.id.text_view_share)
-        val textViewSendToSupport = findViewById<TextView>(R.id.text_view_send_to_support)
-        val textViewUserAgreement = findViewById<TextView>(R.id.text_view_user_agreement)
-
-        buttonBackFromSettings.setOnClickListener{
+        binding.buttonBackFromSettings.setOnClickListener{
             finish()
         }
 
-        switchDarkTheme.isChecked = viewModel.getSavedTheme()
-        switchDarkTheme.setOnCheckedChangeListener { _, isChecked ->
+        binding.switchDarkTheme.isChecked = viewModel.getSavedTheme()
+        binding.switchDarkTheme.setOnCheckedChangeListener { _, isChecked ->
              viewModel.setTheme(isChecked)
         }
 
-        textViewShare.setOnClickListener {
+        binding.textViewShare.setOnClickListener {
             viewModel.shareApp()
         }
 
-        textViewSendToSupport.setOnClickListener {
+        binding.textViewSendToSupport.setOnClickListener {
             viewModel.openSupport()
         }
 
-        textViewUserAgreement.setOnClickListener {
+        binding.textViewUserAgreement.setOnClickListener {
             viewModel.openTerms()
         }
     }

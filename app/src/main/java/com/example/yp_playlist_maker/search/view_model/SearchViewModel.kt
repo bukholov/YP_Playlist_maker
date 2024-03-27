@@ -2,40 +2,30 @@ package com.example.yp_playlist_maker.search.view_model
 
 import android.os.Build
 import android.os.Handler
-import android.os.Looper
 import android.os.SystemClock
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.yp_playlist_maker.creator.Creator
 import com.example.yp_playlist_maker.search.data.SearchState
+import com.example.yp_playlist_maker.search.domain.TracksInteractor
+import org.koin.java.KoinJavaComponent.inject
 
 class SearchViewModel: ViewModel() {
     companion object {
         const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
         const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
         private val SEARCH_REQUEST_TOKEN = Any()
-
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel()
-            }
-        }
     }
 
     private var isClickAllowed = true
-
-    private val handler = Handler(Looper.getMainLooper())
-    private val tracksInteractor = Creator.provideTracksInteractor()
+    private val handler: Handler by inject(Handler::class.java)
+    private val tracksInteractor: TracksInteractor by inject(TracksInteractor::class.java)
     private var detailsRunnable: Runnable? = null
     private var lastSearchQuery = ""
     private lateinit var searchRunnable: Runnable
 
-    private val stateLiveData = MutableLiveData<SearchState>()
+    private val stateLiveData: MutableLiveData<SearchState> by inject(MutableLiveData::class.java)
     fun observeState(): LiveData<SearchState> = stateLiveData
 
     fun searchDebounce(changeText: String) {

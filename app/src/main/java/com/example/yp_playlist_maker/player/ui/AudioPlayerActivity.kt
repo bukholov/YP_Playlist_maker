@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -16,20 +15,22 @@ import com.example.yp_playlist_maker.player.data.PlayerState
 import com.example.yp_playlist_maker.player.view_model.AudioPlayerViewModel
 import com.example.yp_playlist_maker.search.domain.Track
 import com.google.gson.Gson
+import org.koin.android.ext.android.inject
+import org.koin.java.KoinJavaComponent.inject
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.math.roundToInt
 
 class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAudioPlayerBinding
-    private lateinit var viewModel: AudioPlayerViewModel
-
+    private val viewModel: AudioPlayerViewModel by inject()
     companion object {
         private const val SELECTED_TRACK_KEY = "SELECTED_TRACK"
         fun show(context: Context, track: Track) {
             Log.d("SearchActivity", "Open AudioPlayerActivity")
+            val gson: Gson by inject(Gson::class.java)
             val intent = Intent(context, AudioPlayerActivity::class.java)
-            intent.putExtra(SELECTED_TRACK_KEY, Gson().toJson(track))
+            intent.putExtra(SELECTED_TRACK_KEY, gson.toJson(track))
             context.startActivity(intent)
         }
     }
@@ -93,10 +94,6 @@ class AudioPlayerActivity : AppCompatActivity() {
         binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(
-            this,
-            AudioPlayerViewModel.getViewModelFactory()
-        )[AudioPlayerViewModel::class.java]
         viewModel.observeState().observe(this) {
             render(it)
         }
