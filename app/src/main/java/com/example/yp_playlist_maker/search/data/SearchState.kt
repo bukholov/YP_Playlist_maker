@@ -15,4 +15,6 @@ sealed interface SearchState {
     ): SearchState
 
     data object Empty: SearchState
+
+    data class History(val tracks: List<Track>): SearchState
 }

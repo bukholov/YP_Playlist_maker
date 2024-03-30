@@ -30,7 +30,10 @@ class AudioPlayerActivity : AppCompatActivity() {
             Log.d("SearchActivity", "Open AudioPlayerActivity")
             val gson: Gson by inject(Gson::class.java)
             val intent = Intent(context, AudioPlayerActivity::class.java)
-            intent.putExtra(SELECTED_TRACK_KEY, gson.toJson(track))
+            intent.apply {
+                putExtra(SELECTED_TRACK_KEY, gson.toJson(track))
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
             context.startActivity(intent)
         }
     }
