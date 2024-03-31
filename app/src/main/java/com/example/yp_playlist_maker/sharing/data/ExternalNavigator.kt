@@ -3,22 +3,32 @@ package com.example.yp_playlist_maker.sharing.data
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import com.example.yp_playlist_maker.R
 
 class ExternalNavigator(val context: Context) {
     fun shareLink(link: String){
-        val sendIntent: Intent = Intent().apply {
+        val shareIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, link)
             type = context.getString(R.string.share_app_text_plain)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
-
-        val shareIntent = Intent.createChooser(sendIntent, null)
-        context.startActivity(shareIntent)
+        Log.d("ExternalNavigaror", "Open shareIntent")
+        context.startActivity(
+            Intent.createChooser(shareIntent, null)
+                .apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+        )
     }
 
     fun openLink(link: String){
-        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(link)))
+        val shareLinkIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link)).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        Log.d("ExternalNavigaror", "Open shareLinkIntent")
+        context.startActivity(shareLinkIntent)
     }
 
     fun openEmail(emailData: EmailData){
@@ -27,7 +37,9 @@ class ExternalNavigator(val context: Context) {
             putExtra(Intent.EXTRA_EMAIL, emailData.email)
             putExtra(Intent.EXTRA_SUBJECT, emailData.subject)
             putExtra(Intent.EXTRA_TEXT, emailData.text)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
+        Log.d("ExternalNavigaror", "Open emailIntent")
        context.startActivity(emailIntent)
     }
 }

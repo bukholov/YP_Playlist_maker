@@ -10,26 +10,20 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.example.yp_playlist_maker.R
-import com.example.yp_playlist_maker.creator.Creator
 import com.example.yp_playlist_maker.databinding.ActivitySearchBinding
-import com.example.yp_playlist_maker.player.ui.AudioPlayerActivity
 import com.example.yp_playlist_maker.search.data.SearchState
 import com.example.yp_playlist_maker.search.domain.Track
-import com.example.yp_playlist_maker.search.domain.TracksHistoryInteractor
 import com.example.yp_playlist_maker.search.view_model.SearchViewModel
+import org.koin.android.ext.android.inject
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var trackAdapter: TrackAdapter
-    private lateinit var tracksHistoryInteractor: TracksHistoryInteractor
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by inject()
     private lateinit var textWatcher: TextWatcher
     private lateinit var binding: ActivitySearchBinding
-    private var isVisibleHistoryFeatures : Boolean = false
 
     private fun showHistoryFeatures(isVisible: Boolean){
-        isVisibleHistoryFeatures = isVisible
         if(isVisible){
             binding.buttonClearHistory.visibility = View.VISIBLE
             binding.tvLookingFor.visibility = View.VISIBLE
@@ -69,12 +63,23 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    private fun showHistory(historyTrackList: List<Track>){
+        binding.progressBarSearchTracks.visibility = View.GONE
+        with(trackAdapter) {
+            tracks.clear()
+            tracks.addAll(historyTrackList)
+            notifyDataSetChanged()
+        }
+        showHistoryFeatures(true)
+    }
+
     private fun render(state: SearchState) {
         when(state){
             is SearchState.Content -> showContent(state.tracks)
             is SearchState.Error -> showError(state.onClickListener)
             is SearchState.Loading -> showLoading()
             is SearchState.Empty -> showEmpty()
+            is SearchState.History -> showHistory(state.tracks)
         }
     }
 
@@ -84,22 +89,12 @@ class SearchActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.buttonClearHistory.visibility = View.GONE
-        tracksHistoryInteractor = Creator.provideTracksHistoryInteractor(this)
 
-        val click = {it: Track->
-            tracksHistoryInteractor.write(it)
-            AudioPlayerActivity.show(this, it)
-            if (isVisibleHistoryFeatures) {
-                showContent(tracksHistoryInteractor.read().reversed())
-            }
-        }
         trackAdapter = TrackAdapter {
-            viewModel.clickTrack(click(it))
+            viewModel.clickTrack(it)
         }
         trackAdapter.tracks = ArrayList()
-
         binding.rvTracks.adapter = trackAdapter
-        viewModel = ViewModelProvider(this, SearchViewModel.getViewModelFactory())[SearchViewModel::class.java]
 
         viewModel.observeState().observe(this){
             render(it)
@@ -139,10 +134,10 @@ class SearchActivity : AppCompatActivity() {
         }
         binding.editTextSearch.setOnFocusChangeListener { view, hasFocus ->
             if(hasFocus && binding.editTextSearch.text.toString()==""){
-                trackAdapter.tracks.addAll(tracksHistoryInteractor.read().reversed())
-                trackAdapter.notifyDataSetChanged()
-                if(trackAdapter.tracks.isNotEmpty()){
-                    showHistoryFeatures(true)
+                showHistoryFeatures(true)
+                viewModel.showTracksHistory()
+                if(trackAdapter.tracks.isEmpty()){
+                    showHistoryFeatures(false)
                 }
             }
             else{
@@ -153,7 +148,7 @@ class SearchActivity : AppCompatActivity() {
         binding.imageViewClearText.setOnClickListener {
             binding.editTextSearch.setText("")
             val view: View? = this.currentFocus
-            showContent(tracksHistoryInteractor.read())
+            viewModel.showTracksHistory()
             showHistoryFeatures(trackAdapter.tracks.isNotEmpty())
             binding.flContent.visibility = View.GONE
 
@@ -163,9 +158,8 @@ class SearchActivity : AppCompatActivity() {
             }
         }
         binding.buttonClearHistory.setOnClickListener {
-            tracksHistoryInteractor.clearSavedTracks()
-            trackAdapter.tracks.clear()
-            trackAdapter.notifyDataSetChanged()
+            viewModel.clearTracksHistory()
+            showContent(emptyList())
             showHistoryFeatures(false)
         }
     }

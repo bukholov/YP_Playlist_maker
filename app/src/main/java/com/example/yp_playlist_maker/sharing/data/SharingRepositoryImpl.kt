@@ -26,7 +26,6 @@ class SharingRepositoryImpl(private val externalNavigator: ExternalNavigator, pr
     }
 
     private fun getSupportEmailData(): EmailData {
-
         return EmailData(
             ContextCompat.getString(context, R.string.mailto),
             ContextCompat.getString(context, R.string.dev_email),
