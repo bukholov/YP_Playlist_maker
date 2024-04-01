@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/SearchPanelResult"
+    style="@style/PanelResult"
     android:id="@+id/ll_no_internet"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -14,18 +14,18 @@
         android:layout_marginTop="@dimen/search_results_panel_margin_top"
         android:layout_weight="1">
 
-        <ImageView style="@style/SearchPanelResult.ImageView"
+        <ImageView style="@style/PlugImageView"
             android:id="@+id/iv_no_internet"
             app:srcCompat="@drawable/no_internet" />
 
     </FrameLayout>
 
-    <TextView style="@style/SearchPanelResult.TextView"
+    <TextView style="@style/PanelResult.TextView"
         android:id="@+id/tv_not_found"
         android:layout_marginTop="@dimen/search_results_panel_text_margin_top"
         android:text="@string/no_internet" />
 
-    <Button style="@style/SearchPanelResult.Button"
+    <Button style="@style/PanelResult.Button"
         android:id="@+id/button_retry"
         android:layout_marginTop="@dimen/search_results_panel_button_retry_margin_top"
         android:text="@string/internet_retry" />

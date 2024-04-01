@@ -7,19 +7,19 @@
     android:orientation="vertical">
 
     <FrameLayout
-        style="@style/SearchPanelResult"
+        style="@style/PanelResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/search_results_panel_margin_top"
         android:layout_weight="1">
 
-        <ImageView style="@style/SearchPanelResult.ImageView"
+        <ImageView style="@style/PlugImageView"
             android:id="@+id/iv_not_found"
             app:srcCompat="@drawable/not_found" />
     </FrameLayout>
 
-    <TextView style="@style/SearchPanelResult.TextView"
+    <TextView style="@style/PanelResult.TextView"
         android:id="@+id/tv_not_found"
         android:layout_marginTop="@dimen/search_results_panel_text_margin_top"
         android:text="@string/not_found" />

@@ -18,4 +18,9 @@
     <string name="year">Year</string>
     <string name="collection">Collection</string>
     <string name="duration">Duration</string>
+    <string name="media_empty">Your media is empty</string>
+    <string name="new_playlist">New playlist</string>
+    <string name="playlists">Playlists</string>
+    <string name="favorite_tracks">Favorite tracks</string>
+    <string name="playlists_not_created">You haven\'t created\nany playlists</string>
 </resources>

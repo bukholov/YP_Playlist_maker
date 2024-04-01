@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".media.ui.FavoriteTracksFragment">
+
+    <ImageView style="@style/PlugImageView"
+        android:id="@+id/iv_sad_face"
+        android:layout_marginTop="@dimen/favorite_tracks_image_margin_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/not_found" />
+
+    <TextView style="@style/PanelResult.TextView"
+        android:id="@+id/tv_playlists_not_created"
+        android:layout_marginTop="@dimen/panel_result_text_margin_top"
+        android:text="@string/media_empty"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_sad_face" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,7 @@
 package com.example.yp_playlist_maker.di
 
+import com.example.yp_playlist_maker.media.viewmodel.FavoriteTracksViewModel
+import com.example.yp_playlist_maker.media.viewmodel.PlaylistsViewModel
 import com.example.yp_playlist_maker.player.view_model.AudioPlayerViewModel
 import com.example.yp_playlist_maker.search.view_model.SearchViewModel
 import com.example.yp_playlist_maker.settings.view_model.SettingsViewModel
@@ -17,5 +19,13 @@ val viewModelModule = module {
 
     viewModel<AudioPlayerViewModel> {
         AudioPlayerViewModel(get(), get())
+    }
+
+    viewModel<PlaylistsViewModel>{
+        PlaylistsViewModel()
+    }
+
+    viewModel<FavoriteTracksViewModel>{
+        FavoriteTracksViewModel()
     }
 }
