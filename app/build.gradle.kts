@@ -85,4 +85,7 @@ dependencies {
     implementation("com.github.moxy-community:moxy:$moxyVersion")
     implementation("com.github.moxy-community:moxy-android:$moxyVersion")
     kapt("com.github.moxy-community:moxy-compiler:$moxyVersion")
+
+    implementation("com.google.android.material:material:1.8.0")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
 }
