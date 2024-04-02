@@ -80,7 +80,7 @@
 
                 <TextView
                     android:id="@+id/tv_looking_for"
-                    style="@style/SearchPanelResult.TextView"
+                    style="@style/PanelResult.TextView"
                     android:layout_marginTop="@dimen/search_panel_text_view_history_margin_top"
                     android:layout_marginBottom="@dimen/search_panel_text_view_history_margin_bottom"
                     android:text="@string/looking_for"
@@ -99,7 +99,7 @@
 
                 <Button
                     android:id="@+id/button_clear_history"
-                    style="@style/SearchPanelResult.Button"
+                    style="@style/PanelResult.Button"
                     android:layout_marginTop="@dimen/search_results_panel_text_hpadding"
                     android:text="@string/clear_history"
                     tools:visibility="gone" />

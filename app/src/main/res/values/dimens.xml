@@ -62,4 +62,9 @@
     <dimen name="audio_player_margin_top_text_view_info_tab">40dp</dimen>
     <dimen name="audio_player_margin_between_text_view_info">16dp</dimen>
     <dimen name="audio_player_margin_bottom_text_view_info_tab">8dp</dimen>
+
+    <dimen name="favorite_tracks_image_margin_top">104dp</dimen>
+    <dimen name="panel_result_text_margin_top">16dp</dimen>
+
+    <dimen name="playlist_image_margin_top">44dp</dimen>
 </resources>

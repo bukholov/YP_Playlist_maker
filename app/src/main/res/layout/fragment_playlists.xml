@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".media.ui.PlaylistsFragment">
+
+    <Button style="@style/PanelResult.Button"
+        android:id="@+id/button_new_playlist"
+        android:layout_marginTop="@dimen/search_results_panel_button_retry_margin_top"
+        android:text="@string/new_playlist"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView style="@style/PlugImageView"
+        android:id="@+id/iv_sad_face"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/playlist_image_margin_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_new_playlist"
+        app:srcCompat="@drawable/not_found" />
+
+    <TextView style="@style/PanelResult.TextView"
+        android:id="@+id/tv_playlists_not_created"
+        android:layout_marginTop="@dimen/panel_result_text_margin_top"
+        android:text="@string/playlists_not_created"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_sad_face" />
+</androidx.constraintlayout.widget.ConstraintLayout>

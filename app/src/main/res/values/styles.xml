@@ -61,11 +61,11 @@
         <item name="android:maxLines">1</item>
     </style>
 
-    <style name="SearchPanelResult">
+    <style name="PanelResult">
         <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
 
-    <style name="SearchPanelResult.TextView">
+    <style name="PanelResult.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAlignment">center</item>
@@ -76,7 +76,7 @@
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="SearchPanelResult.Button">
+    <style name="PanelResult.Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
@@ -87,16 +87,13 @@
         <item name="backgroundTint">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="SearchPanelResult.ImageView">
+    <style name="PlugImageView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">end</item>
         <item name="android:layout_weight">1</item>
     </style>>
 
-    <style name="SearchPanelResult.ImageView.Note">
-        <item name="android:tint">?attr/colorOnPrimary</item>
-    </style>>
     <style name="AudioPlayerStyle">
 
     </style>
