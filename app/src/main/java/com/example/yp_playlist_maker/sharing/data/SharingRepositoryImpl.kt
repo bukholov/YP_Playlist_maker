@@ -22,7 +22,7 @@ class SharingRepositoryImpl(private val externalNavigator: ExternalNavigator, pr
     }
 
     private fun getTermsLink(): String {
-        return ContextCompat.getString(context, R.string.uri_practicum_android_developer)
+        return ContextCompat.getString(context, R.string.uri_user_agreement)
     }
 
     private fun getSupportEmailData(): EmailData {

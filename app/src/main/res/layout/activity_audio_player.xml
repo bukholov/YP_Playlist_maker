@@ -7,10 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".player.ui.AudioPlayerActivity">
 
-    <Button style="@style/ButtonBackFromActivityStyle"
+    <Button style="@style/TitleActivityStyle"
         android:id="@+id/button_back_from_audio_player"
         app:icon="@drawable/arrow_back"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
