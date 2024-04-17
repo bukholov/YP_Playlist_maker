@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.yp_playlist_maker.R
 import com.example.yp_playlist_maker.databinding.FragmentSettingsBinding
-import com.example.yp_playlist_maker.media.ui.PlaylistsFragment
 import com.example.yp_playlist_maker.settings.view_model.SettingsViewModel
 import org.koin.android.ext.android.inject
 
@@ -45,23 +44,16 @@ class SettingsFragment: Fragment() {
         }
 
         binding.textViewUserAgreement.setOnClickListener {
-            openTerms()
-        }
-    }
+            //viewModel.openTerms()
+            val direction = SettingsFragmentDirections.actionSettingsFragmentToWebFragment(getString(
+                R.string.uri_user_agreement))
 
-    private fun openTerms(){
-        val action = SettingsFragmentDirections.actionSettingsFragmentToWebFragment(getString(R.string.uri_user_agreement))
-        findNavController().navigate(action)
+            findNavController().navigate(direction)
+        }
     }
 
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
-    }
-
-    companion object {
-        fun newInstance() =
-            PlaylistsFragment().apply {
-            }
     }
 }

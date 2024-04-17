@@ -2,14 +2,10 @@ package com.example.yp_playlist_maker.main.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.yp_playlist_maker.R
 import com.example.yp_playlist_maker.databinding.ActivityRootBinding
-import com.example.yp_playlist_maker.media.ui.MediaFragment
-import com.example.yp_playlist_maker.search.ui.SearchFragment
-import com.example.yp_playlist_maker.settings.ui.SettingsFragment
 
 class RootActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRootBinding
@@ -24,28 +20,22 @@ class RootActivity : AppCompatActivity() {
 
         val bottomNavigationView = binding.bottomNavigationView
         bottomNavigationView.setupWithNavController(navController)
-
+        bottomNavigationView.setOnItemSelectedListener {
+            true
+        }
+        bottomNavigationView.selectedItemId = R.id.media_fragment
         bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.search_fragment-> {
-                    supportFragmentManager
-                        .commit {
-                            replace(R.id.container_view, SearchFragment())
-                        }
+                    navController.navigate(R.id.searchFragment)
                     true
                 }
                 R.id.media_fragment -> {
-                    supportFragmentManager
-                        .commit {
-                            replace(R.id.container_view, MediaFragment())
-                        }
+                    navController.navigate(R.id.mediaFragment)
                     true
                 }
                 R.id.settings_fragment ->{
-                    supportFragmentManager
-                        .commit {
-                            replace(R.id.container_view, SettingsFragment())
-                        }
+                    navController.navigate(R.id.settingsFragment)
                     true
                 }
                 else -> {
@@ -53,6 +43,5 @@ class RootActivity : AppCompatActivity() {
                 }
             }
         }
-        bottomNavigationView.selectedItemId = R.id.media_fragment
     }
 }

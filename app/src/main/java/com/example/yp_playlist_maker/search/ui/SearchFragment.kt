@@ -167,8 +167,8 @@ class SearchFragment: Fragment() {
         return binding.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         textWatcher?.let { binding.editTextSearch.removeTextChangedListener(it) }
     }
 }
