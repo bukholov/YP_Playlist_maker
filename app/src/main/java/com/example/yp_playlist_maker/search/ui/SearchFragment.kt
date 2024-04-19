@@ -12,7 +12,6 @@ import android.widget.Button
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.yp_playlist_maker.MyApp
 import com.example.yp_playlist_maker.R
 import com.example.yp_playlist_maker.databinding.FragmentSearchBinding
 import com.example.yp_playlist_maker.search.data.SearchState
@@ -73,7 +72,7 @@ class SearchFragment: Fragment() {
             tracks.addAll(historyTrackList)
             notifyDataSetChanged()
         }
-        showHistoryFeatures(true)
+        showHistoryFeatures(historyTrackList.isNotEmpty())
     }
 
     private fun render(state: SearchState) {
@@ -154,7 +153,7 @@ class SearchFragment: Fragment() {
             binding.flContent.visibility = View.GONE
 
             if(view != null){
-                val inputMethodManager = MyApp().getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+                val inputMethodManager = getActivity()?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
             }
         }
