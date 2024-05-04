@@ -85,7 +85,7 @@ class SearchViewModel: ViewModel() {
     }
 
     fun clickTrack(it: Track){
-        if(clickDebounce()){
+       if(clickDebounce()){
             tracksHistoryInteractor.write(it)
             if (stateLiveData.value is SearchState.History){
                 showTracksHistory()

@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -49,6 +50,7 @@ android {
         compose = true
         viewBinding = true
     }
+    buildToolsVersion = "33.0.1"
 }
 
 dependencies {
@@ -88,4 +90,8 @@ dependencies {
 
     implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
+
+    implementation("androidx.navigation:navigation-fragment-ktx:2.5.3")
+    implementation("androidx.navigation:navigation-ui-ktx:2.5.3")
+    implementation("androidx.fragment:fragment-ktx:1.5.6")
 }

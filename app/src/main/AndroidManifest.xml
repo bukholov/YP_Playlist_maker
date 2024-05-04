@@ -20,26 +20,11 @@
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".NotFound"
-            android:exported="false"
-            android:label="@string/not_found"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.YP_Playlist_Maker" />
-        <activity
-            android:name=".search.ui.SearchActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
-        <activity
-            android:name=".media.ui.MediaActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
-        <activity
-            android:name=".settings.ui.SettingsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".main.ui.MainActivity"
-            android:screenOrientation="portrait"
-            android:exported="true">
+            android:name=".main.ui.RootActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustNothing"
+            android:theme="@style/Theme.YP_Playlist_Maker">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

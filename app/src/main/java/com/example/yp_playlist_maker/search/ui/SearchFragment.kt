@@ -3,25 +3,27 @@ package com.example.yp_playlist_maker.search.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.yp_playlist_maker.R
-import com.example.yp_playlist_maker.databinding.ActivitySearchBinding
+import com.example.yp_playlist_maker.databinding.FragmentSearchBinding
 import com.example.yp_playlist_maker.search.data.SearchState
 import com.example.yp_playlist_maker.search.domain.Track
 import com.example.yp_playlist_maker.search.view_model.SearchViewModel
 import org.koin.android.ext.android.inject
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment: Fragment() {
     private lateinit var trackAdapter: TrackAdapter
     private val viewModel: SearchViewModel by inject()
     private lateinit var textWatcher: TextWatcher
-    private lateinit var binding: ActivitySearchBinding
+    private lateinit var binding: FragmentSearchBinding
 
     private fun showHistoryFeatures(isVisible: Boolean){
         if(isVisible){
@@ -42,16 +44,16 @@ class SearchActivity : AppCompatActivity() {
         binding.progressBarSearchTracks.visibility = View.VISIBLE
     }
 
-    private fun showError(onClickListener: OnClickListener){
+    private fun showError(onClickListener: View.OnClickListener){
         binding.progressBarSearchTracks.visibility = View.GONE
-        layoutInflater.inflate(R.layout.activity_no_internet, binding.flContent)
-        findViewById<LinearLayout>(R.id.ll_no_internet).findViewById<Button>(R.id.button_retry).setOnClickListener(onClickListener)
+        layoutInflater.inflate(R.layout.fragment_no_internet, binding.flContent)
+        activity?.findViewById<LinearLayout>(R.id.ll_no_internet)?.findViewById<Button>(R.id.button_retry)?.setOnClickListener(onClickListener)
     }
 
     private fun showEmpty(){
         binding.progressBarSearchTracks.visibility = View.GONE
         binding.flContent.removeAllViewsInLayout()
-        layoutInflater.inflate(R.layout.activity_not_found, binding.flContent)
+        layoutInflater.inflate(R.layout.fragment_not_found, binding.flContent)
     }
 
     private fun showContent(newTrackList: List<Track>){
@@ -70,7 +72,7 @@ class SearchActivity : AppCompatActivity() {
             tracks.addAll(historyTrackList)
             notifyDataSetChanged()
         }
-        showHistoryFeatures(true)
+        showHistoryFeatures(historyTrackList.isNotEmpty())
     }
 
     private fun render(state: SearchState) {
@@ -83,10 +85,12 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentSearchBinding.inflate(layoutInflater)
 
         binding.buttonClearHistory.visibility = View.GONE
 
@@ -96,12 +100,8 @@ class SearchActivity : AppCompatActivity() {
         trackAdapter.tracks = ArrayList()
         binding.rvTracks.adapter = trackAdapter
 
-        viewModel.observeState().observe(this){
+        viewModel.observeState().observe(viewLifecycleOwner){
             render(it)
-        }
-
-        binding.buttonBackFromSearch.setOnClickListener {
-            finish()
         }
 
         fun clearButtonVisibility(s: CharSequence?): Int {
@@ -147,13 +147,13 @@ class SearchActivity : AppCompatActivity() {
         }
         binding.imageViewClearText.setOnClickListener {
             binding.editTextSearch.setText("")
-            val view: View? = this.currentFocus
+            val view: View? = activity?.currentFocus
             viewModel.showTracksHistory()
             showHistoryFeatures(trackAdapter.tracks.isNotEmpty())
             binding.flContent.visibility = View.GONE
 
             if(view != null){
-                val inputMethodManager = this.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+                val inputMethodManager = getActivity()?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
             }
         }
@@ -162,10 +162,12 @@ class SearchActivity : AppCompatActivity() {
             showContent(emptyList())
             showHistoryFeatures(false)
         }
+
+        return binding.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onDestroyView() {
+        super.onDestroyView()
         textWatcher?.let { binding.editTextSearch.removeTextChangedListener(it) }
     }
 }

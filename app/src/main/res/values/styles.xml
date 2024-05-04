@@ -28,7 +28,7 @@
         <item name="android:textSize">@dimen/settings_activity_font_size</item>
     </style>
 
-    <style name="ButtonBackFromActivityStyle">
+    <style name="TitleActivityStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginVertical">@dimen/title_label_margin</item>
@@ -131,6 +131,17 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="BottomNavigationView">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">@dimen/audio_player_info_font_size</item>
+        <item name="itemIconTint">@color/menu_selector</item>
+        <item name="itemTextColor">@color/menu_selector</item>
+        <item name="android:background">?attr/colorSecondary</item>
+        <item name="itemTextAppearanceActiveBoldEnabled">false</item>
+        <item name="backgroundTint">?attr/colorSecondary</item>
+        <item name="itemActiveIndicatorStyle">@color/YP_Blue</item>
     </style>
 
 </resources>
