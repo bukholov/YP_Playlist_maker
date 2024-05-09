@@ -1,9 +1,9 @@
 package com.example.yp_playlist_maker.search.domain
 
-import java.util.function.Consumer
+import kotlinx.coroutines.flow.Flow
 
 interface TracksInteractor {
-    fun searchTracks(expression: String, consumer: Consumer<Result<List<Track>>>)
+    suspend fun searchTracks(expression: String): Flow<Pair<List<Track>?, String?>>
 
     fun loadTrackData(expression: String): Track
 }
