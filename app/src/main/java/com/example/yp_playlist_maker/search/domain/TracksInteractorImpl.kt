@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class TracksInteractorImpl(private val repository: TracksRepository): TracksInteractor {
-    override suspend fun searchTracks(expression: String): Flow<Pair<List<Track>?, String?>> {
+    override fun searchTracks(expression: String): Flow<Pair<List<Track>?, String?>> {
         return repository.searchTracks(expression).map {
             Pair(it.getOrNull(), null)
         }

@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flow
 
 const val CONNECTION_SUCCESS = 200
 class TracksRepositoryImpl(private val networkClient: NetworkClient): TracksRepository {
-    override suspend fun searchTracks(expression: String): Flow<Result<List<Track>>> = flow {
+    override fun searchTracks(expression: String): Flow<Result<List<Track>>> = flow {
         val response = networkClient.doRequest(TracksSearchRequest(expression))
         when(response.resultCode){
             CONNECTION_SUCCESS -> {

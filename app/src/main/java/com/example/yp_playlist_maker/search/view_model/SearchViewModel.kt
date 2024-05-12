@@ -19,7 +19,7 @@ import org.koin.java.KoinJavaComponent.inject
 class SearchViewModel: ViewModel() {
     companion object {
         const val SEARCH_DEBOUNCE_DELAY_MILLIS = 2000L
-        const val CLICK_DEBOUNCE_DELAY_MILLIS = 1000L
+        const val CLICK_DEBOUNCE_DELAY_MILLIS = 500L
         private val SEARCH_REQUEST_TOKEN = Any()
     }
 
