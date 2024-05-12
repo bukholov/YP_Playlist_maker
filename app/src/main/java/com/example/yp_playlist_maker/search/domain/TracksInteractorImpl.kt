@@ -1,15 +1,12 @@
 package com.example.yp_playlist_maker.search.domain
 
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import java.util.function.Consumer
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class TracksInteractorImpl(private val repository: TracksRepository): TracksInteractor {
-    override fun searchTracks(expression: String, consumer: Consumer<Result<List<Track>>>) {
-        val executorService: ExecutorService = Executors.newFixedThreadPool(1)
-
-        executorService.execute {
-            consumer.accept(repository.searchTracks(expression))
+    override fun searchTracks(expression: String): Flow<Pair<List<Track>?, String?>> {
+        return repository.searchTracks(expression).map {
+            Pair(it.getOrNull(), null)
         }
     }
 

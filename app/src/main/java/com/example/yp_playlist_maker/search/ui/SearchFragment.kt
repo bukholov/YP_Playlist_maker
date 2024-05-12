@@ -95,7 +95,7 @@ class SearchFragment: Fragment() {
         binding.buttonClearHistory.visibility = View.GONE
 
         trackAdapter = TrackAdapter {
-            viewModel.clickTrack(it)
+            viewModel.onTrackClickDebounce(it)
         }
         trackAdapter.tracks = ArrayList()
         binding.rvTracks.adapter = trackAdapter
