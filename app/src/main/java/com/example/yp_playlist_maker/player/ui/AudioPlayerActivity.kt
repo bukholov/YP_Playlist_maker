@@ -12,7 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.yp_playlist_maker.R
 import com.example.yp_playlist_maker.databinding.ActivityAudioPlayerBinding
 import com.example.yp_playlist_maker.player.data.PlayerState
-import com.example.yp_playlist_maker.player.view_model.AudioPlayerViewModel
+import com.example.yp_playlist_maker.player.ui.view_model.AudioPlayerViewModel
 import com.example.yp_playlist_maker.search.domain.Track
 import com.google.gson.Gson
 import org.koin.android.ext.android.inject
@@ -58,9 +58,7 @@ class AudioPlayerActivity : AppCompatActivity() {
                 binding.tvSelectedTrackPrimaryGenreName.text = playerState.track.primaryGenreName
                 binding.tvSelectedTrackCountry.text = playerState.track.country
                 binding.tvSelectedTrackCollectionName.text = playerState.track.collectionName
-                binding.tvSelectedTrackReleaseDate.text = SimpleDateFormat(
-                    "yyyy", Locale.getDefault()
-                ).format(playerState.track.releaseDate)
+                binding.tvSelectedTrackReleaseDate.text = playerState.track.releaseDate.toString()
                 Glide.with(this).load(Uri.parse(playerState.track.getCoverArtwork())).fitCenter()
                     .placeholder(R.drawable.placeholder).apply(
                         RequestOptions.bitmapTransform(
@@ -71,6 +69,13 @@ class AudioPlayerActivity : AppCompatActivity() {
                             )
                         )
                     ).into(binding.ivTrackPhoto)
+
+                if(playerState.track.isFavorite){
+                    binding.imageViewLike.setImageResource(R.drawable.liked)
+                }
+                else{
+                    binding.imageViewLike.setImageResource(R.drawable.like)
+                }
             }
 
             is PlayerState.StatePlaying -> {
@@ -100,6 +105,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         viewModel.observeState().observe(this) {
             render(it)
         }
+
         viewModel.loadTrack(stringExtra = intent.getStringExtra(SELECTED_TRACK_KEY)!!)
 
         binding.imageViewPlay.setOnClickListener {
@@ -108,6 +114,10 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         binding.buttonBackFromAudioPlayer.setOnClickListener {
             finish()
+        }
+
+        binding.imageViewLike.setOnClickListener {
+            viewModel.likeTrack()
         }
     }
 

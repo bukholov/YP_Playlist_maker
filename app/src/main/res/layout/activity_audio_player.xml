@@ -71,6 +71,7 @@
         app:layout_constraintTop_toTopOf="@id/image_view_play" />
 
     <ImageView
+        android:id="@+id/image_view_like"
         android:layout_width="@dimen/audio_player_additional_buttons_size"
         android:layout_height="@dimen/audio_player_additional_buttons_size"
         android:layout_marginEnd="@dimen/audio_player_head_horizontal_margin"

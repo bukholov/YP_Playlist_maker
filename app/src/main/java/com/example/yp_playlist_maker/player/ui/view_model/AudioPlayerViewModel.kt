@@ -1,4 +1,4 @@
-package com.example.yp_playlist_maker.player.view_model
+package com.example.yp_playlist_maker.player.ui.view_model
 
 import android.media.MediaPlayer
 import android.util.Log
@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.yp_playlist_maker.player.data.PlayerState
 import com.example.yp_playlist_maker.player.domain.PlayerInteractor
+import com.example.yp_playlist_maker.player.domain.db.FavoriteTracksRepository
+import com.example.yp_playlist_maker.search.domain.Track
 import com.example.yp_playlist_maker.search.domain.TracksInteractor
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -16,8 +18,9 @@ import org.koin.java.KoinJavaComponent.inject
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AudioPlayerViewModel(private val tracksInteractor: TracksInteractor,
-                           private val playerInteractor: PlayerInteractor
+class AudioPlayerViewModel( private val tracksInteractor: TracksInteractor,
+                            private val playerInteractor: PlayerInteractor,
+                            private val likedTracksRepository: FavoriteTracksRepository
 ): ViewModel() {
     companion object {
         const val SHOW_TIME_DEBOUNCE_DELAY_MILLIS = 300L
@@ -25,13 +28,27 @@ class AudioPlayerViewModel(private val tracksInteractor: TracksInteractor,
     private val mediaPlayer: MediaPlayer by inject(MediaPlayer::class.java)
     private val stateLiveData: MutableLiveData<PlayerState> by inject(MutableLiveData::class.java)
     private var timerJob: Job? = null
+    private var track: Track? = null
+
     fun observeState(): LiveData<PlayerState> = stateLiveData
 
     fun loadTrack(stringExtra: String){
-        val track = tracksInteractor.loadTrackData(stringExtra)
+        track = tracksInteractor.loadTrackData(stringExtra)
+
+        viewModelScope.launch {
+            likedTracksRepository
+                .likedTracks()
+                .collect{tracks ->
+                    tracks.map {
+                        if(track!!.trackId == it.trackId){
+                            track!!.isFavorite = it.isFavorite
+                        }
+                    }
+                }
+        }
 
         with(mediaPlayer){
-            mediaPlayer.setDataSource(track.previewUrl)
+            mediaPlayer.setDataSource(track!!.previewUrl)
             mediaPlayer.prepareAsync()
             setOnPreparedListener {
                 renderState(PlayerState.Prepared)
@@ -41,7 +58,7 @@ class AudioPlayerViewModel(private val tracksInteractor: TracksInteractor,
                 renderState(PlayerState.Complete(playerInteractor.getStartPosition()))
             }
         }
-        renderState(PlayerState.StateDefault(track))
+        renderState(PlayerState.StateDefault(track!!))
     }
 
     fun release(){
@@ -78,6 +95,21 @@ class AudioPlayerViewModel(private val tracksInteractor: TracksInteractor,
                 renderState(PlayerState.StatePlaying(SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)))
                 delay(SHOW_TIME_DEBOUNCE_DELAY_MILLIS)
             }
+        }
+    }
+
+    fun likeTrack(){
+        viewModelScope.launch {
+            if(track!!.isFavorite){
+                Log.d("Favorite track", "delete from favorite")
+                likedTracksRepository.unlikeTrack(track!!)
+            }
+            else{
+                Log.d("Favorite track", "add to favorite")
+                likedTracksRepository.likeTrack(track!!)
+            }
+            track!!.isFavorite = !track!!.isFavorite
+            renderState(PlayerState.StateDefault(track!!))
         }
     }
 }

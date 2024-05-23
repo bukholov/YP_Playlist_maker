@@ -10,6 +10,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.util.Calendar
 
 const val CONNECTION_SUCCESS = 200
 class TracksRepositoryImpl(private val networkClient: NetworkClient): TracksRepository {
@@ -17,8 +18,12 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient): TracksRepo
         val response = networkClient.doRequest(TracksSearchRequest(expression))
         when(response.resultCode){
             CONNECTION_SUCCESS -> {
+
                 with(response as TracksSearchResponse){
                     val data = results.map {
+                        val calendar = Calendar.getInstance()
+                        calendar.time =it.releaseDate
+
                         Track(it.trackId,
                             it.trackName,
                             it.artistName,
@@ -27,8 +32,9 @@ class TracksRepositoryImpl(private val networkClient: NetworkClient): TracksRepo
                             it.collectionName,
                             it.primaryGenreName,
                             it.country,
-                            it.releaseDate,
-                            it.previewUrl)
+                            calendar.get(Calendar.YEAR),
+                            it.previewUrl,
+                            false)
                     }
                     emit(Result.success(ArrayList(data)))
                 }

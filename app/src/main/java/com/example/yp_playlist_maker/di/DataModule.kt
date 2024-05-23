@@ -6,8 +6,13 @@ import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.MutableLiveData
+import androidx.room.Room
+import com.example.yp_playlist_maker.media.data.db.AppDatabase
+import com.example.yp_playlist_maker.media.data.db.converters.TrackDbConvertor
+import com.example.yp_playlist_maker.player.data.FavoriteTracksRepositoryImpl
 import com.example.yp_playlist_maker.player.domain.PlayerRepository
-import com.example.yp_playlist_maker.player.domain.PlayerRepositoryImpl
+import com.example.yp_playlist_maker.player.domain.db.FavoriteTracksRepository
+import com.example.yp_playlist_maker.player.domain.impl.PlayerRepositoryImpl
 import com.example.yp_playlist_maker.search.data.NetworkClient
 import com.example.yp_playlist_maker.search.data.network.ITunesApi
 import com.example.yp_playlist_maker.search.data.network.RetrofitNetworkClient
@@ -80,4 +85,15 @@ val dataModule = module {
     }
 
     factory { MutableLiveData<Any>() }
+
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+               .build()
+    }
+
+    factory { TrackDbConvertor() }
+
+    single<FavoriteTracksRepository> {
+        FavoriteTracksRepositoryImpl(get(), get())
+    }
 }
