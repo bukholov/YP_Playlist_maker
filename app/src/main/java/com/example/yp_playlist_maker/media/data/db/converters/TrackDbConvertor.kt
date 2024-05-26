@@ -2,6 +2,7 @@ package com.example.yp_playlist_maker.media.data.db.converters
 
 import com.example.yp_playlist_maker.media.data.db.entity.TrackEntity
 import com.example.yp_playlist_maker.search.domain.Track
+import java.util.Date
 
 class TrackDbConvertor {
     fun map(track: Track): TrackEntity{
@@ -15,7 +16,9 @@ class TrackDbConvertor {
             track.primaryGenreName,
             track.country,
             track.trackTime,
-            track.previewUrl)
+            track.previewUrl,
+            Date(Date().time)
+            )
     }
 
     fun map(track: TrackEntity): Track{

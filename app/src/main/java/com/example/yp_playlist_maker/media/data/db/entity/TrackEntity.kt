@@ -2,6 +2,7 @@ package com.example.yp_playlist_maker.media.data.db.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Date
 
 @Entity(tableName = "track_table")
 data class TrackEntity(
@@ -16,4 +17,5 @@ data class TrackEntity(
     val country: String,
     val trackTime: Int,
     val previewUrl: String,
+    val changeDate: Date?,
 )
