@@ -24,4 +24,15 @@
     <string name="favorite_tracks">Favorite tracks</string>
     <string name="playlists_not_created">You haven\'t created\nany playlists</string>
     <string name="agreement">Agreement</string>
+    <string name="name">Name*</string>
+    <string name="create">Create</string>
+    <string name="description">Description</string>
+    <string name="finish_creating_playlist">" Finish creating the playlist?"</string>
+    <string name="unsaved_data_will_be_lost">All unsaved data will be lost</string>
+    <string name="finish">Finish</string>
+    <string name="cancel">Cancel</string>
+    <string name="playlist_created">Playlist %s created</string>
+    <string name="adding_to_playlist">Adding to playlist</string>
+    <string name="track_already_added_to_playlist">The track has already been added to playlist [%s]</string>
+    <string name="added_to_playlist">Added to playlist [%s]</string>
 </resources>

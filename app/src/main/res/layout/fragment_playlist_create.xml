@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".media.ui.PlaylistCreateFragment">
+
+    <Button style="@style/TitleActivityStyle"
+        android:id="@+id/button_back"
+        android:text="@string/new_playlist"
+        app:icon="@drawable/arrow_back"
+        android:backgroundTint="?attr/colorSecondary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/view_add_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/playlist_create_image_view_margin"
+        android:layout_marginTop="@dimen/playlist_create_image_view_margin"
+        android:background="@drawable/add_image_drawable"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button_back"
+        android:scaleType="centerCrop"/>
+
+    <com.google.android.material.textfield.TextInputLayout style="@style/PlaylistCreateEditText"
+        android:id="@+id/edit_text_playlist_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/playlist_create_body_margin"
+        android:layout_marginHorizontal="@dimen/playlist_create_body_margin"
+        android:hint="@string/name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_add_image">
+
+        <com.google.android.material.textfield.TextInputEditText style="@style/PlaylistCreateEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout style="@style/PlaylistCreateEditText"
+        android:id="@+id/edit_text_playlist_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/playlist_create_body_margin"
+        android:layout_marginHorizontal="@dimen/playlist_create_body_margin"
+        android:hint="@string/description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_text_playlist_name">
+
+        <com.google.android.material.textfield.TextInputEditText style="@style/PlaylistCreateEditText"
+            android:imeOptions="actionDone"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/button_create_playlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/playlist_create_image_view_margin"
+        app:cornerRadius="@dimen/playlist_create_button_create_round_corners"
+        android:background="@drawable/button_create"
+        android:enabled="false"
+        android:text="@string/create"
+
+        android:textColor="@color/white"
+        android:textSize="@dimen/playlist_create_edit_text_text_size"
+        android:layout_marginHorizontal="@dimen/playlist_create_body_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,8 +1,10 @@
 package com.example.yp_playlist_maker.di
 
+import com.example.yp_playlist_maker.media.domain.db.PlaylistInteractor
+import com.example.yp_playlist_maker.media.domain.impl.PlaylistInteractorImpl
 import com.example.yp_playlist_maker.player.domain.PlayerInteractor
 import com.example.yp_playlist_maker.player.domain.db.FavoriteTracksInteractor
-import com.example.yp_playlist_maker.player.domain.impl.LikedTracksInteractorImpl
+import com.example.yp_playlist_maker.player.domain.impl.FavoriteTracksInteractorImpl
 import com.example.yp_playlist_maker.player.domain.impl.PlayerInteractorImpl
 import com.example.yp_playlist_maker.search.domain.TracksHistoryInteractor
 import com.example.yp_playlist_maker.search.domain.TracksHistoryInteractorImpl
@@ -37,6 +39,10 @@ val domainModule = module {
     }
 
     single<FavoriteTracksInteractor>{
-        LikedTracksInteractorImpl(get())
+        FavoriteTracksInteractorImpl(get())
+    }
+
+    single<PlaylistInteractor>{
+        PlaylistInteractorImpl(get())
     }
 }

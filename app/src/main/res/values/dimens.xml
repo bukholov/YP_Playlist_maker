@@ -67,4 +67,13 @@
     <dimen name="panel_result_text_margin_top">16dp</dimen>
 
     <dimen name="playlist_image_margin_top">44dp</dimen>
+    <dimen name="playlist_create_edit_text_text_size">16sp</dimen>
+    <dimen name="playlist_create_button_create_round_corners">8dp</dimen>
+    <dimen name="playlist_create_image_view_margin">24dp</dimen>
+    <dimen name="playlist_create_body_margin">16dp</dimen>
+    <dimen name="playlist_text_view_text_size">12sp</dimen>
+    <dimen name="playlist_item_mini_track_count_text_size">11sp</dimen>
+    <dimen name="playlist_item_mini_margin_h">12dp</dimen>
+    
+    <dimen name="audio_player_bottom_sheet_height">504dp</dimen>
 </resources>

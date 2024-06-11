@@ -5,4 +5,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface FavoriteTracksInteractor {
     fun likedTracks(): Flow<List<Track>>
+
+    suspend fun likeTrack(track: Track)
+
+    suspend fun unlikeTrack(track: Track)
 }

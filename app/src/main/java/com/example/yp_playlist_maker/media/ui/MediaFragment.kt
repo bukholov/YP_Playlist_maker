@@ -20,7 +20,7 @@ class MediaFragment: Fragment() {
     ): View? {
         binding = FragmentMediaBinding.inflate(inflater, container, false)
 
-        binding.pagerMedia.adapter = MediaViewPagerAdapter(fragmentManager = parentFragmentManager, lifecycle)
+        binding.pagerMedia.adapter = MediaViewPagerAdapter(fragmentManager = childFragmentManager, lifecycle)
         tabMedia = TabLayoutMediator(binding.tabLayoutMedia, binding.pagerMedia){ tab, position ->
             when(position){
                 0 -> tab.text = getString(R.string.favorite_tracks)

@@ -1,13 +1,11 @@
 package com.example.yp_playlist_maker.search.view_model
 
-import android.content.Context
 import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.yp_playlist_maker.player.ui.AudioPlayerActivity
 import com.example.yp_playlist_maker.search.data.SearchState
 import com.example.yp_playlist_maker.search.domain.Track
 import com.example.yp_playlist_maker.search.domain.TracksHistoryInteractor
@@ -28,7 +26,6 @@ class SearchViewModel: ViewModel() {
     private val tracksHistoryInteractor: TracksHistoryInteractor by inject(TracksHistoryInteractor::class.java)
     private var lastSearchQuery = ""
     private val stateLiveData: MutableLiveData<SearchState> by inject(MutableLiveData::class.java)
-    private val context: Context by inject(Context::class.java)
 
     fun observeState(): LiveData<SearchState> = stateLiveData
 
@@ -66,7 +63,6 @@ class SearchViewModel: ViewModel() {
         if (stateLiveData.value is SearchState.History){
             showTracksHistory()
         }
-        AudioPlayerActivity.show(context, it)
     }
 
     fun showTracksHistory(){
