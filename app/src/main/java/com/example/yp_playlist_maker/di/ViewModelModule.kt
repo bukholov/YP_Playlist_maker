@@ -19,7 +19,7 @@ val viewModelModule = module {
     }
 
     viewModel<AudioPlayerViewModel> {
-        AudioPlayerViewModel(get(), get(), get(), get())
+        AudioPlayerViewModel(get(), get(), get(), get(), get())
     }
 
     viewModel<PlaylistsViewModel>{

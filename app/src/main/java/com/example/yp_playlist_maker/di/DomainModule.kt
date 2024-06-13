@@ -1,7 +1,9 @@
 package com.example.yp_playlist_maker.di
 
 import com.example.yp_playlist_maker.media.domain.db.PlaylistInteractor
+import com.example.yp_playlist_maker.media.domain.db.TracksInPlaylistInteractor
 import com.example.yp_playlist_maker.media.domain.impl.PlaylistInteractorImpl
+import com.example.yp_playlist_maker.media.domain.impl.TracksInPlaylistInteractorImpl
 import com.example.yp_playlist_maker.player.domain.PlayerInteractor
 import com.example.yp_playlist_maker.player.domain.db.FavoriteTracksInteractor
 import com.example.yp_playlist_maker.player.domain.impl.FavoriteTracksInteractorImpl
@@ -18,11 +20,11 @@ import org.koin.dsl.module
 
 
 val domainModule = module {
-    single<TracksInteractor> {
+    factory<TracksInteractor> {
         TracksInteractorImpl(get())
     }
 
-    single<TracksHistoryInteractor>{
+    factory<TracksHistoryInteractor>{
         TracksHistoryInteractorImpl(get())
     }
 
@@ -30,19 +32,23 @@ val domainModule = module {
         SettingsInteractorImpl(get())
     }
 
-    single<SharingInteractor>{
+    factory<SharingInteractor>{
         SharingInteractorImpl(get())
     }
 
-    single<PlayerInteractor> {
+    factory<PlayerInteractor> {
         PlayerInteractorImpl(get())
     }
 
-    single<FavoriteTracksInteractor>{
+    factory<FavoriteTracksInteractor>{
         FavoriteTracksInteractorImpl(get())
     }
 
-    single<PlaylistInteractor>{
+    factory<PlaylistInteractor>{
         PlaylistInteractorImpl(get())
+    }
+
+    factory<TracksInPlaylistInteractor> {
+        TracksInPlaylistInteractorImpl(get())
     }
 }

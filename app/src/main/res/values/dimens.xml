@@ -3,6 +3,7 @@
     <dimen name="title_label_padding">12dp</dimen>
     <dimen name="title_label_margin">4dp</dimen>
     <dimen name="title_label_margin_bottom">24dp</dimen>
+    <dimen name="title_label_drawable_padding">24dp</dimen>
 
     <dimen name="main_activity_font_size">22sp</dimen>
     <dimen name="main_icon_padding">8dp</dimen>
@@ -72,8 +73,14 @@
     <dimen name="playlist_create_image_view_margin">24dp</dimen>
     <dimen name="playlist_create_body_margin">16dp</dimen>
     <dimen name="playlist_text_view_text_size">12sp</dimen>
+    <dimen name="playlist_item_margin_top">16dp</dimen>
+    <dimen name="playlist_item_margin">4dp</dimen>
     <dimen name="playlist_item_mini_track_count_text_size">11sp</dimen>
     <dimen name="playlist_item_mini_margin_h">12dp</dimen>
     
     <dimen name="audio_player_bottom_sheet_height">504dp</dimen>
+
+    <dimen name="tab_media_margin_horizontal">16dp</dimen>
+    <dimen name="tab_media_activity_font_size">16sp</dimen>
+
 </resources>

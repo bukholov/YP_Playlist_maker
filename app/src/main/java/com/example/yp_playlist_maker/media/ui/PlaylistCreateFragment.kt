@@ -1,6 +1,5 @@
 package com.example.yp_playlist_maker.media.ui
 
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -20,16 +20,18 @@ import com.example.yp_playlist_maker.R
 import com.example.yp_playlist_maker.databinding.FragmentPlaylistCreateBinding
 import com.example.yp_playlist_maker.media.domain.db.Playlist
 import com.example.yp_playlist_maker.media.viewmodel.PlaylistCreateViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.roundToInt
 
 class PlaylistCreateFragment : Fragment() {
     private var _binding: FragmentPlaylistCreateBinding? = null
-    private val viewModel: PlaylistCreateViewModel by inject<PlaylistCreateViewModel>()
+    private val viewModelPlaylistCreate: PlaylistCreateViewModel by viewModel()
     private lateinit var textWatcher: TextWatcher
-    private var uriImage: String = ""
-
+    companion object {
+        private const val IS_SAVED_INSTANCE = "IS_SAVED_INSTANCE"
+    }
     private val binding: FragmentPlaylistCreateBinding
         get() = _binding!!
 
@@ -38,8 +40,22 @@ class PlaylistCreateFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentPlaylistCreateBinding.inflate(layoutInflater)
-
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility = View.GONE
         val radiusRound = binding.root.resources.getDimension(R.dimen.search_corner_radius).roundToInt()
+
+        if(savedInstanceState != null){
+            if(savedInstanceState.getBoolean(IS_SAVED_INSTANCE)){
+                val playlistFromSavedInstance = viewModelPlaylistCreate.getPlaylistFromSavedInstanceState()
+                Log.d("onCreateView", "$playlistFromSavedInstance")
+                binding.editTextPlaylistName.editText?.setText(playlistFromSavedInstance.playlistName)
+                binding.editTextPlaylistDescription.editText?.setText(playlistFromSavedInstance.playlistDescription)
+                binding.viewAddImage.tag = playlistFromSavedInstance.pathImage
+                Glide.with(binding.root)
+                    .load(playlistFromSavedInstance.pathImage)
+                    .transform(CenterCrop(), RoundedCorners(radiusRound))
+                    .into(binding.viewAddImage)
+            }
+        }
 
         val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
@@ -47,14 +63,57 @@ class PlaylistCreateFragment : Fragment() {
                         .load(uri)
                         .transform(CenterCrop(), RoundedCorners(radiusRound))
                         .into(binding.viewAddImage)
-                    uriImage = uri.toString()
+                    binding.viewAddImage.tag = uri.toString()
                 } else {
                     Log.d("PhotoPicker", "No media selected")
                 }
             }
 
-        binding.buttonBack.setOnClickListener {
+        fun savePlaylist(){
+            val playlist = Playlist(
+                0,
+                binding.editTextPlaylistName.editText?.text.toString(),
+                binding.editTextPlaylistDescription.editText?.text.toString(),
+                if(binding.viewAddImage.tag == null) "" else binding.viewAddImage.tag.toString())
+            viewModelPlaylistCreate.createPlaylist(playlist)
+            Toast.makeText(
+                context,
+                getString(R.string.playlist_created).format(playlist.playlistName),
+                Toast.LENGTH_SHORT
+            ).show()
+            requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility = View.VISIBLE
             findNavController().popBackStack()
+        }
+
+        val messageOnClose = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.finish_creating_playlist))
+            .setMessage(getString(R.string.unsaved_data_will_be_lost))
+            .setNeutralButton(getString(R.string.cancel)) { dialog, which ->
+
+            }
+            .setNegativeButton(getString(R.string.finish)) { dialog, which ->
+                findNavController().popBackStack()
+            }
+            .setPositiveButton(getString(R.string.create)) { dialog, which ->
+                savePlaylist()
+            }
+
+        binding.buttonBack.setOnClickListener {
+            if(binding.editTextPlaylistName.editText?.text?.isNotBlank() == true ||
+                binding.editTextPlaylistDescription.editText?.text?.isNotBlank() == true
+            ) {
+                messageOnClose.show()
+            }
+            else{
+                val callback = object : OnBackPressedCallback(true) {
+                    override fun handleOnBackPressed() {
+                        remove()
+                    }
+                }
+                requireActivity().onBackPressedDispatcher.addCallback(callback)
+                requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility = View.VISIBLE
+                findNavController().popBackStack()
+            }
         }
 
         binding.viewAddImage.setOnClickListener {
@@ -74,41 +133,44 @@ class PlaylistCreateFragment : Fragment() {
         }
         textWatcher?.let { binding.editTextPlaylistName.editText?.addTextChangedListener(textWatcher) }
 
-
         binding.buttonCreatePlaylist.setOnClickListener {
-            MaterialAlertDialogBuilder(requireContext())
-                .setTitle(getString(R.string.finish_creating_playlist))
-                .setMessage(getString(R.string.unsaved_data_will_be_lost))
-                .setNeutralButton(getString(R.string.cancel)) { dialog, which ->
-
-                }
-                .setNegativeButton(getString(R.string.finish)) { dialog, which ->
-                    findNavController().popBackStack()
-                }
-                .setPositiveButton(getString(R.string.create)) { dialog, which ->
-                    if(uriImage.isNotBlank()){
-                        viewModel.saveImageToPrivateStorage(Uri.parse(uriImage))
-                    }
-
-                    val playlist = Playlist(
-                        0,
-                        binding.editTextPlaylistName.editText?.text.toString(),
-                        binding.editTextPlaylistDescription.editText?.text.toString(),
-                        uriImage,
-                        ""
-                    )
-                    viewModel.createPlaylist(playlist)
-                    Toast.makeText(context, getString(R.string.playlist_created).format(playlist.namePlaylistName), Toast.LENGTH_SHORT).show()
-                    findNavController().popBackStack()
-                }
-                .show()
+            if(binding.editTextPlaylistName.editText?.text?.isNotBlank() == true ||
+                binding.editTextPlaylistDescription.editText?.text?.isNotBlank() == true
+            ) {
+                savePlaylist()
+            }
         }
 
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if(binding.editTextPlaylistName.editText?.text?.isNotBlank() == true ||
+                    binding.editTextPlaylistDescription.editText?.text?.isNotBlank() == true
+                ) {
+                    messageOnClose.show()
+                }
+                else{
+                    remove()
+                    findNavController().popBackStack()
+                }
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(callback)
         return binding.root
     }
 
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        viewModelPlaylistCreate.savePlaylistInstanceState(Playlist(
+            0,
+            binding.editTextPlaylistName.editText?.text.toString(),
+            binding.editTextPlaylistDescription.editText?.text.toString(),
+            if(binding.viewAddImage.tag == null) "" else binding.viewAddImage.tag.toString()))
+
+        outState.putBoolean(IS_SAVED_INSTANCE, true)
     }
 }

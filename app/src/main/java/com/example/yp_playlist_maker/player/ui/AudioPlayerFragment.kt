@@ -21,15 +21,16 @@ import com.example.yp_playlist_maker.player.data.PlaylistsState
 import com.example.yp_playlist_maker.player.ui.view_model.AudioPlayerViewModel
 import com.example.yp_playlist_maker.search.domain.Track
 import com.example.yp_playlist_maker.search.ui.SearchFragmentDirections
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 import kotlin.math.roundToInt
 
 class AudioPlayerFragment : Fragment() {
     private lateinit var binding: FragmentAudioPlayerBinding
-    private val viewModel: AudioPlayerViewModel by inject()
+    private val audioPlayerViewModel: AudioPlayerViewModel by viewModel()
     private lateinit var playlistMiniAdapter: PlaylistMiniAdapter
     companion object {
         private const val SELECTED_TRACK_KEY = "SELECTED_TRACK"
@@ -136,18 +137,20 @@ class AudioPlayerFragment : Fragment() {
     ): View? {
         super.onCreate(savedInstanceState)
         binding = FragmentAudioPlayerBinding.inflate(layoutInflater)
-        viewModel.loadTrack(stringExtra = requireArguments().getString(SELECTED_TRACK_KEY)!!)
+        audioPlayerViewModel.loadTrack(stringExtra = requireArguments().getString(SELECTED_TRACK_KEY)!!)
 
-        viewModel.observeState().observe(requireActivity()) {
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility = View.GONE
+
+        audioPlayerViewModel.observeState().observe(requireActivity()) {
             render(it)
         }
 
-        viewModel.observePlaylistState().observe(requireActivity()){
+        audioPlayerViewModel.observePlaylistState().observe(requireActivity()){
             renderPlaylists(it)
         }
 
         binding.imageViewPlay.setOnClickListener {
-            viewModel.playbackControl()
+            audioPlayerViewModel.playbackControl()
         }
 
         binding.buttonBackFromAudioPlayer.setOnClickListener {
@@ -155,7 +158,7 @@ class AudioPlayerFragment : Fragment() {
         }
 
         binding.imageViewLike.setOnClickListener {
-            viewModel.likeTrack()
+            audioPlayerViewModel.likeTrack()
         }
 
         val bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistBottomSheet).apply {
@@ -175,19 +178,18 @@ class AudioPlayerFragment : Fragment() {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                binding.overlay.alpha = slideOffset
             }
         })
 
         playlistMiniAdapter = PlaylistMiniAdapter{
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-            viewModel.addToPlaylist(it)
+            audioPlayerViewModel.addToPlaylist(it)
         }
         playlistMiniAdapter.playlists = ArrayList()
         binding.rvPlaylistsMini.adapter = playlistMiniAdapter
         binding.addToPlaylist.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            viewModel.showPlaylists()
+            audioPlayerViewModel.showPlaylists()
         }
 
         binding.buttonAddToPlaylist.setOnClickListener {
@@ -199,16 +201,16 @@ class AudioPlayerFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.pausePlayer()
+        audioPlayerViewModel.pausePlayer()
     }
 
     override fun onResume() {
-        Log.d("RESUME", "RESUME")
         super.onResume()
     }
 
     override fun onDestroy() {
-        viewModel.release()
+        audioPlayerViewModel.release()
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility = View.VISIBLE
         super.onDestroy()
     }
 }

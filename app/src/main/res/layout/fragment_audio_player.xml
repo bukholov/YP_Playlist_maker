@@ -7,21 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".player.ui.AudioPlayerFragment">
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout_audio_player"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <View android:id="@+id/overlay"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/Shadow_color"
-            android:visibility="gone"/>
+        android:layout_height="match_parent"
+        android:background="?attr/colorSecondary">
 
         <TextView style="@style/TitleActivityStyle"
             android:id="@+id/button_back_from_audio_player"
             android:drawableStart="@drawable/arrow_back"
-            android:drawable = "@drawable/arrow_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -77,7 +73,7 @@
             android:layout_width="@dimen/audio_player_additional_buttons_size"
             android:layout_height="@dimen/audio_player_additional_buttons_size"
             android:layout_marginStart="@dimen/audio_player_head_horizontal_margin"
-            android:background="@drawable/add_playlist"
+            android:src="@drawable/add_playlist"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/image_view_play"
             app:layout_constraintTop_toTopOf="@id/image_view_play" />
@@ -87,7 +83,7 @@
             android:layout_width="@dimen/audio_player_additional_buttons_size"
             android:layout_height="@dimen/audio_player_additional_buttons_size"
             android:layout_marginEnd="@dimen/audio_player_head_horizontal_margin"
-            android:background="@drawable/like"
+            android:src="@drawable/like"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/image_view_play"
             app:layout_constraintTop_toTopOf="@id/image_view_play" />
@@ -168,6 +164,12 @@
             app:layout_constraintStart_toEndOf="@id/tv_track_country"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_track_country" />
+
+        <View android:id="@+id/overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/Shadow_color"
+            android:visibility="gone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -184,7 +186,7 @@
         <View
             android:layout_width="50dp"
             android:layout_height="4dp"
-            android:background="@color/YP_Text_Gray"
+            android:background="@color/Shadow_color"
             android:id="@+id/view_bottom_sheet"
             android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"

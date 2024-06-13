@@ -7,10 +7,9 @@ class PlaylistDbConvertor {
     fun map(playlist: Playlist): PlaylistEntity{
         return PlaylistEntity(
             playlist.playlistId,
-            playlist.namePlaylistName,
-            playlist.descriptionPlaylist,
-            playlist.pathImage,
-            playlist.gsonTrackIdList)
+            playlist.playlistName,
+            playlist.playlistDescription,
+            playlist.pathImage)
     }
 
     fun map(playlist: PlaylistEntity): Playlist {
@@ -18,7 +17,6 @@ class PlaylistDbConvertor {
             playlist.playlistId,
             playlist.namePlaylistName,
             playlist.descriptionPlaylist,
-            playlist.pathImage,
-            playlist.gsonTrackIdList)
+            playlist.pathImage)
     }
 }

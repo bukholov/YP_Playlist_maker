@@ -28,9 +28,9 @@ class TrackDbConvertor {
             track.artistName,
             track.trackTime,
             track.artworkUrl100,
+            track.collectionName,
             track.primaryGenreName,
             track.country,
-            track.collectionName,
             track.releaseDate,
             track.previewUrl,
             true)

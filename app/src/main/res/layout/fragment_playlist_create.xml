@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSecondary"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".media.ui.PlaylistCreateFragment">
 
-    <Button style="@style/TitleActivityStyle"
+    <TextView style="@style/TitleActivityStyle"
         android:id="@+id/button_back"
         android:text="@string/new_playlist"
-        app:icon="@drawable/arrow_back"
-        android:backgroundTint="?attr/colorSecondary"
+        android:drawableStart="@drawable/arrow_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -54,29 +54,18 @@
         app:layout_constraintTop_toBottomOf="@id/edit_text_playlist_name">
 
         <com.google.android.material.textfield.TextInputEditText style="@style/PlaylistCreateEditText"
-            android:imeOptions="actionDone"
-            android:maxLines="1"
-            android:singleLine="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton style="@style/PlaylistCreateButton"
         android:id="@+id/button_create_playlist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/playlist_create_image_view_margin"
         app:cornerRadius="@dimen/playlist_create_button_create_round_corners"
-        android:background="@drawable/button_create"
         android:enabled="false"
         android:text="@string/create"
-
-        android:textColor="@color/white"
-        android:textSize="@dimen/playlist_create_edit_text_text_size"
+        android:layout_marginBottom="@dimen/playlist_create_image_view_margin"
         android:layout_marginHorizontal="@dimen/playlist_create_body_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

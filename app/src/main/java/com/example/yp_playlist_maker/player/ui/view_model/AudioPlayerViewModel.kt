@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.yp_playlist_maker.R
 import com.example.yp_playlist_maker.media.domain.db.Playlist
 import com.example.yp_playlist_maker.media.domain.db.PlaylistInteractor
+import com.example.yp_playlist_maker.media.domain.db.TracksInPlaylistInteractor
 import com.example.yp_playlist_maker.player.data.PlayerState
 import com.example.yp_playlist_maker.player.data.PlaylistsState
 import com.example.yp_playlist_maker.player.domain.PlayerInteractor
@@ -26,7 +27,8 @@ import java.util.Locale
 class AudioPlayerViewModel( private val tracksInteractor: TracksInteractor,
                             private val playerInteractor: PlayerInteractor,
                             private val favoriteTracksInteractor: FavoriteTracksInteractor,
-                            private val playlistInteractor: PlaylistInteractor
+                            private val playlistInteractor: PlaylistInteractor,
+                            private val tracksInPlaylistInteractor: TracksInPlaylistInteractor
 ): ViewModel() {
     companion object {
         const val SHOW_TIME_DEBOUNCE_DELAY_MILLIS = 300L
@@ -136,20 +138,22 @@ class AudioPlayerViewModel( private val tracksInteractor: TracksInteractor,
     }
 
     fun addToPlaylist(playlist: Playlist){
-        Log.d("AudioPlayerViewModel", "addToPlaylist ${track}")
         viewModelScope.launch {
-            if(playlist.readTracks().contains(track!!.trackId)){
-                renderPlaylists(PlaylistsState.StateMakeMessage(context.getString(R.string.track_already_added_to_playlist).format(playlist.namePlaylistName)))
-            }
-            else{
-                playlist.addToPlaylist(track!!)
-                playlistInteractor.syncPlaylist(playlist)
-                renderPlaylists(PlaylistsState.StateMakeMessage(context.getString(R.string.added_to_playlist).format(playlist.namePlaylistName)))
-                playlistInteractor
-                    .playlists()
-                    .collect{playlists->
-                        renderPlaylists(PlaylistsState.StateData(playlists))
-                    }
+            tracksInPlaylistInteractor.getTrackIdsInPlaylist(playlist.playlistId).collect{ listTrackIds ->
+                if(listTrackIds.contains(track!!.trackId)){
+                    Log.d("AudioPlayerViewModel", "Track $track already in playlist: $playlist")
+                    renderPlaylists(PlaylistsState.StateMakeMessage(context.getString(R.string.track_already_added_to_playlist).format(playlist.playlistName)))
+                }
+                else{
+                    Log.d("AudioPlayerViewModel", "addToPlaylist $track in playlist: $playlist")
+                    tracksInPlaylistInteractor.insertTrackInPlaylist(playlist.playlistId, track!!.trackId)
+                    renderPlaylists(PlaylistsState.StateMakeMessage(context.getString(R.string.added_to_playlist).format(playlist.playlistName)))
+                    playlistInteractor
+                        .playlists()
+                        .collect{playlists->
+                            renderPlaylists(PlaylistsState.StateData(playlists))
+                        }
+                }
             }
         }
     }
