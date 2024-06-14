@@ -81,39 +81,30 @@ class PlaylistCreateFragment : Fragment() {
                 getString(R.string.playlist_created).format(playlist.playlistName),
                 Toast.LENGTH_SHORT
             ).show()
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility = View.VISIBLE
             findNavController().popBackStack()
         }
 
-        val messageOnClose = MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.finish_creating_playlist))
-            .setMessage(getString(R.string.unsaved_data_will_be_lost))
-            .setNeutralButton(getString(R.string.cancel)) { dialog, which ->
-
-            }
-            .setNegativeButton(getString(R.string.finish)) { dialog, which ->
-                findNavController().popBackStack()
-            }
-            .setPositiveButton(getString(R.string.create)) { dialog, which ->
-                savePlaylist()
-            }
-
-        binding.buttonBack.setOnClickListener {
-            if(binding.editTextPlaylistName.editText?.text?.isNotBlank() == true ||
-                binding.editTextPlaylistDescription.editText?.text?.isNotBlank() == true
+        fun showMessageDialogClose(){
+            if(binding.editTextPlaylistName.editText?.text?.isNotBlank() == true
+                || binding.editTextPlaylistDescription.editText?.text?.isNotBlank() == true
+                || (if(binding.viewAddImage.tag == null) "" else binding.viewAddImage.tag.toString()) != ""
             ) {
-                messageOnClose.show()
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle(getString(R.string.finish_creating_playlist))
+                    .setMessage(getString(R.string.unsaved_data_will_be_lost))
+                    .setNeutralButton(getString(R.string.cancel)) { dialog, which ->
+                    }
+                    .setNegativeButton(getString(R.string.finish)) { dialog, which ->
+                        findNavController().popBackStack()
+                    }.show()
             }
             else{
-                val callback = object : OnBackPressedCallback(true) {
-                    override fun handleOnBackPressed() {
-                        remove()
-                    }
-                }
-                requireActivity().onBackPressedDispatcher.addCallback(callback)
-                requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility = View.VISIBLE
                 findNavController().popBackStack()
             }
+        }
+
+        binding.buttonBack.setOnClickListener {
+            showMessageDialogClose()
         }
 
         binding.viewAddImage.setOnClickListener {
@@ -134,27 +125,17 @@ class PlaylistCreateFragment : Fragment() {
         textWatcher?.let { binding.editTextPlaylistName.editText?.addTextChangedListener(textWatcher) }
 
         binding.buttonCreatePlaylist.setOnClickListener {
-            if(binding.editTextPlaylistName.editText?.text?.isNotBlank() == true ||
-                binding.editTextPlaylistDescription.editText?.text?.isNotBlank() == true
-            ) {
+            if(binding.editTextPlaylistName.editText?.text?.isNotBlank() == true) {
                 savePlaylist()
             }
         }
 
-        val callback = object : OnBackPressedCallback(true) {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true){
             override fun handleOnBackPressed() {
-                if(binding.editTextPlaylistName.editText?.text?.isNotBlank() == true ||
-                    binding.editTextPlaylistDescription.editText?.text?.isNotBlank() == true
-                ) {
-                    messageOnClose.show()
-                }
-                else{
-                    remove()
-                    findNavController().popBackStack()
-                }
+                showMessageDialogClose()
             }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(callback)
+        })
+
         return binding.root
     }
 
