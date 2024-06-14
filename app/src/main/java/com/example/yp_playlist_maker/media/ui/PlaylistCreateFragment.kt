@@ -43,6 +43,19 @@ class PlaylistCreateFragment : Fragment() {
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility = View.GONE
         val radiusRound = binding.root.resources.getDimension(R.dimen.search_corner_radius).roundToInt()
 
+        textWatcher = object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                binding.buttonCreatePlaylist.isEnabled = binding.editTextPlaylistName.editText?.text.toString().isNotBlank()
+            }
+        }
+        textWatcher?.let { binding.editTextPlaylistName.editText?.addTextChangedListener(textWatcher) }
+
         if(savedInstanceState != null){
             if(savedInstanceState.getBoolean(IS_SAVED_INSTANCE)){
                 val playlistFromSavedInstance = viewModelPlaylistCreate.getPlaylistFromSavedInstanceState()
@@ -110,19 +123,6 @@ class PlaylistCreateFragment : Fragment() {
         binding.viewAddImage.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
-
-        textWatcher = object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.buttonCreatePlaylist.isEnabled = binding.editTextPlaylistName.editText?.text.toString().isNotBlank()
-            }
-        }
-        textWatcher?.let { binding.editTextPlaylistName.editText?.addTextChangedListener(textWatcher) }
 
         binding.buttonCreatePlaylist.setOnClickListener {
             if(binding.editTextPlaylistName.editText?.text?.isNotBlank() == true) {
