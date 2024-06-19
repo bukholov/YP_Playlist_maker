@@ -12,4 +12,8 @@ class SharingInteractorImpl(private val repository: SharingRepository): SharingI
     override fun openSupport() {
         repository.openSupport()
     }
+
+    override fun shareString(message: String) {
+        repository.shareString(message)
+    }
 }

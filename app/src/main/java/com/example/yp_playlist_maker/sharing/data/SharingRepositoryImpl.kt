@@ -17,6 +17,11 @@ class SharingRepositoryImpl(private val externalNavigator: ExternalNavigator, pr
     override fun openSupport() {
         externalNavigator.openEmail(getSupportEmailData())
     }
+
+    override fun shareString(message: String) {
+        externalNavigator.shareLink(message)
+    }
+
     private fun getShareAppLink(): String {
         return ContextCompat.getString(context, R.string.uri_practicum_android_developer)
     }

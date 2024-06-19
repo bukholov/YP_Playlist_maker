@@ -37,7 +37,7 @@ class AudioPlayerViewModel( private val tracksInteractor: TracksInteractor,
     private val stateLiveData: MutableLiveData<PlayerState> by inject(MutableLiveData::class.java)
     private val playlistLiveData: MutableLiveData<PlaylistsState> by inject(MutableLiveData::class.java)
     private var timerJob: Job? = null
-    private var track: Track? = null
+    private var currentTrack: Track? = null
     private val context: Context by inject(Context::class.java)
     private var alreadyPrepared = true
 
@@ -45,9 +45,8 @@ class AudioPlayerViewModel( private val tracksInteractor: TracksInteractor,
 
     fun observePlaylistState(): LiveData<PlaylistsState> = playlistLiveData
 
-    fun loadTrack(stringExtra: String){
-        track = tracksInteractor.loadTrackData(stringExtra)
-
+    fun loadTrack(track: Track){
+        currentTrack = track
         viewModelScope.launch {
             favoriteTracksInteractor
                 .likedTracks()
@@ -78,8 +77,6 @@ class AudioPlayerViewModel( private val tracksInteractor: TracksInteractor,
             renderState(PlayerState.Resume(track!!, SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)))
         }
     }
-
-
 
     fun release(){
         mediaPlayer.release()
@@ -124,29 +121,29 @@ class AudioPlayerViewModel( private val tracksInteractor: TracksInteractor,
 
     fun likeTrack(){
         viewModelScope.launch {
-            if(track!!.isFavorite){
+            if(currentTrack!!.isFavorite){
                 Log.d("Favorite track", "delete from favorite")
-                favoriteTracksInteractor.unlikeTrack(track!!)
+                favoriteTracksInteractor.unlikeTrack(currentTrack!!)
             }
             else{
                 Log.d("Favorite track", "add to favorite")
-                favoriteTracksInteractor.likeTrack(track!!)
+                favoriteTracksInteractor.likeTrack(currentTrack!!)
             }
-            track!!.isFavorite = !track!!.isFavorite
-            renderState(PlayerState.StateDefault(track!!))
+            currentTrack!!.isFavorite = !currentTrack!!.isFavorite
+            renderState(PlayerState.StateDefault(currentTrack!!))
         }
     }
 
     fun addToPlaylist(playlist: Playlist){
         viewModelScope.launch {
             tracksInPlaylistInteractor.getTrackIdsInPlaylist(playlist.playlistId).collect{ listTrackIds ->
-                if(listTrackIds.contains(track!!.trackId)){
-                    Log.d("AudioPlayerViewModel", "Track $track already in playlist: $playlist")
+                if(listTrackIds.isNotEmpty() &&  listTrackIds.contains(currentTrack!!.trackId)){
+                    Log.d("AudioPlayerViewModel", "Track $currentTrack already in playlist: $playlist")
                     renderPlaylists(PlaylistsState.StateMakeMessage(context.getString(R.string.track_already_added_to_playlist).format(playlist.playlistName)))
                 }
                 else{
-                    Log.d("AudioPlayerViewModel", "addToPlaylist $track in playlist: $playlist")
-                    tracksInPlaylistInteractor.insertTrackInPlaylist(playlist.playlistId, track!!.trackId)
+                    Log.d("AudioPlayerViewModel", "addToPlaylist $currentTrack in playlist: $playlist")
+                    tracksInPlaylistInteractor.insertTrackInPlaylist(playlist.playlistId, currentTrack!!)
                     renderPlaylists(PlaylistsState.StateMakeMessage(context.getString(R.string.added_to_playlist).format(playlist.playlistName)))
                     playlistInteractor
                         .playlists()

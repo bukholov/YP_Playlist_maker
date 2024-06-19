@@ -110,6 +110,6 @@ val dataModule = module {
     }
 
     single<TracksInPlaylistRepository> {
-        TracksInPlaylistRepositoryImpl(get())
+        TracksInPlaylistRepositoryImpl(get(), get())
     }
 }

@@ -15,12 +15,17 @@ import kotlin.math.roundToInt
 
 class TrackViewHolder(
     private val binding: TrackItemBinding,
-    onClickListener: (position: Int) -> Unit
+    onClickListener: (position: Int) -> Unit,
+    onLongClickListener: (position: Int) -> Unit
 ): RecyclerView.ViewHolder(binding.root) {
-
     init {
         itemView.setOnClickListener {
             onClickListener(adapterPosition)
+        }
+
+        itemView.setOnLongClickListener {
+            onLongClickListener(adapterPosition)
+            true
         }
     }
 

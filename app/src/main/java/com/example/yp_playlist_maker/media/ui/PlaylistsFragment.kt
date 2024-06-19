@@ -11,12 +11,12 @@ import com.example.yp_playlist_maker.R
 import com.example.yp_playlist_maker.databinding.FragmentPlaylistsBinding
 import com.example.yp_playlist_maker.media.domain.db.Playlist
 import com.example.yp_playlist_maker.media.viewmodel.PlaylistsViewModel
-import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class PlaylistsFragment : Fragment() {
     private lateinit var playlistAdapter: PlaylistAdapter
-    private val viewModel: PlaylistsViewModel by inject<PlaylistsViewModel>()
+    private val playlistsViewModel: PlaylistsViewModel by viewModel<PlaylistsViewModel>()
     private lateinit var binding: FragmentPlaylistsBinding
 
     private fun render(result: Result<List<Playlist>>) {
@@ -42,14 +42,13 @@ class PlaylistsFragment : Fragment() {
         }
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
 
-        viewModel.observeState().observe(viewLifecycleOwner){
+        playlistsViewModel.observeState().observe(viewLifecycleOwner){
             render(it)
         }
 
@@ -57,10 +56,14 @@ class PlaylistsFragment : Fragment() {
             Log.d("PlaylistFragment", "Opening PlaylistCreateFragment")
             findNavController().navigate(R.id.playlistCreateFragment)
         }
-        playlistAdapter = PlaylistAdapter()
+        playlistAdapter = PlaylistAdapter(){
+            val direction = MediaFragmentDirections.actionMediaFragmentToPlaylistInfoFragment(it)
+            findNavController().navigate(directions = direction)
+        }
+
         playlistAdapter.playlists = ArrayList()
         binding.rvPlaylists.adapter = playlistAdapter
-        viewModel.fillData()
+        playlistsViewModel.fillData()
 
         return binding.root
     }

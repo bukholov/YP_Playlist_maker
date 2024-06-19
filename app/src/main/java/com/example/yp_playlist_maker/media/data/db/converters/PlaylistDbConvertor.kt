@@ -9,7 +9,8 @@ class PlaylistDbConvertor {
             playlist.playlistId,
             playlist.playlistName,
             playlist.playlistDescription,
-            playlist.pathImage)
+            playlist.pathImage,
+            playlist.countTracksInPlaylist)
     }
 
     fun map(playlist: PlaylistEntity): Playlist {
@@ -17,6 +18,7 @@ class PlaylistDbConvertor {
             playlist.playlistId,
             playlist.namePlaylistName,
             playlist.descriptionPlaylist,
-            playlist.pathImage)
+            playlist.pathImage,
+            playlist.countTracksInPlaylist)
     }
 }

@@ -18,9 +18,8 @@ import com.example.yp_playlist_maker.databinding.FragmentSearchBinding
 import com.example.yp_playlist_maker.search.data.SearchState
 import com.example.yp_playlist_maker.search.domain.Track
 import com.example.yp_playlist_maker.search.view_model.SearchViewModel
-import com.google.gson.Gson
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.android.ext.android.inject
-import org.koin.java.KoinJavaComponent
 
 class SearchFragment: Fragment() {
     private lateinit var trackAdapter: TrackAdapter
@@ -94,13 +93,12 @@ class SearchFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentSearchBinding.inflate(layoutInflater)
-
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility = View.VISIBLE
         binding.buttonClearHistory.visibility = View.GONE
 
         trackAdapter = TrackAdapter {
             viewModel.onTrackClickDebounce(it)
-            val gson: Gson by KoinJavaComponent.inject(Gson::class.java)
-            val direction = SearchFragmentDirections.actionSearchFragmentToAudioPlayerFragment(gson.toJson(it))
+            val direction = SearchFragmentDirections.actionSearchFragmentToAudioPlayerFragment(it)
             findNavController().navigate(directions = direction)
         }
         trackAdapter.tracks = ArrayList()

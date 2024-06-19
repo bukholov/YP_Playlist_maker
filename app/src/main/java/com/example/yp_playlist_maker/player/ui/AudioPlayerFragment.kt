@@ -1,6 +1,7 @@
 package com.example.yp_playlist_maker.player.ui
 
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,13 +15,11 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.yp_playlist_maker.R
 import com.example.yp_playlist_maker.databinding.FragmentAudioPlayerBinding
-import com.example.yp_playlist_maker.media.ui.FavoriteTracksFragment
 import com.example.yp_playlist_maker.media.ui.PlaylistMiniAdapter
 import com.example.yp_playlist_maker.player.data.PlayerState
 import com.example.yp_playlist_maker.player.data.PlaylistsState
 import com.example.yp_playlist_maker.player.ui.view_model.AudioPlayerViewModel
 import com.example.yp_playlist_maker.search.domain.Track
-import com.example.yp_playlist_maker.search.ui.SearchFragmentDirections
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,12 +33,6 @@ class AudioPlayerFragment : Fragment() {
     private lateinit var playlistMiniAdapter: PlaylistMiniAdapter
     companion object {
         private const val SELECTED_TRACK_KEY = "SELECTED_TRACK"
-         fun newInstance(trackString: String) =
-            FavoriteTracksFragment().apply {
-                Log.d("SearchActivity", "Open AudioPlayerActivity")
-                val direction = SearchFragmentDirections.actionSearchFragmentToAudioPlayerFragment(trackString)
-                findNavController().navigate(R.id.audioPlayerFragment)
-            }
     }
 
     private fun pausePlayer() {
@@ -137,7 +130,13 @@ class AudioPlayerFragment : Fragment() {
     ): View? {
         super.onCreate(savedInstanceState)
         binding = FragmentAudioPlayerBinding.inflate(layoutInflater)
-        audioPlayerViewModel.loadTrack(stringExtra = requireArguments().getString(SELECTED_TRACK_KEY)!!)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            audioPlayerViewModel.loadTrack(requireArguments().getParcelable(SELECTED_TRACK_KEY, Track::class.java)!!)
+        }
+        else{
+            audioPlayerViewModel.loadTrack(requireArguments().getParcelable<Track>(SELECTED_TRACK_KEY)!!)
+        }
 
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility = View.GONE
 
@@ -204,13 +203,8 @@ class AudioPlayerFragment : Fragment() {
         audioPlayerViewModel.pausePlayer()
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     override fun onDestroy() {
         audioPlayerViewModel.release()
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility = View.VISIBLE
         super.onDestroy()
     }
 }

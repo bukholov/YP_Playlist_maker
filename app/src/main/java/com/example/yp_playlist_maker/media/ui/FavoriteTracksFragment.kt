@@ -10,9 +10,7 @@ import com.example.yp_playlist_maker.databinding.FragmentFavoriteTracksBinding
 import com.example.yp_playlist_maker.media.viewmodel.FavoriteTracksViewModel
 import com.example.yp_playlist_maker.search.domain.Track
 import com.example.yp_playlist_maker.search.ui.TrackAdapter
-import com.google.gson.Gson
 import org.koin.android.ext.android.inject
-import org.koin.java.KoinJavaComponent
 
 class FavoriteTracksFragment : Fragment() {
     private lateinit var trackAdapter: TrackAdapter
@@ -55,8 +53,7 @@ class FavoriteTracksFragment : Fragment() {
         binding = FragmentFavoriteTracksBinding.inflate(layoutInflater)
 
         trackAdapter = TrackAdapter {
-            val gson: Gson by KoinJavaComponent.inject(Gson::class.java)
-            val direction = MediaFragmentDirections.actionMediaFragmentToAudioPlayerFragment(gson.toJson(it))
+            val direction = MediaFragmentDirections.actionMediaFragmentToAudioPlayerFragment(it)
             findNavController().navigate(directions = direction)
         }
         trackAdapter.tracks = ArrayList()
