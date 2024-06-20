@@ -6,11 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yp_playlist_maker.databinding.TrackItemBinding
 import com.example.yp_playlist_maker.search.domain.Track
 
-class TrackAdapter (
-    private val onClickListener: (Track)->Unit,
-    private val onLongClickListener: (Track)->Unit
-) : RecyclerView.Adapter<TrackViewHolder> () {
-    constructor(onClickListener: (Track)->Unit): this(onClickListener, { })
+class TrackAdapter(
+    private val onClickListener: (Track) -> Unit,
+    private val onLongClickListener: (Track) -> Unit
+) : RecyclerView.Adapter<TrackViewHolder>() {
+    constructor(onClickListener: (Track) -> Unit) : this(onClickListener, { })
 
     lateinit var tracks: ArrayList<Track>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {

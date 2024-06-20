@@ -21,18 +21,17 @@ import com.example.yp_playlist_maker.search.view_model.SearchViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import org.koin.android.ext.android.inject
 
-class SearchFragment: Fragment() {
+class SearchFragment : Fragment() {
     private lateinit var trackAdapter: TrackAdapter
     private val viewModel: SearchViewModel by inject()
     private lateinit var textWatcher: TextWatcher
     private lateinit var binding: FragmentSearchBinding
 
-    private fun showHistoryFeatures(isVisible: Boolean){
-        if(isVisible){
+    private fun showHistoryFeatures(isVisible: Boolean) {
+        if (isVisible) {
             binding.buttonClearHistory.visibility = View.VISIBLE
             binding.tvLookingFor.visibility = View.VISIBLE
-        }
-        else{
+        } else {
             binding.buttonClearHistory.visibility = View.GONE
             binding.tvLookingFor.visibility = View.GONE
         }
@@ -46,19 +45,20 @@ class SearchFragment: Fragment() {
         binding.progressBarSearchTracks.visibility = View.VISIBLE
     }
 
-    private fun showError(onClickListener: View.OnClickListener){
+    private fun showError(onClickListener: View.OnClickListener) {
         binding.progressBarSearchTracks.visibility = View.GONE
         layoutInflater.inflate(R.layout.fragment_no_internet, binding.flContent)
-        activity?.findViewById<LinearLayout>(R.id.ll_no_internet)?.findViewById<Button>(R.id.button_retry)?.setOnClickListener(onClickListener)
+        activity?.findViewById<LinearLayout>(R.id.ll_no_internet)
+            ?.findViewById<Button>(R.id.button_retry)?.setOnClickListener(onClickListener)
     }
 
-    private fun showEmpty(){
+    private fun showEmpty() {
         binding.progressBarSearchTracks.visibility = View.GONE
         binding.flContent.removeAllViewsInLayout()
         layoutInflater.inflate(R.layout.fragment_not_found, binding.flContent)
     }
 
-    private fun showContent(newTrackList: List<Track>){
+    private fun showContent(newTrackList: List<Track>) {
         binding.progressBarSearchTracks.visibility = View.GONE
         with(trackAdapter) {
             tracks.clear()
@@ -67,7 +67,7 @@ class SearchFragment: Fragment() {
         }
     }
 
-    private fun showHistory(historyTrackList: List<Track>){
+    private fun showHistory(historyTrackList: List<Track>) {
         binding.progressBarSearchTracks.visibility = View.GONE
         with(trackAdapter) {
             tracks.clear()
@@ -78,7 +78,7 @@ class SearchFragment: Fragment() {
     }
 
     private fun render(state: SearchState) {
-        when(state){
+        when (state) {
             is SearchState.Content -> showContent(state.tracks)
             is SearchState.Error -> showError(state.onClickListener)
             is SearchState.Loading -> showLoading()
@@ -91,9 +91,10 @@ class SearchFragment: Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentSearchBinding.inflate(layoutInflater)
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility = View.VISIBLE
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility =
+            View.VISIBLE
         binding.buttonClearHistory.visibility = View.GONE
 
         trackAdapter = TrackAdapter {
@@ -104,7 +105,7 @@ class SearchFragment: Fragment() {
         trackAdapter.tracks = ArrayList()
         binding.rvTracks.adapter = trackAdapter
 
-        viewModel.observeState().observe(viewLifecycleOwner){
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
 
@@ -119,6 +120,7 @@ class SearchFragment: Fragment() {
         textWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
 
@@ -127,24 +129,23 @@ class SearchFragment: Fragment() {
                 binding.imageViewClearText.visibility = clearButtonVisibility(s)
             }
         }
-        textWatcher?.let { binding.editTextSearch.addTextChangedListener(textWatcher) }
+        textWatcher.let { binding.editTextSearch.addTextChangedListener(textWatcher) }
 
         binding.editTextSearch.setOnEditorActionListener { textView, actionId, keyEvent ->
-            if (actionId == EditorInfo.IME_ACTION_DONE){
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 viewModel.searchTracks(textView.text.toString())
                 true
             }
             false
         }
         binding.editTextSearch.setOnFocusChangeListener { view, hasFocus ->
-            if(hasFocus && binding.editTextSearch.text.toString()==""){
+            if (hasFocus && binding.editTextSearch.text.toString() == "") {
                 showHistoryFeatures(true)
                 viewModel.showTracksHistory()
-                if(trackAdapter.tracks.isEmpty()){
+                if (trackAdapter.tracks.isEmpty()) {
                     showHistoryFeatures(false)
                 }
-            }
-            else{
+            } else {
                 showHistoryFeatures(false)
             }
 
@@ -156,8 +157,9 @@ class SearchFragment: Fragment() {
             showHistoryFeatures(trackAdapter.tracks.isNotEmpty())
             binding.flContent.visibility = View.GONE
 
-            if(view != null){
-                val inputMethodManager = getActivity()?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+            if (view != null) {
+                val inputMethodManager =
+                    activity?.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
             }
         }
@@ -172,6 +174,6 @@ class SearchFragment: Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        textWatcher?.let { binding.editTextSearch.removeTextChangedListener(it) }
+        textWatcher.let { binding.editTextSearch.removeTextChangedListener(it) }
     }
 }

@@ -6,7 +6,7 @@ import com.example.yp_playlist_maker.search.domain.Track
 import java.util.Date
 
 class TrackDbConvertor {
-    fun mapToTrackEntity(track: Track): TrackEntity{
+    fun mapToTrackEntity(track: Track): TrackEntity {
         return TrackEntity(
             track.trackId,
             track.artworkUrl100,
@@ -19,10 +19,10 @@ class TrackDbConvertor {
             track.trackTime,
             track.previewUrl,
             Date(Date().time)
-            )
+        )
     }
 
-    fun mapToPlaylistTrackEntity(track: Track): PlaylistTrackEntity{
+    fun mapToPlaylistTrackEntity(track: Track): PlaylistTrackEntity {
         return PlaylistTrackEntity(
             track.trackId,
             track.artworkUrl100,
@@ -38,7 +38,7 @@ class TrackDbConvertor {
         )
     }
 
-    fun mapToTrack(track: TrackEntity): Track{
+    fun mapToTrack(track: TrackEntity): Track {
         return Track(
             track.trackId,
             track.trackName,
@@ -50,10 +50,11 @@ class TrackDbConvertor {
             track.country,
             track.releaseDate,
             track.previewUrl,
-            true)
+            true
+        )
     }
 
-    fun mapToTrack(track: PlaylistTrackEntity): Track{
+    fun mapToTrack(track: PlaylistTrackEntity): Track {
         return Track(
             track.trackId,
             track.trackName,
@@ -65,6 +66,7 @@ class TrackDbConvertor {
             track.country,
             track.releaseDate,
             track.previewUrl,
-            true)
+            false
+        )
     }
 }

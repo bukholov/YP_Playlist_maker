@@ -9,4 +9,5 @@ data class Playlist(
     val playlistName: String,
     val playlistDescription: String,
     val pathImage: String,
-    var countTracksInPlaylist: Int): Parcelable
+    var countTracksInPlaylist: Int
+) : Parcelable

@@ -6,7 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.yp_playlist_maker.databinding.PlaylistItemMiniBinding
 import com.example.yp_playlist_maker.media.domain.db.Playlist
 
-class PlaylistMiniAdapter(val onClickListener: (Playlist)->Unit) : RecyclerView.Adapter<PlaylistMiniViewHolder> () {
+class PlaylistMiniAdapter(val onClickListener: (Playlist) -> Unit) :
+    RecyclerView.Adapter<PlaylistMiniViewHolder>() {
     lateinit var playlists: ArrayList<Playlist>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistMiniViewHolder {
@@ -16,8 +17,8 @@ class PlaylistMiniAdapter(val onClickListener: (Playlist)->Unit) : RecyclerView.
             false
         )
 
-        return PlaylistMiniViewHolder(binding){position->
-            playlists.getOrNull(position)?.let { playlist->
+        return PlaylistMiniViewHolder(binding) { position ->
+            playlists.getOrNull(position)?.let { playlist ->
                 onClickListener(playlist)
             }
         }

@@ -15,11 +15,15 @@ interface PlaylistTrackDao {
     @Delete
     suspend fun deleteTrack(track: PlaylistTrackEntity)
 
-    @Query("delete from playlist_track_table " +
-            "where trackId = :trackId and trackId not in (select trackId from tracks_in_playlist_table where playlistId <> :playlistId) ")
+    @Query(
+        "delete from playlist_track_table " +
+                "where trackId = :trackId and trackId not in (select trackId from tracks_in_playlist_table where playlistId <> :playlistId) "
+    )
     suspend fun deleteUnusableTrack(playlistId: Int, trackId: Int)
 
-    @Query("delete from playlist_track_table " +
-            "where trackId in (select trackId from tracks_in_playlist_table where playlistId = :playlistId) and trackId not in (select trackId from tracks_in_playlist_table where playlistId <> :playlistId) ")
+    @Query(
+        "delete from playlist_track_table " +
+                "where trackId in (select trackId from tracks_in_playlist_table where playlistId = :playlistId) and trackId not in (select trackId from tracks_in_playlist_table where playlistId <> :playlistId) "
+    )
     suspend fun deleteAllTracksFromPlaylist(playlistId: Int)
 }

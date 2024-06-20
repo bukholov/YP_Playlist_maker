@@ -17,7 +17,7 @@ class TrackViewHolder(
     private val binding: TrackItemBinding,
     onClickListener: (position: Int) -> Unit,
     onLongClickListener: (position: Int) -> Unit
-): RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root) {
     init {
         itemView.setOnClickListener {
             onClickListener(adapterPosition)
@@ -30,12 +30,14 @@ class TrackViewHolder(
     }
 
     @SuppressLint("ResourceType")
-    fun bind(item: Track){
+    fun bind(item: Track) {
         binding.textViewTrackArtist.text = item.artistName
         binding.textViewTrackName.text = item.trackName
-        binding.textViewTrackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(item.trackTime)
+        binding.textViewTrackTime.text =
+            SimpleDateFormat("mm:ss", Locale.getDefault()).format(item.trackTime)
 
-        val radiusRound = binding.root.resources.getDimension(R.dimen.track_item_art_round_corner).roundToInt()
+        val radiusRound =
+            binding.root.resources.getDimension(R.dimen.track_item_art_round_corner).roundToInt()
 
         Glide.with(binding.root)
             .load(Uri.parse(item.artworkUrl100))

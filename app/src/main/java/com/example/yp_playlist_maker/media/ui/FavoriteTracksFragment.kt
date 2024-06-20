@@ -24,8 +24,8 @@ class FavoriteTracksFragment : Fragment() {
     }
 
     private fun render(result: Result<List<Track>>) {
-        if(result.isSuccess){
-            if(result.getOrNull()!!.isEmpty()){
+        if (result.isSuccess) {
+            if (result.getOrNull()!!.isEmpty()) {
                 with(trackAdapter) {
                     tracks.clear()
                     notifyDataSetChanged()
@@ -33,8 +33,7 @@ class FavoriteTracksFragment : Fragment() {
                 binding.ivSadFace.visibility = View.VISIBLE
                 binding.tvPlaylistsNotCreated.visibility = View.VISIBLE
 
-            }
-            else{
+            } else {
                 binding.ivSadFace.visibility = View.GONE
                 binding.tvPlaylistsNotCreated.visibility = View.GONE
                 with(trackAdapter) {
@@ -49,7 +48,7 @@ class FavoriteTracksFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFavoriteTracksBinding.inflate(layoutInflater)
 
         trackAdapter = TrackAdapter {
@@ -59,7 +58,7 @@ class FavoriteTracksFragment : Fragment() {
         trackAdapter.tracks = ArrayList()
         binding.rvLikedTracks.adapter = trackAdapter
 
-        viewModel.observeState().observe(viewLifecycleOwner){
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
         viewModel.fillData()

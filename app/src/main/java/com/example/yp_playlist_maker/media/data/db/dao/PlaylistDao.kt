@@ -17,9 +17,11 @@ interface PlaylistDao {
     @Delete
     suspend fun deletePlaylist(playlistEntity: PlaylistEntity)
 
-    @Query("select a.playlistId, a.namePlaylistName, a.descriptionPlaylist, a.pathImage, count(b.trackId) countTracksInPlaylist from playlist_table a " +
-            "left join tracks_in_playlist_table b on a.playlistId = b.playlistId " +
-            "group by a.playlistId order by a.playlistId")
+    @Query(
+        "select a.playlistId, a.namePlaylistName, a.descriptionPlaylist, a.pathImage, count(b.trackId) countTracksInPlaylist from playlist_table a " +
+                "left join tracks_in_playlist_table b on a.playlistId = b.playlistId " +
+                "group by a.playlistId order by a.playlistId"
+    )
     fun getPlaylists(): Flow<List<PlaylistEntity>>
 
     @Update(entity = PlaylistEntity::class)

@@ -14,14 +14,16 @@ import com.example.yp_playlist_maker.media.data.db.entity.TrackEntity
 import com.example.yp_playlist_maker.media.data.db.entity.TracksInPlaylistEntity
 
 
-@Database(version = 2, entities = [
-    TrackEntity::class,
-    PlaylistEntity::class,
-    TracksInPlaylistEntity::class,
-    PlaylistTrackEntity::class
-])
+@Database(
+    version = 2, entities = [
+        TrackEntity::class,
+        PlaylistEntity::class,
+        TracksInPlaylistEntity::class,
+        PlaylistTrackEntity::class
+    ]
+)
 @TypeConverters(Converters::class)
-abstract class AppDatabase : RoomDatabase(){
+abstract class AppDatabase : RoomDatabase() {
     abstract fun trackDao(): TrackDao
 
     abstract fun playlistDao(): PlaylistDao

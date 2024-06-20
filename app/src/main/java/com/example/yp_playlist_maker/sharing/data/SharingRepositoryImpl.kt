@@ -5,7 +5,10 @@ import androidx.core.content.ContextCompat
 import com.example.yp_playlist_maker.R
 import com.example.yp_playlist_maker.sharing.domain.SharingRepository
 
-class SharingRepositoryImpl(private val externalNavigator: ExternalNavigator, private val context: Context):SharingRepository {
+class SharingRepositoryImpl(
+    private val externalNavigator: ExternalNavigator,
+    private val context: Context
+) : SharingRepository {
     override fun shareApp() {
         externalNavigator.shareLink(getShareAppLink())
     }

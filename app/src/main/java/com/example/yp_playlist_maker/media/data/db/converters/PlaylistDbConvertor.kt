@@ -4,13 +4,14 @@ import com.example.yp_playlist_maker.media.data.db.entity.PlaylistEntity
 import com.example.yp_playlist_maker.media.domain.db.Playlist
 
 class PlaylistDbConvertor {
-    fun map(playlist: Playlist): PlaylistEntity{
+    fun map(playlist: Playlist): PlaylistEntity {
         return PlaylistEntity(
             playlist.playlistId,
             playlist.playlistName,
             playlist.playlistDescription,
             playlist.pathImage,
-            playlist.countTracksInPlaylist)
+            playlist.countTracksInPlaylist
+        )
     }
 
     fun map(playlist: PlaylistEntity): Playlist {
@@ -19,6 +20,7 @@ class PlaylistDbConvertor {
             playlist.namePlaylistName,
             playlist.descriptionPlaylist,
             playlist.pathImage,
-            playlist.countTracksInPlaylist)
+            playlist.countTracksInPlaylist
+        )
     }
 }

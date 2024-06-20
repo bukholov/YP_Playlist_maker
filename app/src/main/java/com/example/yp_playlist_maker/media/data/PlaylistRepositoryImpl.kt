@@ -13,18 +13,17 @@ import com.example.yp_playlist_maker.media.domain.db.Playlist
 import com.example.yp_playlist_maker.media.domain.db.PlaylistRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import org.koin.java.KoinJavaComponent
 import java.io.File
 import java.io.FileOutputStream
 import java.sql.Timestamp
 
 class PlaylistRepositoryImpl(
     private val appDatabase: AppDatabase,
-    private val playlistDbConvertor: PlaylistDbConvertor
-): PlaylistRepository {
-    private val context: Context by KoinJavaComponent.inject(Context::class.java)
-    override fun playlists(): Flow<List<Playlist>> = flow{
-        appDatabase.playlistDao().getPlaylists().collect{
+    private val playlistDbConvertor: PlaylistDbConvertor,
+    private val context: Context
+) : PlaylistRepository {
+    override fun playlists(): Flow<List<Playlist>> = flow {
+        appDatabase.playlistDao().getPlaylists().collect {
             emit(convertFromPlaylistEntity(it))
         }
     }
@@ -42,22 +41,23 @@ class PlaylistRepositoryImpl(
         appDatabase.playlistDao().updatePlaylist(playlistDbConvertor.map(playlist))
     }
 
-    override fun getPlaylist(playlistId: Int): Flow<Playlist> = flow{
-          appDatabase.playlistDao().getPlaylist(playlistId).collect{
-              Log.d("PlaylistRepositoryImpl Playlist", playlistDbConvertor.map(it).toString())
-              Log.d("PlaylistRepositoryImpl PlaylistEntity", it.toString())
-              emit(playlistDbConvertor.map(it))
-          }
+    override fun getPlaylist(playlistId: Int): Flow<Playlist> = flow {
+        appDatabase.playlistDao().getPlaylist(playlistId).collect {
+            Log.d("PlaylistRepositoryImpl Playlist", playlistDbConvertor.map(it).toString())
+            Log.d("PlaylistRepositoryImpl PlaylistEntity", it.toString())
+            emit(playlistDbConvertor.map(it))
+        }
     }
 
     override fun saveImageToPrivateStorage(uri: Uri): String {
         val filePath = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).toString())
-        if (!filePath.exists()){
+        if (!filePath.exists()) {
             filePath.mkdirs()
         }
 
-        val file = File(filePath, uri.toString().split("/").last() + Timestamp(System.currentTimeMillis()))
-        val inputStream = context?.contentResolver?.openInputStream(uri)
+        val file =
+            File(filePath, uri.toString().split("/").last() + Timestamp(System.currentTimeMillis()))
+        val inputStream = context.contentResolver?.openInputStream(uri)
         val outputStream = FileOutputStream(file)
         Log.d("saveImageToPrivateStorage", "SaveImage from $uri to ${file.absolutePath}")
         BitmapFactory
@@ -67,12 +67,12 @@ class PlaylistRepositoryImpl(
         return file.absolutePath
     }
 
-    override fun deleteImageFromPrivateStorage(path: String){
+    override fun deleteImageFromPrivateStorage(path: String) {
         val filePath = File(path)
         filePath.delete()
     }
 
-    private fun convertFromPlaylistEntity(playlists: List<PlaylistEntity>):List<Playlist> {
+    private fun convertFromPlaylistEntity(playlists: List<PlaylistEntity>): List<Playlist> {
         return playlists.map { playlistEntity -> playlistDbConvertor.map(playlistEntity) }
     }
 }

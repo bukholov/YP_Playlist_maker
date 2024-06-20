@@ -7,8 +7,8 @@ import com.example.yp_playlist_maker.databinding.PlaylistItemBinding
 import com.example.yp_playlist_maker.media.domain.db.Playlist
 
 class PlaylistAdapter(
-    val onClickListener: (Playlist)->Unit
-    ) : RecyclerView.Adapter<PlaylistViewHolder> () {
+    val onClickListener: (Playlist) -> Unit
+) : RecyclerView.Adapter<PlaylistViewHolder>() {
     lateinit var playlists: ArrayList<Playlist>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val binding = PlaylistItemBinding.inflate(
@@ -17,8 +17,8 @@ class PlaylistAdapter(
             false
         )
 
-        return PlaylistViewHolder(binding){
-            playlists.getOrNull(it)?.let { playlist->
+        return PlaylistViewHolder(binding) {
+            playlists.getOrNull(it)?.let { playlist ->
                 onClickListener(playlist)
             }
         }

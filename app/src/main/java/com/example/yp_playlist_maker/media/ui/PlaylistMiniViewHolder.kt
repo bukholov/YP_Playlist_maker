@@ -15,17 +15,23 @@ import kotlin.math.roundToInt
 class PlaylistMiniViewHolder(
     private val binding: PlaylistItemMiniBinding,
     private val onClickListener: (position: Int) -> Unit
-): RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root) {
     init {
         itemView.setOnClickListener {
             onClickListener(adapterPosition)
         }
     }
+
     @SuppressLint("ResourceType")
-    fun bind(item: Playlist){
+    fun bind(item: Playlist) {
         binding.textViewPlaylistName.text = item.playlistName
-        binding.textViewPlaylistTrackCount.text = binding.root.context.resources.getQuantityString(R.plurals.count_of_track_numbers, item.countTracksInPlaylist, item.countTracksInPlaylist)
-        val radiusRound = binding.root.resources.getDimension(R.dimen.track_item_art_round_corner).roundToInt()
+        binding.textViewPlaylistTrackCount.text = binding.root.context.resources.getQuantityString(
+            R.plurals.count_of_track_numbers,
+            item.countTracksInPlaylist,
+            item.countTracksInPlaylist
+        )
+        val radiusRound =
+            binding.root.resources.getDimension(R.dimen.track_item_art_round_corner).roundToInt()
 
         Glide.with(binding.root)
             .load(File(item.pathImage, ""))

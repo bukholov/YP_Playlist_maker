@@ -21,22 +21,29 @@ class PlaylistsFragment : Fragment() {
 
     private fun render(result: Result<List<Playlist>>) {
         if (result.isSuccess) {
-            if(result.getOrNull()!!.isEmpty()){
+            val listOfPlaylists: List<Playlist>? = result.getOrNull()
+
+            if (listOfPlaylists.isNullOrEmpty()) {
                 with(playlistAdapter) {
                     playlists.clear()
                     notifyDataSetChanged()
                 }
                 binding.ivSadFace.visibility = View.VISIBLE
                 binding.tvPlaylistsNotCreated.visibility = View.VISIBLE
-
-            }
-            else{
+            } else {
                 binding.ivSadFace.visibility = View.GONE
                 binding.tvPlaylistsNotCreated.visibility = View.GONE
                 with(playlistAdapter) {
                     playlists.clear()
-                    playlists.addAll(result.getOrNull()!!)
+                    playlists.addAll(listOfPlaylists)
                     notifyDataSetChanged()
+
+                    if (result.getOrNull() != null) {
+                        playlists.clear()
+                        playlists.addAll(listOfPlaylists)
+                        notifyDataSetChanged()
+
+                    }
                 }
             }
         }
@@ -45,10 +52,10 @@ class PlaylistsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
 
-        playlistsViewModel.observeState().observe(viewLifecycleOwner){
+        playlistsViewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
 
@@ -56,7 +63,7 @@ class PlaylistsFragment : Fragment() {
             Log.d("PlaylistFragment", "Opening PlaylistCreateFragment")
             findNavController().navigate(R.id.playlistCreateFragment)
         }
-        playlistAdapter = PlaylistAdapter(){
+        playlistAdapter = PlaylistAdapter {
             val direction = MediaFragmentDirections.actionMediaFragmentToPlaylistInfoFragment(it)
             findNavController().navigate(directions = direction)
         }

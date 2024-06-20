@@ -5,7 +5,8 @@ import com.example.yp_playlist_maker.media.domain.db.TracksInPlaylistRepository
 import com.example.yp_playlist_maker.search.domain.Track
 import kotlinx.coroutines.flow.Flow
 
-class TracksInPlaylistInteractorImpl(private val tracksInPlaylistRepository: TracksInPlaylistRepository): TracksInPlaylistInteractor {
+class TracksInPlaylistInteractorImpl(private val tracksInPlaylistRepository: TracksInPlaylistRepository) :
+    TracksInPlaylistInteractor {
     override suspend fun insertTrackInPlaylist(playlistId: Int, track: Track) {
         tracksInPlaylistRepository.insertTrackInPlaylist(playlistId, track)
     }

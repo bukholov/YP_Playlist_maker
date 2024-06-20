@@ -23,13 +23,11 @@ class PlaylistInfoViewModel(
     private val tracksInPlaylistInteractor: TracksInPlaylistInteractor,
     private val sharingInteractor: SharingInteractor,
     private val playlistInteractor: PlaylistInteractor
-): ViewModel() {
+) : ViewModel() {
     private lateinit var currentPlaylistInfoState: PlaylistInfoState
     private val context: Context by KoinJavaComponent.inject(Context::class.java)
 
-    private val statePlaylistLiveData: MutableLiveData<PlaylistInfoState> by KoinJavaComponent.inject(
-        MutableLiveData::class.java
-    )
+    private val statePlaylistLiveData = MutableLiveData<PlaylistInfoState>()
 
     fun observeState(): LiveData<PlaylistInfoState> = statePlaylistLiveData
 
@@ -37,19 +35,20 @@ class PlaylistInfoViewModel(
         statePlaylistLiveData.postValue(playlistInfoState)
     }
 
-    fun loadPlaylistInfo(playlist: Playlist){
+    fun loadPlaylistInfo(playlist: Playlist) {
         syncPlaylist(playlist.playlistId)
         viewModelScope.launch {
             tracksInPlaylistInteractor
                 .getTracksInPlaylist(playlist.playlistId)
-                .collect{
-                    currentPlaylistInfoState = PlaylistInfoState(currentPlaylistInfoState.playlist, it)
+                .collect {
+                    currentPlaylistInfoState =
+                        PlaylistInfoState(currentPlaylistInfoState.playlist, it)
                     renderState(currentPlaylistInfoState)
                 }
         }
     }
 
-    private fun syncPlaylist(playlistId: Int){
+    private fun syncPlaylist(playlistId: Int) {
         viewModelScope.launch {
             playlistInteractor.getPlaylist(playlistId).collect {
                 currentPlaylistInfoState = PlaylistInfoState(it, listOf())
@@ -58,25 +57,39 @@ class PlaylistInfoViewModel(
         }
     }
 
-    fun deleteTrackFromPlaylist(track: Track){
+    fun deleteTrackFromPlaylist(track: Track) {
         viewModelScope.launch {
-            tracksInPlaylistInteractor.deleteIfUnusableTrack(playlistId = currentPlaylistInfoState.playlist.playlistId, track.trackId)
+            tracksInPlaylistInteractor.deleteIfUnusableTrack(
+                playlistId = currentPlaylistInfoState.playlist.playlistId,
+                track.trackId
+            )
         }
         viewModelScope.launch {
-            tracksInPlaylistInteractor.deleteTrackFromPlaylist(playlistId = currentPlaylistInfoState.playlist.playlistId, track)
+            tracksInPlaylistInteractor.deleteTrackFromPlaylist(
+                playlistId = currentPlaylistInfoState.playlist.playlistId,
+                track
+            )
         }
     }
 
-    fun sharePlaylist(){
-        if(currentPlaylistInfoState.tracks.isEmpty()){
+    fun sharePlaylist() {
+        if (currentPlaylistInfoState.tracks.isEmpty()) {
             Toast.makeText(context, R.string.playlist_share_message, Toast.LENGTH_SHORT).show()
-        }
-        else{
-            var message = context.resources.getQuantityString(R.plurals.count_of_track_numbers, currentPlaylistInfoState.tracks.size, currentPlaylistInfoState.tracks.size) + "\n"
+        } else {
+            var message = context.resources.getQuantityString(
+                R.plurals.count_of_track_numbers,
+                currentPlaylistInfoState.tracks.size,
+                currentPlaylistInfoState.tracks.size
+            ) + "\n"
             currentPlaylistInfoState.tracks.mapIndexed { index, track ->
-                val trackTime = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime)
+                val trackTime =
+                    SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTime)
 
-                message += "${index+1}.${track.artistName} - ${track.trackName} ($trackTime) \n".format(track.artistName, track.trackName, trackTime)
+                message += "${index + 1}.${track.artistName} - ${track.trackName} ($trackTime) \n".format(
+                    track.artistName,
+                    track.trackName,
+                    trackTime
+                )
             }
             sharingInteractor.shareString(message)
         }

@@ -12,18 +12,19 @@ import kotlinx.coroutines.flow.flow
 class TracksInPlaylistRepositoryImpl(
     private val appDatabase: AppDatabase,
     private val trackDbConvertor: TrackDbConvertor
-): TracksInPlaylistRepository {
+) : TracksInPlaylistRepository {
     override suspend fun insertTrackInPlaylist(playlistId: Int, track: Track) {
         appDatabase.playlistTrackDao().insertTrack(trackDbConvertor.mapToPlaylistTrackEntity(track))
-        appDatabase.tracksInPlaylistDao().insertTrack(TracksInPlaylistEntity(0, playlistId, track.trackId))
+        appDatabase.tracksInPlaylistDao()
+            .insertTrack(TracksInPlaylistEntity(0, playlistId, track.trackId))
     }
 
     override fun getTrackIdsInPlaylist(playlistId: Int): Flow<List<Int>> {
         return appDatabase.tracksInPlaylistDao().getTrackIdsInPlaylist(playlistId)
     }
 
-    override fun getTracksInPlaylist(playlistId: Int): Flow<List<Track>> = flow{
-        appDatabase.tracksInPlaylistDao().getTracksInPlaylist(playlistId).collect{
+    override fun getTracksInPlaylist(playlistId: Int): Flow<List<Track>> = flow {
+        appDatabase.tracksInPlaylistDao().getTracksInPlaylist(playlistId).collect {
             emit(convertFromTrackEntity(it))
         }
     }
@@ -44,7 +45,7 @@ class TracksInPlaylistRepositoryImpl(
         appDatabase.playlistTrackDao().deleteAllTracksFromPlaylist(playlistId)
     }
 
-    private fun convertFromTrackEntity(tracks: List<PlaylistTrackEntity>):List<Track> {
+    private fun convertFromTrackEntity(tracks: List<PlaylistTrackEntity>): List<Track> {
         return tracks.map { playlistTrackEntity -> trackDbConvertor.mapToTrack(playlistTrackEntity) }
     }
 }

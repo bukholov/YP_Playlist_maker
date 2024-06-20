@@ -3,6 +3,7 @@ package com.example.yp_playlist_maker.media.data.db.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
+
 @Entity(tableName = "playlist_track_table")
 data class PlaylistTrackEntity(
     @PrimaryKey

@@ -1,6 +1,6 @@
 package com.example.yp_playlist_maker.sharing.domain
 
-class SharingInteractorImpl(private val repository: SharingRepository): SharingInteractor {
+class SharingInteractorImpl(private val repository: SharingRepository) : SharingInteractor {
     override fun shareApp() {
         repository.shareApp()
     }

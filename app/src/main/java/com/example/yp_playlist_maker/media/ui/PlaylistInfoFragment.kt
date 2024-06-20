@@ -31,11 +31,12 @@ class PlaylistInfoFragment : Fragment() {
     private lateinit var binding: FragmentPlaylistInfoBinding
     private val playlistInfoViewModel: PlaylistInfoViewModel by viewModel()
     private lateinit var trackAdapter: TrackAdapter
+
     companion object {
         private const val SELECTED_PLAYLIST_KEY = "SELECTED_PLAYLIST"
     }
 
-    private fun render(playlistInfo: PlaylistInfoState){
+    private fun render(playlistInfo: PlaylistInfoState) {
         binding.textViewPlaylistName.text = playlistInfo.playlist.playlistName
         binding.textViewPlaylistDescription.text = playlistInfo.playlist.playlistDescription
         binding.textViewPlaylistNameItemMini.text = playlistInfo.playlist.playlistName
@@ -48,39 +49,60 @@ class PlaylistInfoFragment : Fragment() {
         Glide.with(binding.root)
             .load(playlistInfo.playlist.pathImage)
             .apply(RequestOptions().placeholder(R.drawable.placeholder))
-            .transform(CenterCrop(), RoundedCorners(resources.getDimension(R.dimen.track_item_art_round_corner).roundToInt()))
+            .transform(
+                CenterCrop(),
+                RoundedCorners(
+                    resources.getDimension(R.dimen.track_item_art_round_corner).roundToInt()
+                )
+            )
             .into(binding.imageViewPlaylistItemMini)
 
         trackAdapter.tracks.clear()
         trackAdapter.tracks.addAll(playlistInfo.tracks)
         trackAdapter.notifyDataSetChanged()
-        val sumTrackTime = SimpleDateFormat("mm", Locale.getDefault()).format(playlistInfo.tracks.map { it.trackTime}.sum()).toInt()
+        val sumTrackTime = SimpleDateFormat(
+            "mm",
+            Locale.getDefault()
+        ).format(playlistInfo.tracks.map { it.trackTime }.sum()).toInt()
         binding.imageViewDot.isVisible = playlistInfo.tracks.isNotEmpty()
         binding.textViewPlaylistCountTracks.isVisible = playlistInfo.tracks.isNotEmpty()
-        if(playlistInfo.tracks.isEmpty()){
+        if (playlistInfo.tracks.isEmpty()) {
             binding.textViewPlaylistSumMinutes.text = getString(R.string.playlist_empty)
             binding.textViewPlaylistTrackCountItemMini.text = getString(R.string.playlist_empty)
+        } else {
+            binding.textViewPlaylistSumMinutes.text =
+                binding.root.context.resources.getQuantityString(
+                    R.plurals.count_of_minutes,
+                    sumTrackTime,
+                    sumTrackTime
+                )
+            binding.textViewPlaylistCountTracks.text =
+                binding.root.context.resources.getQuantityString(
+                    R.plurals.count_of_track_numbers,
+                    playlistInfo.tracks.count(),
+                    playlistInfo.tracks.count()
+                )
+            binding.textViewPlaylistTrackCountItemMini.text =
+                binding.root.context.resources.getQuantityString(
+                    R.plurals.count_of_track_numbers,
+                    playlistInfo.tracks.count(),
+                    playlistInfo.tracks.count()
+                )
         }
-        else{
-            binding.textViewPlaylistSumMinutes.text = binding.root.context.resources.getQuantityString(R.plurals.count_of_minutes, sumTrackTime, sumTrackTime)
-            binding.textViewPlaylistCountTracks.text = binding.root.context.resources.getQuantityString(R.plurals.count_of_track_numbers, playlistInfo.tracks.count(),playlistInfo.tracks.count())
-            binding.textViewPlaylistTrackCountItemMini.text = binding.root.context.resources.getQuantityString(R.plurals.count_of_track_numbers, playlistInfo.tracks.count(),playlistInfo.tracks.count())
-        }
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentPlaylistInfoBinding.inflate(layoutInflater)
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility = View.GONE
-        playlistInfoViewModel.observeState().observe(requireActivity()) {
-            render(it)
-        }
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility =
+            View.GONE
 
-        val onClickListener = {track: Track ->
-            val direction = PlaylistInfoFragmentDirections.actionPlaylistInfoFragmentToAudioPlayerFragment(track)
+
+        val onClickListener = { track: Track ->
+            val direction =
+                PlaylistInfoFragmentDirections.actionPlaylistInfoFragmentToAudioPlayerFragment(track)
             findNavController().navigate(directions = direction)
         }
 
@@ -97,20 +119,34 @@ class PlaylistInfoFragment : Fragment() {
         trackAdapter.tracks = ArrayList()
         binding.rvTracks.adapter = trackAdapter
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            playlistInfoViewModel.loadPlaylistInfo(requireArguments().getParcelable(SELECTED_PLAYLIST_KEY, Playlist::class.java)!!)
-        }
-        else{
-            playlistInfoViewModel.loadPlaylistInfo(requireArguments().getParcelable<Playlist>(SELECTED_PLAYLIST_KEY)!!)
+        playlistInfoViewModel.observeState().observe(requireActivity()) {
+            render(it)
         }
 
-        val bottomSheetBehavior = BottomSheetBehavior.from(binding.playlistInfoTracksBottomSheet).apply {
-            state = BottomSheetBehavior.STATE_COLLAPSED
+        val playlist: Playlist? =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) requireArguments().getParcelable(
+                SELECTED_PLAYLIST_KEY,
+                Playlist::class.java
+            ) else
+                requireArguments().getParcelable<Playlist>(
+                    SELECTED_PLAYLIST_KEY
+                )
+
+        if (playlist != null) {
+            playlistInfoViewModel.loadPlaylistInfo(playlist)
+        } else {
+            findNavController().popBackStack()
         }
 
-        val bottomSheetMenuBehavior = BottomSheetBehavior.from(binding.playlistInfoTracksBottomSheetMenu).apply {
-            state = BottomSheetBehavior.STATE_HIDDEN
-        }
+        val bottomSheetBehavior =
+            BottomSheetBehavior.from(binding.playlistInfoTracksBottomSheet).apply {
+                state = BottomSheetBehavior.STATE_COLLAPSED
+            }
+
+        val bottomSheetMenuBehavior =
+            BottomSheetBehavior.from(binding.playlistInfoTracksBottomSheetMenu).apply {
+                state = BottomSheetBehavior.STATE_HIDDEN
+            }
 
 
         binding.textViewBack.setOnClickListener {
@@ -146,7 +182,10 @@ class PlaylistInfoFragment : Fragment() {
         }
 
         binding.textEditPlaylist.setOnClickListener {
-            val direction = PlaylistInfoFragmentDirections.actionPlaylistInfoFragmentToPlaylistCreateFragment(playlistInfoViewModel.getPlaylist())
+            val direction =
+                PlaylistInfoFragmentDirections.actionPlaylistInfoFragmentToPlaylistCreateFragment(
+                    playlistInfoViewModel.getPlaylist()
+                )
             findNavController().navigate(directions = direction)
         }
 
