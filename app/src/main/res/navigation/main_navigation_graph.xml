@@ -3,30 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation_graph"
-    app:startDestination="@id/mediaFragment">
+    app:startDestination="@id/media_fragment">
 
     <fragment
-        android:id="@+id/settingsFragment"
+        android:id="@+id/settings_fragment"
         android:name="com.example.yp_playlist_maker.settings.ui.SettingsFragment"
-        android:label="SettingsFragment" >
+        android:label="SettingsFragment">
         <action
             android:id="@+id/action_settingsFragment_to_webFragment"
-            app:destination="@id/webFragment" />
+            app:destination="@id/web_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/webFragment"
+        android:id="@+id/web_fragment"
         android:name="com.example.yp_playlist_maker.sharing.ui.WebFragment"
         android:label="fragment_web"
-        tools:layout="@layout/fragment_web" >
+        tools:layout="@layout/fragment_web">
         <argument
             android:name="uri_link"
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/mediaFragment"
+        android:id="@+id/media_fragment"
         android:name="com.example.yp_playlist_maker.media.ui.MediaFragment"
         android:label="fragment_media"
-        tools:layout="@layout/fragment_media" >
+        tools:layout="@layout/fragment_media">
         <action
             android:id="@+id/action_mediaFragment_to_audioPlayerFragment"
             app:destination="@id/audioPlayerFragment" />
@@ -35,10 +35,10 @@
             app:destination="@id/playlistInfoFragment" />
     </fragment>
     <fragment
-        android:id="@+id/searchFragment"
+        android:id="@+id/search_fragment"
         android:name="com.example.yp_playlist_maker.search.ui.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" >
+        tools:layout="@layout/fragment_search">
         <action
             android:id="@+id/action_searchFragment_to_audioPlayerFragment"
             app:destination="@id/audioPlayerFragment" />
@@ -47,7 +47,7 @@
         android:id="@+id/playlistCreateFragment"
         android:name="com.example.yp_playlist_maker.media.ui.PlaylistCreateFragment"
         android:label="fragment_playlist_create"
-        tools:layout="@layout/fragment_playlist_create" >
+        tools:layout="@layout/fragment_playlist_create">
         <argument
             android:name="SELECTED_PLAYLIST"
             app:argType="com.example.yp_playlist_maker.media.domain.db.Playlist" />
@@ -55,17 +55,19 @@
     <fragment
         android:id="@+id/audioPlayerFragment"
         android:name="com.example.yp_playlist_maker.player.ui.AudioPlayerFragment"
-        android:label="AudioPlayerFragment" >
-        <argument android:name="SELECTED_TRACK"
-            app:argType="com.example.yp_playlist_maker.search.domain.Track"/>
+        android:label="AudioPlayerFragment">
+        <argument
+            android:name="SELECTED_TRACK"
+            app:argType="com.example.yp_playlist_maker.search.domain.Track" />
     </fragment>
     <fragment
         android:id="@+id/playlistInfoFragment"
         android:name="com.example.yp_playlist_maker.media.ui.PlaylistInfoFragment"
         android:label="fragment_playlist_info"
-        tools:layout="@layout/fragment_playlist_info" >
-        <argument android:name="SELECTED_PLAYLIST"
-            app:argType="com.example.yp_playlist_maker.media.domain.db.Playlist"/>
+        tools:layout="@layout/fragment_playlist_info">
+        <argument
+            android:name="SELECTED_PLAYLIST"
+            app:argType="com.example.yp_playlist_maker.media.domain.db.Playlist" />
         <action
             android:id="@+id/action_playlistInfoFragment_to_audioPlayerFragment"
             app:destination="@id/audioPlayerFragment" />

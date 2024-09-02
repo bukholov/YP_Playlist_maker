@@ -2,6 +2,7 @@ package com.example.yp_playlist_maker.main.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.yp_playlist_maker.R
@@ -21,31 +22,31 @@ class RootActivity : AppCompatActivity() {
 
         val bottomNavigationView = binding.bottomNavigationView
         bottomNavigationView.setupWithNavController(navController)
-        bottomNavigationView.setOnItemSelectedListener {
-            true
-        }
-        bottomNavigationView.selectedItemId = R.id.media_fragment
-        bottomNavigationView.setOnItemSelectedListener {
-            when (it.itemId) {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
                 R.id.search_fragment -> {
-                    navController.navigate(R.id.searchFragment)
+                    changeBottomNavigationVisibility(true)
                     true
                 }
 
                 R.id.media_fragment -> {
-                    navController.navigate(R.id.mediaFragment)
+                    changeBottomNavigationVisibility(true)
                     true
                 }
 
                 R.id.settings_fragment -> {
-                    navController.navigate(R.id.settingsFragment)
+                    changeBottomNavigationVisibility(true)
                     true
                 }
 
                 else -> {
-                    true
+                    changeBottomNavigationVisibility(false)
                 }
             }
         }
+    }
+
+    private fun changeBottomNavigationVisibility(isVisible: Boolean) {
+        binding.bottomNavigationView.isVisible = isVisible
     }
 }
