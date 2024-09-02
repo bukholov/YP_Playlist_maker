@@ -20,7 +20,6 @@ import com.example.yp_playlist_maker.player.data.PlayerState
 import com.example.yp_playlist_maker.player.data.PlaylistsState
 import com.example.yp_playlist_maker.player.ui.view_model.AudioPlayerViewModel
 import com.example.yp_playlist_maker.search.domain.Track
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
@@ -40,14 +39,16 @@ class AudioPlayerFragment : Fragment() {
         binding.imageViewPlay.setImageResource(R.drawable.play)
     }
 
-    private fun startPlayer(currentPosition: String) {
+    private fun startPlayer(currentPosition: String, percentPosition: Float) {
         binding.imageViewPlay.setImageResource(R.drawable.pause)
         binding.tvCurrentTrackTime.text = currentPosition
+        binding.trackSlider.value = percentPosition
     }
 
-    private fun resumePlayer(track: Track, currentPosition: String) {
+    private fun resumePlayer(track: Track, currentPosition: String, percentPosition: Int) {
         fillData(track)
         binding.imageViewPlay.setImageResource(R.drawable.play)
+        binding.trackSlider.value = percentPosition.toFloat()
         binding.tvCurrentTrackTime.text = currentPosition
     }
 
@@ -86,7 +87,7 @@ class AudioPlayerFragment : Fragment() {
             }
 
             is PlayerState.StatePlaying -> {
-                startPlayer(playerState.currentPosition)
+                startPlayer(playerState.currentPosition, playerState.percentPosition)
             }
 
             is PlayerState.Pause -> {
@@ -100,10 +101,15 @@ class AudioPlayerFragment : Fragment() {
             is PlayerState.Complete -> {
                 binding.imageViewPlay.setImageResource(R.drawable.play)
                 binding.tvCurrentTrackTime.text = playerState.startPosition
+                binding.trackSlider.value = 0.0f
             }
 
             is PlayerState.Resume -> {
-                resumePlayer(playerState.track, playerState.currentPosition)
+                resumePlayer(
+                    playerState.track,
+                    playerState.currentPosition,
+                    playerState.percentPosition
+                )
             }
         }
     }
@@ -155,10 +161,6 @@ class AudioPlayerFragment : Fragment() {
         binding.imageViewPlay.setOnClickListener {
             audioPlayerViewModel.playbackControl()
         }
-
-
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility =
-            View.GONE
 
         audioPlayerViewModel.observeState().observe(requireActivity()) {
             render(it)
@@ -215,6 +217,12 @@ class AudioPlayerFragment : Fragment() {
 
         binding.buttonAddToPlaylist.setOnClickListener {
             findNavController().navigate(R.id.playlistCreateFragment)
+        }
+
+        binding.trackSlider.addOnChangeListener { slider, value, fromUser ->
+            if (fromUser) {
+                audioPlayerViewModel.playFrom(value)
+            }
         }
 
         return binding.root

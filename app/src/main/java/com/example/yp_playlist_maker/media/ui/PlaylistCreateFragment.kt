@@ -20,7 +20,6 @@ import com.example.yp_playlist_maker.R
 import com.example.yp_playlist_maker.databinding.FragmentPlaylistCreateBinding
 import com.example.yp_playlist_maker.media.domain.db.Playlist
 import com.example.yp_playlist_maker.media.viewmodel.PlaylistCreateViewModel
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.roundToInt
@@ -61,8 +60,6 @@ class PlaylistCreateFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPlaylistCreateBinding.inflate(layoutInflater)
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility =
-            View.GONE
 
         viewModelPlaylistCreate.observeState().observe(requireActivity()) {
             renderPlaylist(it)

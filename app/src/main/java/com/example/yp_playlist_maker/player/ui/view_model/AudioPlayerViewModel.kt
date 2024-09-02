@@ -30,7 +30,7 @@ class AudioPlayerViewModel(
     private val tracksInPlaylistInteractor: TracksInPlaylistInteractor
 ) : ViewModel() {
     companion object {
-        const val SHOW_TIME_DEBOUNCE_DELAY_MILLIS = 300L
+        const val SHOW_TIME_DEBOUNCE_DELAY_MILLIS = 100L
     }
 
     private val mediaPlayer: MediaPlayer by inject(MediaPlayer::class.java)
@@ -73,13 +73,15 @@ class AudioPlayerViewModel(
                 renderState(PlayerState.StateDefault(track))
             }
         } else {
+
             renderState(
                 PlayerState.Resume(
                     track,
                     SimpleDateFormat(
                         "mm:ss",
                         Locale.getDefault()
-                    ).format(mediaPlayer.currentPosition)
+                    ).format(mediaPlayer.currentPosition),
+                    mediaPlayer.currentPosition / mediaPlayer.duration
                 )
             )
         }
@@ -101,6 +103,13 @@ class AudioPlayerViewModel(
             timerJob?.cancel()
             renderState(PlayerState.Pause)
         }
+    }
+
+    fun playFrom(position: Float) {
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.seekTo((position * mediaPlayer.duration).toInt())
+        }
+
     }
 
     private fun renderState(playerState: PlayerState) {
@@ -128,7 +137,8 @@ class AudioPlayerViewModel(
                         SimpleDateFormat(
                             "mm:ss",
                             Locale.getDefault()
-                        ).format(mediaPlayer.currentPosition)
+                        ).format(mediaPlayer.currentPosition),
+                        mediaPlayer.currentPosition.toFloat() / mediaPlayer.duration
                     )
                 )
                 delay(SHOW_TIME_DEBOUNCE_DELAY_MILLIS)

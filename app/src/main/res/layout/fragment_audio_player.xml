@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".player.ui.AudioPlayerFragment">
-
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,8 +13,9 @@
         android:layout_height="match_parent"
         android:background="?attr/colorSecondary">
 
-        <TextView style="@style/TitleActivityStyle"
+        <TextView
             android:id="@+id/button_back_from_audio_player"
+            style="@style/TitleActivityStyle"
             android:drawableStart="@drawable/arrow_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,31 +29,45 @@
             android:layout_marginTop="@dimen/audio_player_track_photo_margin_top"
             android:layout_marginBottom="@dimen/audio_player_track_photo_margin_bottom"
             android:src="@drawable/placeholder"
+            app:layout_constraintBottom_toTopOf="@id/tv_track_name"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_back_from_audio_player"
-            app:layout_constraintBottom_toTopOf="@id/tv_track_name"/>
+            app:layout_constraintTop_toBottomOf="@id/button_back_from_audio_player" />
 
-        <TextView style="@style/AudioPlayerStyle.Head.TrackName"
+        <TextView
             android:id="@+id/tv_track_name"
+            style="@style/AudioPlayerStyle.Head.TrackName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/audio_player_head_horizontal_margin"
             android:layout_marginBottom="@dimen/audio_player_track_name_bottom_margin"
+            app:layout_constraintBottom_toTopOf="@+id/tv_artist_name"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/tv_artist_name" />
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView style="@style/AudioPlayerStyle.Head.ArtistName"
+        <TextView
             android:id="@+id/tv_artist_name"
+            style="@style/AudioPlayerStyle.Head.ArtistName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/audio_player_head_horizontal_margin"
             android:layout_marginBottom="@dimen/audio_player_artist_name_margin_bottom"
+            app:layout_constraintBottom_toTopOf="@id/track_slider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/track_slider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/audio_player_head_horizontal_margin"
+            app:labelBehavior="gone"
+            app:layout_constraintBottom_toTopOf="@id/image_view_play"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/image_view_play" />
+            app:thumbColor="@color/YP_Blue"
+            app:trackColor="@color/YP_Light_Gray" />
 
         <ImageView
             android:id="@+id/image_view_play"
@@ -63,9 +76,9 @@
             android:layout_marginTop="@dimen/audio_player_artist_name_margin_bottom"
             android:layout_marginBottom="@dimen/audio_player_play_button_margin_bottom"
             android:src="@drawable/play"
+            app:layout_constraintBottom_toTopOf="@id/tv_current_track_time"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tv_current_track_time" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/add_to_playlist"
@@ -73,8 +86,8 @@
             android:layout_height="@dimen/audio_player_additional_buttons_size"
             android:layout_marginStart="@dimen/audio_player_head_horizontal_margin"
             android:src="@drawable/add_playlist"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/image_view_play"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/image_view_play" />
 
         <ImageView
@@ -83,142 +96,156 @@
             android:layout_height="@dimen/audio_player_additional_buttons_size"
             android:layout_marginEnd="@dimen/audio_player_head_horizontal_margin"
             android:src="@drawable/like"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/image_view_play"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/image_view_play" />
 
-        <TextView style="@style/AudioPlayerStyle.Head.ArtistName"
+        <TextView
             android:id="@+id/tv_current_track_time"
+            style="@style/AudioPlayerStyle.Head.ArtistName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/audio_player_track_photo_margin_bottom"
             android:text="@string/audio_player_start_position"
+            app:layout_constraintBottom_toTopOf="@id/tv_track_duration"
             app:layout_constraintEnd_toEndOf="@+id/image_view_play"
-            app:layout_constraintStart_toStartOf="@+id/image_view_play"
-            app:layout_constraintBottom_toTopOf="@id/tv_track_duration" />
+            app:layout_constraintStart_toStartOf="@+id/image_view_play" />
 
-        <TextView style="@style/AudioPlayerStyle.TextView.TrackParams"
+        <TextView
             android:id="@+id/tv_track_duration"
-            android:text="@string/duration"
+            style="@style/AudioPlayerStyle.TextView.TrackParams"
             android:layout_marginBottom="@dimen/audio_player_margin_between_text_view_info"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tv_track_collection_name"/>
+            android:text="@string/duration"
+            app:layout_constraintBottom_toTopOf="@id/tv_track_collection_name"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView style="@style/AudioPlayerStyle.TextView.InfoDesc"
+        <TextView
             android:id="@+id/tv_selected_track_duration"
-            app:layout_constraintStart_toEndOf="@id/tv_track_duration"
+            style="@style/AudioPlayerStyle.TextView.InfoDesc"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_track_duration"
             app:layout_constraintTop_toTopOf="@id/tv_track_duration" />
 
-        <TextView style="@style/AudioPlayerStyle.TextView.TrackParams"
+        <TextView
             android:id="@+id/tv_track_collection_name"
+            style="@style/AudioPlayerStyle.TextView.TrackParams"
+            android:layout_marginBottom="@dimen/audio_player_margin_between_text_view_info"
             android:text="@string/collection"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tv_track_release_date"
-            android:layout_marginBottom="@dimen/audio_player_margin_between_text_view_info" />
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView style="@style/AudioPlayerStyle.TextView.InfoDesc"
+        <TextView
             android:id="@+id/tv_selected_track_collection_name"
-            app:layout_constraintStart_toEndOf="@id/tv_track_collection_name"
+            style="@style/AudioPlayerStyle.TextView.InfoDesc"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_track_collection_name"
             app:layout_constraintTop_toTopOf="@id/tv_track_collection_name" />
 
-        <TextView style="@style/AudioPlayerStyle.TextView.TrackParams"
+        <TextView
             android:id="@+id/tv_track_release_date"
+            style="@style/AudioPlayerStyle.TextView.TrackParams"
+            android:layout_marginBottom="@dimen/audio_player_margin_between_text_view_info"
             android:text="@string/year"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/tv_track_primary_genre_name"
-            android:layout_marginBottom="@dimen/audio_player_margin_between_text_view_info" />
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView style="@style/AudioPlayerStyle.TextView.InfoDesc"
+        <TextView
             android:id="@+id/tv_selected_track_release_date"
-            app:layout_constraintStart_toEndOf="@id/tv_track_release_date"
+            style="@style/AudioPlayerStyle.TextView.InfoDesc"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_track_release_date"
             app:layout_constraintTop_toTopOf="@id/tv_track_release_date" />
 
-        <TextView style="@style/AudioPlayerStyle.TextView.TrackParams"
+        <TextView
             android:id="@+id/tv_track_primary_genre_name"
-            android:text="@string/genre"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/tv_track_country"
+            style="@style/AudioPlayerStyle.TextView.TrackParams"
             android:layout_marginTop="@dimen/audio_player_margin_between_text_view_info"
-            android:layout_marginBottom="@dimen/audio_player_margin_between_text_view_info"/>
+            android:layout_marginBottom="@dimen/audio_player_margin_between_text_view_info"
+            android:text="@string/genre"
+            app:layout_constraintBottom_toTopOf="@id/tv_track_country"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView  style="@style/AudioPlayerStyle.TextView.InfoDesc"
+        <TextView
             android:id="@+id/tv_selected_track_primary_genre_name"
-            app:layout_constraintStart_toEndOf="@id/tv_track_primary_genre_name"
+            style="@style/AudioPlayerStyle.TextView.InfoDesc"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_track_primary_genre_name"
             app:layout_constraintTop_toTopOf="@id/tv_track_primary_genre_name" />
 
-        <TextView style="@style/AudioPlayerStyle.TextView.TrackParams"
+        <TextView
             android:id="@+id/tv_track_country"
-            android:text="@string/country"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/AudioPlayerStyle.TextView.TrackParams"
             android:layout_marginTop="@dimen/audio_player_margin_between_text_view_info"
-            android:layout_marginBottom="@dimen/audio_player_margin_bottom_text_view_info_tab"/>
+            android:layout_marginBottom="@dimen/audio_player_margin_bottom_text_view_info_tab"
+            android:text="@string/country"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView style="@style/AudioPlayerStyle.TextView.InfoDesc"
+        <TextView
             android:id="@+id/tv_selected_track_country"
-            app:layout_constraintStart_toEndOf="@id/tv_track_country"
+            style="@style/AudioPlayerStyle.TextView.InfoDesc"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_track_country"
             app:layout_constraintTop_toTopOf="@id/tv_track_country" />
 
-        <View android:id="@+id/overlay"
+        <View
+            android:id="@+id/overlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/Shadow_color"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/playlist_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="@dimen/audio_player_bottom_sheet_height"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="@dimen/audio_player_bottom_sheet_height"
-        android:id="@+id/playlist_bottom_sheet"
         android:background="@drawable/bottom_sheet"
         android:nestedScrollingEnabled="true"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="@dimen/audio_player_bottom_sheet_height"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <View
+            android:id="@+id/view_bottom_sheet"
             android:layout_width="@dimen/bottom_bar_width"
             android:layout_height="@dimen/bottom_bar_height"
-            android:background="@drawable/bottom_sheet_bar"
-            android:id="@+id/view_bottom_sheet"
             android:layout_marginTop="@dimen/bottom_bar_margin_top"
-            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/bottom_sheet_bar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView style="@style/PanelResult.TextView"
+        <TextView
             android:id="@+id/text_view_add_to_playlist"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_bottom_sheet"
+            style="@style/PanelResult.TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/adding_to_playlist"/>
-
-        <Button style="@style/PanelResult.Button"
-            android:id="@+id/button_add_to_playlist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/new_playlist"
-            android:layout_marginTop="@dimen/search_results_panel_button_retry_margin_top"
-            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/adding_to_playlist"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_view_add_to_playlist"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_bottom_sheet" />
+
+        <Button
+            android:id="@+id/button_add_to_playlist"
+            style="@style/PanelResult.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/search_results_panel_button_retry_margin_top"
+            android:text="@string/new_playlist"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_view_add_to_playlist" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_playlists_mini"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/button_add_to_playlist"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
-            tools:listitem="@layout/playlist_item_mini"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/button_add_to_playlist"
+            tools:listitem="@layout/playlist_item_mini" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

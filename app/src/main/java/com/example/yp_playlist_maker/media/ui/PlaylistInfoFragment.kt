@@ -19,7 +19,6 @@ import com.example.yp_playlist_maker.media.domain.db.Playlist
 import com.example.yp_playlist_maker.media.viewmodel.PlaylistInfoViewModel
 import com.example.yp_playlist_maker.search.domain.Track
 import com.example.yp_playlist_maker.search.ui.TrackAdapter
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -96,9 +95,6 @@ class PlaylistInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPlaylistInfoBinding.inflate(layoutInflater)
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_navigation_view).visibility =
-            View.GONE
-
 
         val onClickListener = { track: Track ->
             val direction =
